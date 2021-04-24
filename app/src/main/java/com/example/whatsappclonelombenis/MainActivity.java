@@ -1,7 +1,6 @@
 package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
