@@ -20,5 +20,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout= findViewById(R.id.tabLayout);
         viewPager= findViewById(R.id.pager);
 
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_tab_camera));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tabChat));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tabStatus));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tabCalls));
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
     }
 }

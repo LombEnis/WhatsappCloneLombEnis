@@ -13,7 +13,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
-
     @NonNull
     @Override
     public Fragment getItem(int position) {

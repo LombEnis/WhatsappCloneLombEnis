@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WhatsappCloneLombEnis</string>
+    <string name="tabChat">CHAT</string>
+    <string name="tabStatus">STATO</string>
+    <string name="tabCalls">CHIAMATE</string>
 </resources>
