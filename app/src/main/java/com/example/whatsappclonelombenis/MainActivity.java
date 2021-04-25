@@ -18,15 +18,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tabLayout= findViewById(R.id.tabLayout);
-        viewPager= findViewById(R.id.pager);
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_tab_camera));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tabChat));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tabStatus));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tabCalls));
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        viewPager= findViewById(R.id.pager);
+        PagerAdapter pagerAdapter= new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
 
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        viewPager.setCurrentItem(1);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
     }
 }
