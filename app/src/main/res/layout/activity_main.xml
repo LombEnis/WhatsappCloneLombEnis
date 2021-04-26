@@ -21,10 +21,33 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:tabIndicatorColor="?attr/colorOnPrimary"
-            app:tabGravity="fill"
             app:tabSelectedTextColor="?attr/colorOnPrimary"
             app:tabTextColor="@color/tab_selected"
-            app:tabIconTint="@color/tab_selected"/>
+            app:tabIconTint="@color/tab_selected">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_tab_camera" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tabChat" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tabStatus"
+                />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tabCalls" />
+
+
+        </com.google.android.material.tabs.TabLayout>
 
         <!--TODO: NEED TO SET TABLAYOUT BELOW TOOLBAR-->
 
