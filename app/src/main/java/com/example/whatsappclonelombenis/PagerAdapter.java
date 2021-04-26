@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 
+
 public class PagerAdapter extends FragmentPagerAdapter {
     int numOfTabs=4;
 

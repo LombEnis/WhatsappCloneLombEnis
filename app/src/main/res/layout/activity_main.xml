@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,16 +22,18 @@
             android:background="?attr/colorPrimary"
             app:tabIndicatorColor="?attr/colorOnPrimary"
             app:tabGravity="fill"
-            />
+            app:tabSelectedTextColor="?attr/colorOnPrimary"
+            app:tabTextColor="@color/tab_selected"
+            app:tabIconTint="@color/tab_selected"/>
 
         <!--TODO: NEED TO SET TABLAYOUT BELOW TOOLBAR-->
-
 
         <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/pager"
-            android:layout_below="@+id/tabLayout"/>
+            android:layout_below="@+id/tabLayout" />
+
 
     </RelativeLayout>
 
