@@ -1,10 +1,9 @@
 <resources>
-    <string name="app_name">WhatsappCloneLombEnis</string>
+    <string name="app_name">WhatsApp</string>
+
     <string name="tabChat">CHAT</string>
     <string name="tabStatus">STATO</string>
     <string name="tabCalls">CHIAMATE</string>
-    <string name="app_name">Whatsapp</string>
-    <string name="search">Search</string>
     <string name="new_group">Nuovo gruppo</string>
     <string name="new_broadcast">Nuovo broadcast</string>
     <string name="whatsapp_web">Whatsapp Web</string>
@@ -16,4 +15,5 @@
     <string name="gif">GIF</string>
     <string name="audio">Audio</string>
     <string name="documenti">Documenti</string>
+    <string name="cerca">Cerca...</string>
 </resources>

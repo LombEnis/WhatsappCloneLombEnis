@@ -12,19 +12,21 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/helvetica</item>
+        <item name="android:fontFamily">@font/pragmatica</item>
     </style>
-  
+
     <!-- Toolbar theme -->
     <style name="AppTheme.Toolbar" parent="Theme.WhatsappCloneLombEnis">
         <!--This line changes the color of icons in toolbar (back, overflow menu icons)-->
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/grey</item>
     </style>
 
     <!-- Tabs theme -->
     <style name="TabsTitle">
         <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
-  
+
 </resources>

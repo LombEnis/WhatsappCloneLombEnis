@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-  
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -119,18 +119,18 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/filters"
         android:background="?attr/colorPrimary"
+        app:tabIconTint="@color/tab_selected"
         app:tabIndicatorColor="?attr/colorOnPrimary"
         app:tabSelectedTextColor="?attr/colorOnPrimary"
-        app:tabTextColor="@color/tab_selected"
-        app:tabIconTint="@color/tab_selected"
-        app:tabTextAppearance="@style/TabsTitle">
+        app:tabTextAppearance="@style/TabsTitle"
+        app:tabTextColor="@color/tab_selected">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_tab_camera"
-            />
+            android:icon="@drawable/ic_tab_camera" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -147,13 +147,12 @@
             android:layout_height="wrap_content"
             android:text="@string/tabCalls" />
 
-
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/pager"
         android:layout_below="@+id/tabLayout" />
 
 
