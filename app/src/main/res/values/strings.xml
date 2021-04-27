@@ -6,4 +6,10 @@
     <string name="whatsapp_web">Whatsapp Web</string>
     <string name="important_messages">Messaggi importanti</string>
     <string name="settings">Impostazioni</string>
+    <string name="foto">Foto</string>
+    <string name="video">Video</string>
+    <string name="link">Link</string>
+    <string name="gif">GIF</string>
+    <string name="audio">Audio</string>
+    <string name="documenti">Documenti</string>
 </resources>

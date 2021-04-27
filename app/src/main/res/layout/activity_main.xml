@@ -14,4 +14,105 @@
         android:theme="@style/AppTheme.Toolbar"
         app:titleTextColor="?attr/colorOnPrimary" />
 
+    <org.apmem.tools.layouts.FlowLayout
+        android:id="@+id/filters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:background="?attr/colorPrimary"
+        android:padding="15dp"
+        android:visibility="gone">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/round_filter_button"
+            android:drawableLeft="@drawable/ic_foto_vector_20"
+            android:drawablePadding="5dp"
+            android:minWidth="0dp"
+            android:onClick="onFilterButtonClick"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/foto"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/round_filter_button"
+            android:drawableLeft="@drawable/ic_video_vector_20"
+            android:drawablePadding="5dp"
+            android:minWidth="0dp"
+            android:onClick="onFilterButtonClick"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/video"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/round_filter_button"
+            android:drawableLeft="@drawable/ic_link_vector_20"
+            android:drawablePadding="5dp"
+            android:minWidth="0dp"
+            android:onClick="onFilterButtonClick"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/link"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/round_filter_button"
+            android:drawableLeft="@drawable/ic_gif_vector_20"
+            android:drawablePadding="5dp"
+            android:minWidth="0dp"
+            android:onClick="onFilterButtonClick"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/gif"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/round_filter_button"
+            android:drawableLeft="@drawable/ic_audio_vector_20"
+            android:drawablePadding="5dp"
+            android:minWidth="0dp"
+            android:onClick="onFilterButtonClick"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/audio"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/round_filter_button"
+            android:drawableLeft="@drawable/ic_documenti_vector_20"
+            android:drawablePadding="5dp"
+            android:minWidth="0dp"
+            android:onClick="onFilterButtonClick"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/documenti"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </org.apmem.tools.layouts.FlowLayout>
+
 </RelativeLayout>
