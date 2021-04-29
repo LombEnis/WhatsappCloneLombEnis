@@ -173,4 +173,8 @@ public class MainActivity extends AppCompatActivity {
         filterButtonItem.setVisible(true);
         filters.setVisibility(View.GONE);
     }
+
+    //Chat RecyclerView
+    ChatRecViewAdapter chatRecViewAdapter= new ChatRecViewAdapter(this);
+
 }
