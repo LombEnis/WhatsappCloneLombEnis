@@ -2,6 +2,8 @@ package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,6 +18,8 @@ import android.widget.Button;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     // TabLayout
     private TabLayout tabLayout;
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuItem filterButtonItem;
     private Button searchFilterButton;
+
+    //Recycler views
+    private RecyclerView chatRecView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,20 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        //Chat RecyclerView
+        ArrayList<Contact> contacts = new ArrayList<>();
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg","Dwayne"));
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3"));
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg","Leonardo"));
+
+        ChatRecViewAdapter chatRecViewAdapter= new ChatRecViewAdapter(this);
+        chatRecViewAdapter.setData(contacts);
+
+        chatRecView.setAdapter(chatRecViewAdapter);
+        chatRecView.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
     @Override
@@ -173,8 +194,4 @@ public class MainActivity extends AppCompatActivity {
         filterButtonItem.setVisible(true);
         filters.setVisibility(View.GONE);
     }
-
-    //Chat RecyclerView
-    ChatRecViewAdapter chatRecViewAdapter= new ChatRecViewAdapter(this);
-
 }

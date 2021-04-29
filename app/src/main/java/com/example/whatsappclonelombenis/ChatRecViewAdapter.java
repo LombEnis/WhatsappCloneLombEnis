@@ -10,8 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.ViewHolder>{
     private Context context;
+    private ArrayList<Contact> contacts= new ArrayList<>();
 
     public ChatRecViewAdapter(Context context) {this.context=context;}
 
@@ -25,12 +28,24 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ChatRecViewAdapter.ViewHolder holder, int position) {
-
+        holder.txtNameContact.setText(contacts.get(position).getName());
+        holder.txtTime.setText("time");
+        holder.txtMessageContact.setText("message");
+        holder.profileImg.setImageResource(R.drawable.ic_default_avatar);
+        /*Glide.with(context)
+                .asBitmap()
+                .load(contacts.get(position).getProfilePicture())
+                .into(holder.profileImg);*/
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return contacts.size();
+    }
+
+    public void setData(ArrayList<Contact> contacts) {
+        this.contacts=contacts;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,7 +56,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             txtNameContact= itemView.findViewById(R.id.chatNameContact);
             txtMessageContact= itemView.findViewById(R.id.chatMessage);
             txtTime= itemView.findViewById(R.id.chatTime);
-            profileImg= itemView.findViewById(R.id.profileImg);
+            profileImg= itemView.findViewById(R.id.chatProfileImg);
         }
     }
 
