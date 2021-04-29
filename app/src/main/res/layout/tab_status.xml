@@ -4,27 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/imageButton">
+        app:layout_constraintBottom_toBottomOf="@id/imageButton"
+        app:layout_constraintStart_toEndOf="@id/imageButton"
+        app:layout_constraintTop_toTopOf="@id/imageButton">
 
         <TextView
             android:id="@+id/my_status_textview"
@@ -35,9 +35,9 @@
 
         <TextView
             android:id="@+id/my_status_subtitle_textview"
-            android:layout_marginTop="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:text="@string/tocca_per_aggiornare_lo_stato" />
     </LinearLayout>
 
@@ -45,28 +45,44 @@
         android:id="@+id/status_uploads_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textFontWeight="500"
+        android:layout_marginTop="15dp"
         android:text="@string/aggiornamenti_recenti"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/imageButton"
+        app:layout_constraintTop_toBottomOf="@id/imageButton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/status_rec_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_uploads_textview" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/text_floating_button"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="15dp"
         android:clickable="true"
-        tools:layout_editor_absoluteX="284dp"
-        tools:layout_editor_absoluteY="565dp"
+        app:layout_constraintBottom_toTopOf="@id/camera_floating_button"
+        app:layout_constraintEnd_toEndOf="@id/camera_floating_button"
+        app:layout_constraintStart_toStartOf="@id/camera_floating_button"
         tools:srcCompat="@tools:sample/avatars" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton5"
+        android:id="@+id/camera_floating_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:clickable="true"
-        tools:layout_editor_absoluteX="284dp"
-        tools:layout_editor_absoluteY="657dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
