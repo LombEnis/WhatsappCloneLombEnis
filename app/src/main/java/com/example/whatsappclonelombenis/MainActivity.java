@@ -6,7 +6,6 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.view.Menu;
@@ -23,26 +22,27 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     // ActionBar
-    private Toolbar toolbar;
+    private Toolbar actionBar;
     private View filters;
 
     private androidx.appcompat.widget.SearchView searchView;
 
     private MenuItem filterButtonItem;
-    private Button filterButton;
+    private Button searchFilterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ActionBar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        // Instantiate ActionBar variables
+        actionBar = findViewById(R.id.action_bar);
         filters = findViewById(R.id.filters);
 
-        // TabLayout creation
+        // Setting ActionBar
+        setSupportActionBar(actionBar);
+
+        // Creating TabLayout
         tabLayout = findViewById(R.id.tabLayout);
 
         viewPager = findViewById(R.id.pager);
@@ -74,13 +74,15 @@ public class MainActivity extends AppCompatActivity {
         layoutParams3.weight = 8;
         layout3.setLayoutParams(layoutParams3);
 
-        // Setting tab listener
+        // Setting tab selected listener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                // When a tab is selected
                 viewPager.setCurrentItem(tab.getPosition());
 
                 filters.setVisibility(View.GONE);
+                filterButtonItem.setVisible(false);
                 tabLayout.setVisibility(View.VISIBLE);
                 searchView.setIconified(true);
             }
@@ -97,23 +99,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflating ActionBar menu
         getMenuInflater().inflate(R.menu.main_options_menu, menu);
 
+        // Instantiating the button showing the selected filter
         filterButtonItem = menu.findItem(R.id.app_bar_filter_button);
-        filterButton = filterButtonItem.getActionView().findViewById(R.id.filter_button);
+        searchFilterButton = filterButtonItem.getActionView().findViewById(R.id.filter_button);
 
-        // Declare search item
+        // Instantiating SearchView
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setQueryHint(getResources().getString(R.string.cerca));
-
-        View closeSearchViewButton = searchView.findViewById(R.id.search_close_btn);
 
         // Set listeners for search item
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Search view is expanded
+                // When search view expanded
                 filters.setVisibility(View.VISIBLE);
                 tabLayout.setVisibility(View.GONE);
             }
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // For auto complete search process
+                // When query text changed
                 if (searchView.getQuery().length() != 0) {
                     filters.setVisibility(View.GONE);
                 } else {
@@ -138,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Instantiating the close button of the SearchView
+        View closeSearchViewButton = searchView.findViewById(R.id.search_close_btn);
+
+        // Setting a click listener on the close button of the SearchView
         closeSearchViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onFilterButtonClick(View view) {
-        // When filter button is clicked
+        // When search filter button is clicked
         Button buttonClicked = (Button) view;
 
-        filterButton.setText(buttonClicked.getText());
-        filterButton.setCompoundDrawables(buttonClicked.getCompoundDrawables()[0], null, null, null);
+        searchFilterButton.setText(buttonClicked.getText());
+        searchFilterButton.setCompoundDrawables(buttonClicked.getCompoundDrawables()[0], null, null, null);
 
         filterButtonItem.setVisible(true);
         filters.setVisibility(View.GONE);
