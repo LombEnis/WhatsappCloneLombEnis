@@ -4,31 +4,31 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class Contact {
-    private URL profilePicture;
     private String name;
     private int telNumber;
+    private String profilePicture;
     private String infoText;
-    private ArrayList<URL> status;
+    private ArrayList<String> status;
 
-    public Contact(URL profilePicture, String name, int telNumber, String infoText, ArrayList<URL> status) {
-        this.profilePicture = profilePicture;
+    public Contact(String name, int telNumber, String profilePicture, String infoText, ArrayList<String> status) {
         this.name = name;
         this.telNumber = telNumber;
+        this.profilePicture = profilePicture;
         this.infoText = infoText;
         this.status = status;
     }
 
-    public Contact(URL profilePicture, String name, ArrayList<URL> status) {
+    public Contact(String name, String profilePicture, ArrayList<String> status) {
         this.profilePicture = profilePicture;
         this.name = name;
         this.status = status;
     }
 
-    public URL getProfilePicture() {
+    public String getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(URL profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -56,11 +56,11 @@ public class Contact {
         this.infoText = infoText;
     }
 
-    public ArrayList<URL> getStatus() {
+    public ArrayList<String> getStatus() {
         return status;
     }
 
-    public void setStatus(ArrayList<URL> status) {
+    public void setStatus(ArrayList<String> status) {
         this.status = status;
     }
 }
