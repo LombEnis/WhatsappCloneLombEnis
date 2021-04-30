@@ -12,6 +12,8 @@
         android:id="@+id/newMessageActivityToolbar"
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.Toolbar"
-        app:titleTextColor="?attr/colorOnPrimary" />
+        app:titleTextColor="?attr/colorOnPrimary"
+        app:title="Seleziona"
+        app:subtitle="10 contatti" />
 
 </RelativeLayout>

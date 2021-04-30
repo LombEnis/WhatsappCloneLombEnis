@@ -16,6 +16,14 @@ public class NewMessage extends AppCompatActivity {
 
         newMessageToolbar=findViewById(R.id.newMessageActivityToolbar);
         setSupportActionBar(newMessageToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
