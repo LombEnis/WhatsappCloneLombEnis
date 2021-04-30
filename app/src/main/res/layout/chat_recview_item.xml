@@ -16,7 +16,7 @@
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_default_avatar" />
+        app:srcCompat="@drawable/ic_default_avatar"/>
 
     <TextView
         android:id="@+id/chatNameContact"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:text="Last message"
         android:textColor="@color/grey"
         app:layout_constraintStart_toEndOf="@+id/chatProfileImg"

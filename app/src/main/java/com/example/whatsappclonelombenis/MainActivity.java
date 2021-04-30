@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         ChatRecViewAdapter chatRecViewAdapter= new ChatRecViewAdapter(this);
         chatRecViewAdapter.setData(contacts);
 
+        chatRecView=findViewById(R.id.chatRecyclerView);
         chatRecView.setAdapter(chatRecViewAdapter);
         chatRecView.setLayoutManager(new LinearLayoutManager(this));
 

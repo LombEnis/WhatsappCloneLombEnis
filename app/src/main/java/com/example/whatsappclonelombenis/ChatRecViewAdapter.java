@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.ViewHolder>{
@@ -36,6 +38,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 .asBitmap()
                 .load(contacts.get(position).getProfilePicture())
                 .into(holder.profileImg);*/
+
     }
 
     @Override
