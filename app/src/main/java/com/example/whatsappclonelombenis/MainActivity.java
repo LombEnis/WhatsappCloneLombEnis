@@ -103,20 +103,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Chat RecyclerView
-        ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg","Dwayne"));
-        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3"));
-        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg","Leonardo"));
-
-        ChatRecViewAdapter chatRecViewAdapter= new ChatRecViewAdapter(this);
-        chatRecViewAdapter.setData(contacts);
-
-        chatRecView=findViewById(R.id.chatRecyclerView);
-        chatRecView.setAdapter(chatRecViewAdapter);
-        chatRecView.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
     @Override
