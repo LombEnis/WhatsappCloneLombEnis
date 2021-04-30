@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class TabStatus extends Fragment {
+public class TabStatusFragment extends Fragment {
     private RecyclerView recView;
     private StatusRecViewAdapter recViewAdapter;
 

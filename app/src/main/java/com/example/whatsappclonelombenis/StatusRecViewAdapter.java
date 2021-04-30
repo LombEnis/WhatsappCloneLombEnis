@@ -1,10 +1,13 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,22 +25,44 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         this.context = context;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) return 1;
+        else return 2;
+    }
+
     @NonNull
     @Override
     public StatusRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_item, parent, false);;
+        View view;
+        if (viewType == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_first_item, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_item, parent, false);
+        }
+
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull StatusRecViewAdapter.ViewHolder holder, int position) {
-        Glide.with(context)
-                .load(contacts.get(position).getProfilePicture())
-                .into(holder.profileImageButton);
+        if (position == 0) {
+            Glide.with(context)
+                    .load(contacts.get(position).getProfilePicture())
+                    .circleCrop()
+                    .into(holder.myProfileImageButton);
 
 
-        holder.nameTextView.setText(contacts.get(position).getName());
+        } else {
+            Glide.with(context)
+                    .load(contacts.get(position).getProfilePicture())
+                    .circleCrop()
+                    .into(holder.profileImageButton);
+
+
+            holder.nameTextView.setText(contacts.get(position).getName());
+        }
     }
 
     @Override
@@ -51,11 +76,15 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private ImageButton myProfileImageButton;
+
         private ImageButton profileImageButton;
         private TextView nameTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            myProfileImageButton = itemView.findViewById(R.id.my_profile_image_button);
 
             profileImageButton = itemView.findViewById(R.id.profile_image_button);
             nameTextView = itemView.findViewById(R.id.name_text_view);
