@@ -18,10 +18,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return new TabCamera();
-            case 1: return new TabChat();
-            case 2: return new TabStatus();
-            case 3: return new TabCalls();
+            case 0: return new TabCameraFragment();
+            case 1: return new TabChatFragment();
+            case 2: return new TabStatusFragment();
+            case 3: return new TabCallsFragment();
             default: return null;
         }
     }
