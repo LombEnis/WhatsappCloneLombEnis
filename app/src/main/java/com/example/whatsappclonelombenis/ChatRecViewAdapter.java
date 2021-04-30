@@ -33,11 +33,11 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         holder.txtNameContact.setText(contacts.get(position).getName());
         holder.txtTime.setText("time");
         holder.txtMessageContact.setText("message");
-        holder.profileImg.setImageResource(R.drawable.ic_default_avatar);
-        /*Glide.with(context)
-                .asBitmap()
+        //holder.profileImg.setImageResource(R.drawable.ic_default_avatar);
+        Glide.with(context)
                 .load(contacts.get(position).getProfilePicture())
-                .into(holder.profileImg);*/
+                .circleCrop()
+                .into(holder.profileImg);
 
     }
 

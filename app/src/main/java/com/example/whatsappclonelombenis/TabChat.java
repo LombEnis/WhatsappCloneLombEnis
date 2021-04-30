@@ -19,7 +19,7 @@ public class TabChat extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.tab_chat, container, false);
+        View chat_layout= inflater.inflate(R.layout.tab_chat, container, false);
 
         //Chat RecyclerView
         ArrayList<Contact> contacts = new ArrayList<>();
@@ -30,11 +30,11 @@ public class TabChat extends Fragment {
         ChatRecViewAdapter chatRecViewAdapter= new ChatRecViewAdapter(this.getContext());
         chatRecViewAdapter.setData(contacts);
 
-        chatRecView=view.findViewById(R.id.chatRecyclerView);
+        chatRecView=chat_layout.findViewById(R.id.chatRecyclerView);
         System.out.println(chatRecView);
         chatRecView.setAdapter(chatRecViewAdapter);
         chatRecView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        return view;
+        return chat_layout;
     }
 }
