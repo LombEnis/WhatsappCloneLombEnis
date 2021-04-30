@@ -32,13 +32,12 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public void onBindViewHolder(@NonNull ChatRecViewAdapter.ViewHolder holder, int position) {
         holder.txtNameContact.setText(contacts.get(position).getName());
         holder.txtTime.setText("time");
-        holder.txtMessageContact.setText("message");
+        holder.txtMessageContact.setText(contacts.get(position).getMessage());
         //holder.profileImg.setImageResource(R.drawable.ic_default_avatar);
         Glide.with(context)
                 .load(contacts.get(position).getProfilePicture())
                 .circleCrop()
                 .into(holder.profileImg);
-
     }
 
     @Override

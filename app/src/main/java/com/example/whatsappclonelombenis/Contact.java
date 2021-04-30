@@ -8,6 +8,7 @@ public class Contact {
     private int telNumber;
     private String infoText;
     private ArrayList<String> status;
+    private String message;
 
     public Contact(String profilePicture, String name, int telNumber, String infoText, ArrayList<String> status) {
         this.profilePicture = profilePicture;
@@ -17,9 +18,14 @@ public class Contact {
         this.status = status;
     }
 
-    public Contact(String profilePicture, String name) {
+    public Contact(String profilePicture, String name, String message) {
         this.profilePicture=profilePicture;
         this.name=name;
+        this.message=message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public Contact(String profilePicture, String name, ArrayList<String> status) {
