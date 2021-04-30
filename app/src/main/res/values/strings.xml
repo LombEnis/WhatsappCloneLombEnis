@@ -16,4 +16,9 @@
     <string name="audio">Audio</string>
     <string name="documenti">Documenti</string>
     <string name="cerca">Cerca...</string>
+    <string name="titolo_cerca">Cerca</string>
+    <string name="invite_friend">Invita un amico</string>
+    <string name="contacts">Contatti</string>
+    <string name="update">Aggiorna</string>
+    <string name="help">Aiuto</string>
 </resources>
