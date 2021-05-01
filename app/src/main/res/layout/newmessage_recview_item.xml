@@ -8,7 +8,7 @@
     android:padding="12dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/newmessageContactProfilePic"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginTop="4dp"
@@ -17,23 +17,23 @@
         app:srcCompat="@drawable/ic_default_avatar" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/newmessageContactName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="Name"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/newmessageContactProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/newmessageContactInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:text="Message"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toEndOf="@+id/newmessageContactProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/newmessageContactName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

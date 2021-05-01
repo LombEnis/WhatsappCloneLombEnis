@@ -37,7 +37,6 @@ public class TabChat extends Fragment {
         chatRecViewAdapter.setData(contacts);
 
         chatRecView=chat_layout.findViewById(R.id.chatRecyclerView);
-        System.out.println(chatRecView);
         chatRecView.setAdapter(chatRecViewAdapter);
         chatRecView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
