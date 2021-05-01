@@ -10,4 +10,47 @@
     <color name="grey">#CCCCCC</color>
     <color name="dark_grey">#696969</color>
     <color name="tab_selected">#C1C0C0</color>
+    <color name="transparent_white">#40000000</color>
+
+    <color name="turquoise">#40e0d0</color>
+    <color name="dark_turquoise">#0BC8B5</color>
+    <color name="cerulean">#4876FF</color>
+    <color name="magenta">#8E008E</color>
+    <color name="parakeet">#39B478</color>
+    <color name="shadow">#2A3C40</color>
+    <color name="heater">#9980BE</color>
+    <color name="hot_pink">#D2036B</color>
+    <color name="pea_green">#84BA33</color>
+    <color name="tuscan_sun">#B1A91C</color>
+    <color name="dark_magenta">#B70141</color>
+    <color name="sand">#B19055</color>
+    <color name="butterscotch">#FFC400</color>
+    <color name="chartreuse">#93A600</color>
+    <color name="lavander">#FF80FF</color>
+    <color name="orchid">#8F3A4D</color>
+    <color name="tyger">#F95E32</color>
+    <color name="lime">#9FFE12</color>
+    <color name="orange">#FF4800</color>
+
+    <array name="status_colors">
+        <item>@color/turquoise</item>
+        <item>@color/dark_turquoise</item>
+        <item>@color/cerulean</item>
+        <item>@color/magenta</item>
+        <item>@color/parakeet</item>
+        <item>@color/shadow</item>
+        <item>@color/heater</item>
+        <item>@color/hot_pink</item>
+        <item>@color/pea_green</item>
+        <item>@color/tuscan_sun</item>
+        <item>@color/dark_magenta</item>
+        <item>@color/sand</item>
+        <item>@color/butterscotch</item>
+        <item>@color/chartreuse</item>
+        <item>@color/lavander</item>
+        <item>@color/orchid</item>
+        <item>@color/tyger</item>
+        <item>@color/lime</item>
+        <item>@color/orange</item>
+    </array>
 </resources>
