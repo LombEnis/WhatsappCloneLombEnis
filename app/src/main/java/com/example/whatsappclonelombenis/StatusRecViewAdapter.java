@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdapter.ViewHolder> {
+    private String myProfilePicture;
     private ArrayList<Contact> contacts;
     private Context context;
 
@@ -49,25 +50,28 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     public void onBindViewHolder(@NonNull StatusRecViewAdapter.ViewHolder holder, int position) {
         if (position == 0) {
             Glide.with(context)
-                    .load(contacts.get(position).getProfilePicture())
+                    .load(myProfilePicture)
                     .circleCrop()
                     .into(holder.myProfileImageButton);
-
-
         } else {
             Glide.with(context)
-                    .load(contacts.get(position).getProfilePicture())
+                    .load(contacts.get(position - 1).getProfilePicture())
                     .circleCrop()
                     .into(holder.profileImageButton);
 
 
-            holder.nameTextView.setText(contacts.get(position).getName());
+            holder.nameTextView.setText(contacts.get(position - 1).getName());
         }
     }
 
     @Override
     public int getItemCount() {
-        return contacts.size();
+        return contacts.size() + 1;
+    }
+
+    public void setMyProfilePicture(String myProfilePicture) {
+        this.myProfilePicture = myProfilePicture;
+        notifyDataSetChanged();
     }
 
     public void setContacts(ArrayList<Contact> contacts) {
