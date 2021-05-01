@@ -13,9 +13,9 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class NewMessage extends AppCompatActivity {
+public class NewMessageActivity extends AppCompatActivity {
     //Toolbar
-    private Toolbar newMessageToolbar;
+    private Toolbar newmessageToolbar;
 
     //Recycler View
     private RecyclerView newmessageRecView;
@@ -29,8 +29,8 @@ public class NewMessage extends AppCompatActivity {
         setContentView(R.layout.activity_new_message);
 
         //Toolbar
-        newMessageToolbar=findViewById(R.id.newMessageActivityToolbar);
-        setSupportActionBar(newMessageToolbar);
+        newmessageToolbar=findViewById(R.id.newmessageActivityToolbar);
+        setSupportActionBar(newmessageToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -64,21 +64,11 @@ public class NewMessage extends AppCompatActivity {
         searchContact.setQueryHint(getResources().getString(R.string.cerca));
         searchContact.setMaxWidth(Integer.MAX_VALUE);
 
-        MenuItem inviteFriendMenuItem= menu.findItem(R.id.newmessage_invite_friend);
-        MenuItem contactsMenuItem= menu.findItem(R.id.newmessage_contacts);
-        MenuItem updateMenuItem= menu.findItem(R.id.newmessage_update);
-        MenuItem helpMenuItem= menu.findItem(R.id.newmessage_help);
-
         searchContact.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSupportActionBar().setDisplayShowHomeEnabled(false);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-                inviteFriendMenuItem.setVisible(false);
-                contactsMenuItem.setVisible(false);
-                updateMenuItem.setVisible(false);
-                helpMenuItem.setVisible(false);
             }
         });
 
@@ -87,16 +77,9 @@ public class NewMessage extends AppCompatActivity {
             public boolean onClose() {
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-                inviteFriendMenuItem.setVisible(true);
-                contactsMenuItem.setVisible(true);
-                updateMenuItem.setVisible(true);
-                helpMenuItem.setVisible(true);
-
                 return false;
             }
         });
         return true;
-
     }
 }

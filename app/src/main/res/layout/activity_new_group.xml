@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewMessageActivity">
+    tools:context=".NewGroupActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/newmessageActivityToolbar"
+        android:id="@+id/newgroupActivityToolbar"
+        app:title="@string/new_group"
+        app:subtitle="@string/add_participants"
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.Toolbar"
-        app:titleTextColor="?attr/colorOnPrimary"
-        app:title="@string/select"
-        app:subtitle="10 contatti" />
+        app:titleTextColor="?attr/colorOnPrimary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/newmessageRecView"
-        android:layout_below="@+id/newmessageActivityToolbar" />
+        android:id="@+id/newgroupRecView"
+        android:layout_below="@+id/newgroupActivityToolbar" />
 
 </RelativeLayout>

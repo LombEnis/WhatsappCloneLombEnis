@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappCloneLombEnis">
-        <activity android:name=".NewMessage"/>
+        <activity android:name=".NewGroupActivity"></activity>
+        <activity android:name=".NewMessageActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

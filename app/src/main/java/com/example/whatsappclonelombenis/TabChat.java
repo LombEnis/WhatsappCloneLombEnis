@@ -44,7 +44,7 @@ public class TabChat extends Fragment {
         chatFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newMessageIntent= new Intent(getContext(), NewMessage.class);
+                Intent newMessageIntent= new Intent(getContext(), NewMessageActivity.class);
                 startActivity(newMessageIntent);
             }
         });

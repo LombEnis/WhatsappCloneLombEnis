@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,13 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
         View view;
         if (viewType==0) {
            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.newmessage_recview_item1,parent,false);
+           view.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent newGroupIntent= new Intent(context, NewGroupActivity.class);
+                   context.startActivity(newGroupIntent);
+               }
+           });
         }
         else if (viewType==1) {
             view= LayoutInflater.from(parent.getContext()).inflate(R.layout.newmessage_recview_item2,parent,false);
@@ -61,6 +69,7 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
 
     public void setData(ArrayList<Contact> contacts) {
         this.contacts= contacts;
+        notifyDataSetChanged();
     }
 
     @Override
