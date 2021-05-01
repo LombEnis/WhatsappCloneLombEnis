@@ -1,12 +1,15 @@
 package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,9 @@ public class NewMessage extends AppCompatActivity {
 
     //Recycler View
     private RecyclerView newmessageRecView;
+
+    //SeachView
+    private SearchView searchContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,45 @@ public class NewMessage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.newmessage_menu, menu);
+
+        MenuItem searchItem= menu.findItem(R.id.newmessage_contact_search);
+        searchContact= (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        searchContact.setQueryHint(getResources().getString(R.string.cerca));
+        searchContact.setMaxWidth(Integer.MAX_VALUE);
+
+        MenuItem inviteFriendMenuItem= menu.findItem(R.id.newmessage_invite_friend);
+        MenuItem contactsMenuItem= menu.findItem(R.id.newmessage_contacts);
+        MenuItem updateMenuItem= menu.findItem(R.id.newmessage_update);
+        MenuItem helpMenuItem= menu.findItem(R.id.newmessage_help);
+
+        searchContact.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportActionBar().setDisplayShowHomeEnabled(false);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+                inviteFriendMenuItem.setVisible(false);
+                contactsMenuItem.setVisible(false);
+                updateMenuItem.setVisible(false);
+                helpMenuItem.setVisible(false);
+            }
+        });
+
+        searchContact.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                inviteFriendMenuItem.setVisible(true);
+                contactsMenuItem.setVisible(true);
+                updateMenuItem.setVisible(true);
+                helpMenuItem.setVisible(true);
+
+                return false;
+            }
+        });
         return true;
+
     }
 }

@@ -62,7 +62,7 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
     public void setData(ArrayList<Contact> contacts) {
         this.contacts= contacts;
     }
-    
+
     @Override
     public int getItemCount() {
         return (contacts.size()+2);
