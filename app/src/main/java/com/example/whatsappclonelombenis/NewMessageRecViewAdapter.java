@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRecViewAdapter.ViewHolder> {
@@ -29,7 +28,6 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
         if (position==0) return 0;
         else if (position==1) return 1;
         else return 2;
-
     }
 
     @NonNull
@@ -52,10 +50,10 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position!=0 && position!=1) {
-            holder.name.setText(contacts.get(position).getName());
-            holder.message.setText(contacts.get(position).getMessage());
+            holder.name.setText(contacts.get(position-2).getName());
+            holder.message.setText(contacts.get(position-2).getMessage());
             Glide.with(context)
-                    .load(contacts.get(position).getProfilePicture())
+                    .load(contacts.get(position-2).getProfilePicture())
                     .circleCrop()
                     .into(holder.profilePic);
         }
@@ -64,11 +62,10 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
     public void setData(ArrayList<Contact> contacts) {
         this.contacts= contacts;
     }
-
-
+    
     @Override
     public int getItemCount() {
-        return contacts.size();
+        return (contacts.size()+2);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
