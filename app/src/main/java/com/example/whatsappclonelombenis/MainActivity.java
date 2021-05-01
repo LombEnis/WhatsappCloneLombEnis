@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         // Instantiating SearchView
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getResources().getString(R.string.cerca));
 
         // Set listeners for search item
