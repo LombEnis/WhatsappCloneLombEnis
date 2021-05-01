@@ -13,7 +13,13 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.Toolbar"
         app:titleTextColor="?attr/colorOnPrimary"
-        app:title="Seleziona"
+        app:title="@string/select"
         app:subtitle="10 contatti" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/newmessageRecView"
+        android:layout_below="@+id/newMessageActivityToolbar" />
 
 </RelativeLayout>

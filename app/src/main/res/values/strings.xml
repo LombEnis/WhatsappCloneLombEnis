@@ -21,4 +21,6 @@
     <string name="contacts">Contatti</string>
     <string name="update">Aggiorna</string>
     <string name="help">Aiuto</string>
+    <string name="select">Seleziona</string>
+    <string name="new_contact">Nuovo contatto</string>
 </resources>
