@@ -1,5 +1,6 @@
 package com.example.whatsappclonelombenis;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,12 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class TabStatusFragment extends Fragment {
     private RecyclerView recView;
     private StatusRecViewAdapter recViewAdapter;
+    private FloatingActionButton textFloatingButton;
 
     @Nullable
     @Override
@@ -47,6 +50,17 @@ public class TabStatusFragment extends Fragment {
 
         recView.setAdapter(recViewAdapter);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Setting click listener on text floating button
+        textFloatingButton = view.findViewById(R.id.text_floating_button);
+
+        textFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent statusTextIntent = new Intent(getContext(), NewStatusTextActivity.class);
+                startActivity(statusTextIntent);
+            }
+        });
 
         return view;
     }
