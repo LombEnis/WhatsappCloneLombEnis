@@ -9,12 +9,13 @@
 
     <ImageButton
         android:id="@+id/imageButton2"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_new_contact" />
+        app:srcCompat="@drawable/ic_new_contact"
+        android:background="@drawable/round_button" />
 
     <TextView
         android:id="@+id/textView4"
@@ -35,6 +36,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView4"
-        app:srcCompat="@drawable/ic_qr_code" />
+        app:srcCompat="@drawable/ic_qr_code"
+        android:background="@null"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

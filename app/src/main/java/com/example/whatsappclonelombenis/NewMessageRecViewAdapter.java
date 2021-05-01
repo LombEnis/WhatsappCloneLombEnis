@@ -53,7 +53,7 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position!=0 && position!=1) {
             holder.name.setText(contacts.get(position).getName());
-            holder.message.setText(contacts.get(position).getName());
+            holder.message.setText(contacts.get(position).getMessage());
             Glide.with(context)
                     .load(contacts.get(position).getProfilePicture())
                     .circleCrop()

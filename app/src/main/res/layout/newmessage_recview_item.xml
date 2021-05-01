@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/newmessageContactProfilePic"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,7 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="2dp"
         android:text="Name"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/newmessageContactProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
