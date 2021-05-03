@@ -8,10 +8,4 @@
         <solid android:color="#E3E0E0"/>
     </shape>
 </item>
-<!--
-<item android:bottom="1dp">
-    <shape android:shape="rectangle">
-        <solid android:color="#FFFFFF"/>
-    </shape>
-</item> -->
 </layer-list>
