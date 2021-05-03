@@ -10,6 +10,7 @@ public class Contact {
     private String infoText;
     private ArrayList<String> status;
 
+    // Main constructor
     public Contact(String name, int telNumber, String profilePicture, String infoText, ArrayList<String> status) {
         this.name = name;
         this.telNumber = telNumber;
@@ -18,12 +19,14 @@ public class Contact {
         this.status = status;
     }
 
+    // Testing constructor
     public Contact(String name, String profilePicture, ArrayList<String> status) {
         this.profilePicture = profilePicture;
         this.name = name;
         this.status = status;
     }
 
+    // Getter and Setter
     public String getProfilePicture() {
         return profilePicture;
     }

@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,14 +26,17 @@ public class TabStatusFragment extends Fragment {
     private StatusRecViewAdapter recViewAdapter;
     private FloatingActionButton textFloatingButton;
 
+    private LinearLayoutManager layoutManager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_status, container, false);
 
-        // Implementing recycler view
+        // Instantiate recycler view
         recView = view.findViewById(R.id.status_rec_view);
 
+        // Create contacts arraylist
         ArrayList<Contact> contacts = new ArrayList<>();
 
         ArrayList<String> statusStories = new ArrayList<>();
@@ -44,14 +49,17 @@ public class TabStatusFragment extends Fragment {
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
                 statusStories));
 
+        // Set adapter for recyclerview
         recViewAdapter = new StatusRecViewAdapter(getContext());
-        recViewAdapter.setMyProfilePicture("https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale");
         recViewAdapter.setContacts(contacts);
 
         recView.setAdapter(recViewAdapter);
-        recView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Setting click listener on text floating button
+        // Set LayoutManager for recyclerview
+        layoutManager = new LinearLayoutManager(getContext());
+        recView.setLayoutManager(layoutManager);
+
+        // Set click listener on text floating button
         textFloatingButton = view.findViewById(R.id.text_floating_button);
 
         textFloatingButton.setOnClickListener(new View.OnClickListener() {

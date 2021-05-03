@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +31,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     @Override
     public int getItemViewType(int position) {
+        // Return different viewType depending on position
         if (position == 0) return 1;
         else return 2;
     }
@@ -35,6 +39,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     @NonNull
     @Override
     public StatusRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate diffenret item layout depending on position
         View view;
         if (viewType == 1) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_first_item, parent, false);
@@ -48,6 +53,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     @Override
     public void onBindViewHolder(@NonNull StatusRecViewAdapter.ViewHolder holder, int position) {
+        // Set different view depending on position
         if (position == 0) {
             Glide.with(context)
                     .load(myProfilePicture)
@@ -59,13 +65,18 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     .circleCrop()
                     .into(holder.profileImageButton);
 
-
             holder.nameTextView.setText(contacts.get(position - 1).getName());
+
+            // Set item divider starting from the second third item
+            if (position > 1) {
+                holder.constraintLayout.setBackground(context.getResources().getDrawable(R.drawable.item_divider));
+            }
         }
     }
 
     @Override
     public int getItemCount() {
+        // Returning the number of contacts + my contact
         return contacts.size() + 1;
     }
 
@@ -82,14 +93,17 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageButton myProfileImageButton;
 
+        private ConstraintLayout constraintLayout;
         private ImageButton profileImageButton;
         private TextView nameTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // Instantiate ActionBar variables
             myProfileImageButton = itemView.findViewById(R.id.my_profile_image_button);
 
+            constraintLayout = itemView.findViewById(R.id.constraint_layout);
             profileImageButton = itemView.findViewById(R.id.profile_image_button);
             nameTextView = itemView.findViewById(R.id.name_text_view);
         }

@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         actionBar = findViewById(R.id.action_bar);
         filters = findViewById(R.id.filters);
 
-        // Setting ActionBar
+        // Set ActionBar
         setSupportActionBar(actionBar);
 
-        // Creating TabLayout
+        // Create TabLayout
         tabLayout = findViewById(R.id.tabLayout);
 
         viewPager = findViewById(R.id.pager);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setCurrentItem(1);
 
-        // Setting Tabs weight
+        // Set Tabs weight
         LinearLayout layout0 = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(0));
         LinearLayout.LayoutParams layoutParams0 = (LinearLayout.LayoutParams) layout0.getLayoutParams();
         layoutParams0.weight = 3;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         layoutParams3.weight = 8;
         layout3.setLayoutParams(layoutParams3);
 
-        // Setting tab selected listener
+        // Set tab selected listener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -102,14 +102,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflating ActionBar menu
+        // Inflate ActionBar menu
         getMenuInflater().inflate(R.menu.main_options_menu, menu);
 
-        // Instantiating the button showing the selected filter
+        // Instante the button showing the selected filter
         filterButtonItem = menu.findItem(R.id.app_bar_filter_button);
         searchFilterButton = filterButtonItem.getActionView().findViewById(R.id.filter_button);
 
-        // Instantiating SearchView
+        // Instante SearchView
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
@@ -144,10 +144,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Instantiating the close button of the SearchView
+        // Instantiate the close button of the SearchView
         View closeSearchViewButton = searchView.findViewById(R.id.search_close_btn);
 
-        // Setting a click listener on the close button of the SearchView
+        // Set a click listener on the close button of the SearchView
         closeSearchViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

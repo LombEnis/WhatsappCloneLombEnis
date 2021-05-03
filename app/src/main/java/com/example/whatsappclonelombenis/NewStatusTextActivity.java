@@ -29,7 +29,7 @@ public class NewStatusTextActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_status_text);
 
-        // Instantiating view
+        // Instante view
         statusTextConstraintLayout = findViewById(R.id.status_text_constraintlayout);
 
         statusEditText = findViewById(R.id.status_edittext);
@@ -40,7 +40,7 @@ public class NewStatusTextActivity extends AppCompatActivity {
 
         sendImageButton = findViewById(R.id.send_imagebutton);
 
-        // Appearing/Disappearing send button on text changing
+        // Appear/Disappear send button on text changing
         statusEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -58,7 +58,7 @@ public class NewStatusTextActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Setting color loop on button click
+        // Set color loop on button click
         colorLoop = getResources().getIntArray(R.array.status_colors);
         colorLoopPos = 0;
 
