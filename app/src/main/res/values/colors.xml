@@ -34,9 +34,9 @@
 
     <array name="status_colors">
         <item>@color/turquoise</item>
-        <item>@color/dark_turquoise</item>
         <item>@color/cerulean</item>
         <item>@color/magenta</item>
+        <item>@color/dark_turquoise</item>
         <item>@color/parakeet</item>
         <item>@color/shadow</item>
         <item>@color/heater</item>

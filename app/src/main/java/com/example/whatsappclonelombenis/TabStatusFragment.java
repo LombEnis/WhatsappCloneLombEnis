@@ -62,7 +62,7 @@ public class TabStatusFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recView.setLayoutManager(layoutManager);
 
-        // -----------
+        // Set item divider for recyclerview
         StatusRecViewItemDivider itemDivider = new StatusRecViewItemDivider(getContext());
         recView.addItemDecoration(itemDivider);
 
