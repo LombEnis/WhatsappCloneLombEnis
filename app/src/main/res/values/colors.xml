@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#CCCCCC</color>
     <color name="tab_selected">#C1C0C0</color>
+    <color name="qrtoolbar_popup_color">#686e6a</color>
 </resources>

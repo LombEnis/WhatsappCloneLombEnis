@@ -24,4 +24,7 @@
     <string name="select">Seleziona</string>
     <string name="new_contact">Nuovo contatto</string>
     <string name="add_participants">Aggiungi partecipanti</string>
+    <string name="qr_code_title">Codice QR</string>
+    <string name="reset_qr_code">Reimposta codice QR</string>
+    <string name="share">Condividi</string>
 </resources>

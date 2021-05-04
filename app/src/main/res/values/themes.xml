@@ -23,6 +23,15 @@
         <item name="android:textColorHint">@color/grey</item>
     </style>
 
+    <!-- QR Code Activity Toolbar theme -->
+    <style name="AppTheme.QRCodeToolbar" parent="Theme.WhatsappCloneLombEnis">
+        <!--This line changes the color of icons in toolbar (back, overflow menu icons)-->
+        <item name="android:textColorSecondary">@color/qrtoolbar_popup_color</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_back</item>
+    </style>
+
     <!-- Tabs theme -->
     <style name="TabsTitle">
         <item name="android:textSize">16dp</item>

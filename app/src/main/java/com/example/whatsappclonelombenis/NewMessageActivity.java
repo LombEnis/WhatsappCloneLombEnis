@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +48,11 @@ public class NewMessageActivity extends AppCompatActivity {
         newmessageRecView= findViewById(R.id.newmessageRecView);
         newmessageRecView.setAdapter(newmessageRecViewAdapter);
         newmessageRecView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void onQRButtonClick(View view) {
+        Intent showQRCodeIntent= new Intent(this, QRCodeActivity.class);
+        startActivity(showQRCodeIntent);
     }
 
     @Override

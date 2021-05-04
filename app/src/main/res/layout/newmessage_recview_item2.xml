@@ -37,6 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView4"
         app:srcCompat="@drawable/ic_qr_code"
-        android:background="@null"/>
+        android:background="@null"
+        android:onClick="onQRButtonClick"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
