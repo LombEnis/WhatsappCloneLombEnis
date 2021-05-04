@@ -48,6 +48,9 @@ public class TabStatusFragment extends Fragment {
         contacts.add(new Contact("Leonardo DiCaprio",
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
                 statusStories));
+        contacts.add(new Contact("Leonardo DiCaprio",
+                "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
+                statusStories));
 
         // Set adapter for recyclerview
         recViewAdapter = new StatusRecViewAdapter(getContext());
@@ -58,6 +61,10 @@ public class TabStatusFragment extends Fragment {
         // Set LayoutManager for recyclerview
         layoutManager = new LinearLayoutManager(getContext());
         recView.setLayoutManager(layoutManager);
+
+        // -----------
+        StatusRecViewItemDivider itemDivider = new StatusRecViewItemDivider(getContext());
+        recView.addItemDecoration(itemDivider);
 
         // Set click listener on text floating button
         textFloatingButton = view.findViewById(R.id.text_floating_button);

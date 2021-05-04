@@ -3,6 +3,7 @@ package com.example.whatsappclonelombenis;
 import android.content.Context;
 import android.media.Image;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,9 +69,9 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             holder.nameTextView.setText(contacts.get(position - 1).getName());
 
             // Set item divider starting from the second third item
-            if (position > 1) {
+            /*if (position > 1) {
                 holder.constraintLayout.setBackground(context.getResources().getDrawable(R.drawable.item_divider));
-            }
+            }*/
         }
     }
 
