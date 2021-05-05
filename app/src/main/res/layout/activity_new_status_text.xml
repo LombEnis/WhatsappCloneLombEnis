@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".NewStatusTextActivity">
 
-    <EditText
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
         android:id="@+id/status_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:ems="5"
         android:gravity="center"
         android:hint="@string/scrivi_il_tuo_stato"
-        android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"
+        android:inputType="textMultiLine|textAutoComplete|textCapSentences"
         android:textColor="@color/white"
         android:textColorHint="@color/transparent_white"
         android:textSize="50dp"
@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/emoji_imagebutton"
@@ -34,6 +34,7 @@
         android:background="@drawable/round_button_transparent_background"
         android:padding="10dp"
         android:scaleType="fitCenter"
+        android:tint="@color/white"
         android:src="@drawable/ic_emoji_vector_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -75,5 +76,12 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+        android:id="@+id/emoji_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

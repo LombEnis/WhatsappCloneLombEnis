@@ -2,20 +2,30 @@ package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 public class NewStatusTextActivity extends AppCompatActivity {
     private ConstraintLayout statusTextConstraintLayout;
 
-    private EditText statusEditText;
+    private EmojiconEditText statusEditText;
+    private EmojiconTextView emojiTextView;
 
     private ImageButton emojiImageButton;
     private ImageButton fontImageButton;
@@ -36,10 +46,11 @@ public class NewStatusTextActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_status_text);
 
-        // Instante view
+        // Instantiate view
         statusTextConstraintLayout = findViewById(R.id.status_text_constraintlayout);
 
         statusEditText = findViewById(R.id.status_edittext);
+        emojiTextView = findViewById(R.id.emoji_textview);
 
         emojiImageButton = findViewById(R.id.emoji_imagebutton);
         fontImageButton = findViewById(R.id.text_imagebutton);
@@ -104,5 +115,9 @@ public class NewStatusTextActivity extends AppCompatActivity {
                 }
             }
         });
+
+        EmojIconActions emojIcon = new EmojIconActions(this, emojiTextView, statusEditText, emojiImageButton);
+        emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.ic_emoji_vector_24);
+        emojIcon.ShowEmojIcon();
     }
 }
