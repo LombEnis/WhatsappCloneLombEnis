@@ -18,25 +18,24 @@
         android:inputType="textMultiLine|textAutoComplete|textCapSentences"
         android:textColor="@color/white"
         android:textColorHint="@color/transparent_white"
-        android:textSize="50dp"
         android:textCursorDrawable="@drawable/status_cursor"
+        android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/emoji_imagebutton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/round_button_transparent_background"
+        android:background="@drawable/white_ripple_round_transparent"
         android:padding="10dp"
         android:scaleType="fitCenter"
-        android:tint="@color/white"
         android:src="@drawable/ic_emoji_vector_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_constraintlayout"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -44,12 +43,11 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/round_button_transparent_background"
+        android:background="@drawable/white_ripple_round_transparent"
         android:padding="15sp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_text_vector_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_constraintlayout"
         app:layout_constraintStart_toEndOf="@+id/emoji_imagebutton" />
 
     <ImageButton
@@ -57,13 +55,40 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/round_button_transparent_background"
+        android:background="@drawable/white_ripple_round_transparent"
         android:padding="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_color_palette_vector_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_constraintlayout"
         app:layout_constraintStart_toEndOf="@+id/text_imagebutton" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_constraintlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent_black"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/arrow_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:src="@drawable/ic_arrow_vector_17" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/arrow_imageview"
+            android:textColor="@color/white"
+            android:text="@string/stato_contatti" />
+
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/send_imagebutton"
@@ -83,5 +108,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
