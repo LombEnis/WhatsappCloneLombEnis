@@ -15,4 +15,34 @@
         app:title="@string/qr_code_title"
         android:id="@+id/qr_code_toolbar"/>
 
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorOnPrimary"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabTextColor="@color/tab_selected"
+        app:tabSelectedTextColor="?attr/colorOnSecondary"
+        app:tabTextAppearance="@style/TabsTitle"
+        android:layout_below="@+id/qr_code_toolbar"
+        android:id="@+id/qr_code_tablayout">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/my_code" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/frame_code" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/qr_code_tablayout"
+        android:id="@+id/qr_code_pager" />
+
+
 </RelativeLayout>

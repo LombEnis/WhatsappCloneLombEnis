@@ -27,4 +27,6 @@
     <string name="qr_code_title">Codice QR</string>
     <string name="reset_qr_code">Reimposta codice QR</string>
     <string name="share">Condividi</string>
+    <string name="my_code">IL MIO CODICE</string>
+    <string name="frame_code">INQUADRA CODICE</string>
 </resources>

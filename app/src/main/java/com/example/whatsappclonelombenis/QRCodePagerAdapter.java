@@ -5,21 +5,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class PagerAdapter extends FragmentPagerAdapter {
-    int numOfTabs=4;
+public class QRCodePagerAdapter extends FragmentPagerAdapter {
+    int numOfTabs=2;
 
-    public PagerAdapter(@NonNull FragmentManager fm) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    public QRCodePagerAdapter(@NonNull FragmentManager fm, int behavior) {
+        super(fm, behavior);
+
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return new TabCamera();
-            case 1: return new TabChat();
-            case 2: return new TabStatus();
-            case 3: return new TabCalls();
+            case 0: return new TabMyQRCode();
+            case 1: return new TabScanQRCode();
             default: return null;
         }
     }
