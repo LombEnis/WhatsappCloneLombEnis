@@ -8,10 +8,10 @@ public class Contact {
     private int telNumber;
     private String profilePicture;
     private String infoText;
-    private ArrayList<String> status;
+    private ArrayList<Story> status;
 
     // Main constructor
-    public Contact(String name, int telNumber, String profilePicture, String infoText, ArrayList<String> status) {
+    public Contact(String name, int telNumber, String profilePicture, String infoText, ArrayList<Story> status) {
         this.name = name;
         this.telNumber = telNumber;
         this.profilePicture = profilePicture;
@@ -20,7 +20,7 @@ public class Contact {
     }
 
     // Testing constructor
-    public Contact(String name, String profilePicture, ArrayList<String> status) {
+    public Contact(String name, String profilePicture, ArrayList<Story> status) {
         this.profilePicture = profilePicture;
         this.name = name;
         this.status = status;
@@ -59,11 +59,11 @@ public class Contact {
         this.infoText = infoText;
     }
 
-    public ArrayList<String> getStatus() {
+    public ArrayList<Story> getStatus() {
         return status;
     }
 
-    public void setStatus(ArrayList<String> status) {
+    public void setStatus(ArrayList<Story> status) {
         this.status = status;
     }
 }
