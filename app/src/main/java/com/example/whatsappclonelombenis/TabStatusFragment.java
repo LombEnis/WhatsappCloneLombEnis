@@ -39,8 +39,14 @@ public class TabStatusFragment extends Fragment {
         // Create contacts arraylist
         ArrayList<Contact> contacts = new ArrayList<>();
 
-        ArrayList<String> statusStories = new ArrayList<>();
-        statusStories.add("https://www.google.com/url?sa=i&url=https%3A%2F%2Fbiografieonline.it%2Fbiografia-leonardo-dicaprio&psig=AOvVaw2zO8Ek2WM3HpZ_EGt4s-Y7&ust=1619820205056000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMj88tG6pPACFQAAAAAdAAAAABAD\"));\n");
+
+        ArrayList<Story> statusStories = new ArrayList<Story>();
+
+        Story story = new Story(R.color.white,
+                "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
+                "Main text test", "Captions test");
+        statusStories.add(story);
+
 
         contacts.add(new Contact("Leonardo DiCaprio",
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",

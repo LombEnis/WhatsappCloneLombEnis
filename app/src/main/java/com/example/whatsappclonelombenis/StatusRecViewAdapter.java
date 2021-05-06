@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.util.TypedValue;
@@ -60,6 +61,13 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     .load(myProfilePicture)
                     .circleCrop()
                     .into(holder.myProfileImageButton);
+
+            holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(true);
+                }
+            });
         } else {
             Glide.with(context)
                     .load(contacts.get(position - 1).getProfilePicture())
@@ -68,10 +76,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             holder.nameTextView.setText(contacts.get(position - 1).getName());
 
-            // Set item divider starting from the second third item
-            /*if (position > 1) {
-                holder.constraintLayout.setBackground(context.getResources().getDrawable(R.drawable.item_divider));
-            }*/
+            ItemClick clickListener = new ItemClick();
+
+            holder.constraintLayout.setOnClickListener(clickListener);
+
+            holder.profileImageButton.setOnClickListener(clickListener);
         }
     }
 
@@ -107,6 +116,15 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
             profileImageButton = itemView.findViewById(R.id.profile_image_button);
             nameTextView = itemView.findViewById(R.id.name_text_view);
+        }
+    }
+
+    // Click listeners
+    class ItemClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, StoriesActivity.class);
+            context.startActivity(intent);
         }
     }
 }
