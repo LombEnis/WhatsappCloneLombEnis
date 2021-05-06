@@ -22,10 +22,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    // TabLayout
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
     // ActionBar
     private Toolbar actionBar;
     private View filters;
@@ -34,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuItem filterButtonItem;
     private Button searchFilterButton;
+
+    // TabLayout
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
