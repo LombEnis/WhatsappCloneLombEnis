@@ -30,6 +30,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/white_ripple_round_transparent"
         android:padding="10dp"
         android:scaleType="fitCenter"
@@ -43,6 +44,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/white_ripple_round_transparent"
         android:padding="15sp"
         android:scaleType="fitCenter"
@@ -55,6 +57,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/white_ripple_round_transparent"
         android:padding="10dp"
         android:scaleType="fitCenter"
@@ -67,9 +70,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent_black"
+        android:gravity="center_vertical"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
@@ -85,8 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/arrow_imageview"
-            android:textColor="@color/white"
-            android:text="@string/stato_contatti" />
+            android:text="@string/stato_contatti"
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 
