@@ -5,25 +5,18 @@ import java.util.ArrayList;
 
 public class Contact {
     private String name;
-    private int telNumber;
+    private String telNumber;
     private String profilePicture;
     private String infoText;
-    private ArrayList<Story> status;
+    private ArrayList<Story> statusStories;
 
     // Main constructor
-    public Contact(String name, int telNumber, String profilePicture, String infoText, ArrayList<Story> status) {
+    public Contact(String name, String telNumber, String profilePicture, String infoText, ArrayList<Story> statusStories) {
         this.name = name;
         this.telNumber = telNumber;
         this.profilePicture = profilePicture;
         this.infoText = infoText;
-        this.status = status;
-    }
-
-    // Testing constructor
-    public Contact(String name, String profilePicture, ArrayList<Story> status) {
-        this.profilePicture = profilePicture;
-        this.name = name;
-        this.status = status;
+        this.statusStories = statusStories;
     }
 
     // Getter and Setter
@@ -43,11 +36,11 @@ public class Contact {
         this.name = name;
     }
 
-    public int getTelNumber() {
+    public String getTelNumber() {
         return telNumber;
     }
 
-    public void setTelNumber(int telNumber) {
+    public void setTelNumber(String telNumber) {
         this.telNumber = telNumber;
     }
 
@@ -59,11 +52,11 @@ public class Contact {
         this.infoText = infoText;
     }
 
-    public ArrayList<Story> getStatus() {
-        return status;
+    public ArrayList<Story> getStatusStories() {
+        return statusStories;
     }
 
-    public void setStatus(ArrayList<Story> status) {
-        this.status = status;
+    public void setStatusStories(ArrayList<Story> statusStories) {
+        this.statusStories = statusStories;
     }
 }

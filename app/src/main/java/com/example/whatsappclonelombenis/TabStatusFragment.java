@@ -42,21 +42,21 @@ public class TabStatusFragment extends Fragment {
 
         ArrayList<Story> statusStories = new ArrayList<Story>();
 
-        Story story = new Story(R.color.white,
+        Story story = new Story(R.color.black,
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                "Main text test", "Captions test");
+                "Main text test", R.color.white, "Captions test");
         statusStories.add(story);
 
 
-        contacts.add(new Contact("Leonardo DiCaprio",
+        contacts.add(new Contact("Leonardo DiCaprio", "3666875674",
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                statusStories));
-        contacts.add(new Contact("Leonardo DiCaprio",
+                "Questo è il mio stato", statusStories));
+        contacts.add(new Contact("Leonardo DiCaprio", "3666875674",
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                statusStories));
-        contacts.add(new Contact("Leonardo DiCaprio",
+                "Questo è il mio stato", statusStories));
+        contacts.add(new Contact("Leonardo DiCaprio", "3666875674",
                 "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                statusStories));
+                "Questo è il mio stato", statusStories));
 
         // Set adapter for recyclerview
         recViewAdapter = new StatusRecViewAdapter(getContext());
