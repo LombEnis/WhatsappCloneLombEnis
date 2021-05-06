@@ -19,7 +19,7 @@
         android:textColor="@color/white"
         android:textColorHint="@color/transparent_white"
         android:textCursorDrawable="@drawable/status_cursor"
-        android:textSize="50dp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="17dp"
-            android:src="@drawable/ic_arrow_vector_17" />
+            android:src="@drawable/ic_arrow_right_vector_17" />
 
         <TextView
             android:id="@+id/textView"
