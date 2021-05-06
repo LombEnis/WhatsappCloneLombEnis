@@ -2,20 +2,14 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +18,7 @@ import java.util.ArrayList;
 
 public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdapter.ViewHolder> {
     private String myProfilePicture;
-    private ArrayList<Contact> contacts;
+    public static ArrayList<Contact> contacts;
     private Context context;
 
     public StatusRecViewAdapter(Context context) {
@@ -76,7 +70,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             holder.nameTextView.setText(contacts.get(position - 1).getName());
 
-            ItemClick clickListener = new ItemClick();
+            ItemClick clickListener = new ItemClick(position);
 
             holder.constraintLayout.setOnClickListener(clickListener);
 
@@ -121,9 +115,17 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     // Click listeners
     class ItemClick implements View.OnClickListener {
+        private int position;
+
+        public ItemClick(int position) {
+            this.position = position;
+        }
+
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, StoriesActivity.class);
+            intent.putExtra("position", position);
+
             context.startActivity(intent);
         }
     }
