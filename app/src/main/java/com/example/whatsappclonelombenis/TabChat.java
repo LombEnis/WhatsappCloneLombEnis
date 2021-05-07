@@ -39,6 +39,8 @@ public class TabChat extends Fragment {
         chatRecView.setAdapter(chatRecViewAdapter);
         chatRecView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        //TODO: add DividerItemDecoration and remove custom border
+
         //FloatingButton
         chatFloatingButton=chat_layout.findViewById(R.id.chatContactsFloatingButton);
         chatFloatingButton.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,11 @@ public class Contact {
         this.message=message;
     }
 
+    public Contact(String profilePicture, String name) {
+        this.profilePicture=profilePicture;
+        this.name=name;
+    }
+
     public String getMessage() {
         return message;
     }
