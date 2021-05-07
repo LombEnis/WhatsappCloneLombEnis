@@ -84,6 +84,13 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             name=itemView.findViewById(R.id.callContactName);
             time=itemView.findViewById(R.id.callTime);
             voiceOrVideoCall=itemView.findViewById(R.id.callImageView);
+
+            voiceOrVideoCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("dsad");
+                }
+            });
         }
     }
 }
