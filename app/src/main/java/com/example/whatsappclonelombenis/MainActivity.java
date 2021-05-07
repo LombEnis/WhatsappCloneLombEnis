@@ -18,6 +18,9 @@ import com.google.android.material.tabs.TabLayout;
 
 
 public class MainActivity extends AppCompatActivity {
+    //TODO: delete divider custom layout when finished
+    //TODO: adjust layout height
+
     // TabLayout
     private TabLayout tabLayout;
     private ViewPager viewPager;

@@ -28,7 +28,6 @@ public class TabChat extends Fragment {
 
         //Chat RecyclerView
         ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg","Dwayne","Oi fra, quando mi dai qualche consiglio sull'allenamento?"));
         contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Ho l'impressione che Leonardo sappia di noi"));
         contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg","Leonardo","Ei Enis, sai dov'è Margot?"));
 
@@ -39,8 +38,6 @@ public class TabChat extends Fragment {
         chatRecView.setAdapter(chatRecViewAdapter);
         chatRecView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        //TODO: add DividerItemDecoration and remove custom border
-
         //FloatingButton
         chatFloatingButton=chat_layout.findViewById(R.id.chatContactsFloatingButton);
         chatFloatingButton.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +47,9 @@ public class TabChat extends Fragment {
                 startActivity(newMessageIntent);
             }
         });
+
+        RecViewItemDivider dividerItemDecoration= new RecViewItemDivider(chatRecView.getContext());
+        chatRecView.addItemDecoration(dividerItemDecoration);
 
         return chat_layout;
     }
