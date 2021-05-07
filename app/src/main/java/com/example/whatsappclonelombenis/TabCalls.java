@@ -1,5 +1,6 @@
 package com.example.whatsappclonelombenis;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,11 +14,16 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class TabCalls extends Fragment {
     //RecyclerView
     RecyclerView callsRecView;
+
+    //FloatingButtons
+    FloatingActionButton callContacts;
 
     @Nullable
     @Override
@@ -40,6 +46,16 @@ public class TabCalls extends Fragment {
 
         RecViewItemDivider dividerItemDecoration= new RecViewItemDivider(callsRecView.getContext());
         callsRecView.addItemDecoration(dividerItemDecoration);
+
+        //callContacts FloatingButton
+        callContacts=view.findViewById(R.id.callContactsFloatingButton);
+        callContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callContactsIntent= new Intent(getContext(), CallContactsActivity.class);
+                startActivity(callContactsIntent);
+            }
+        });
 
         return view;
     }

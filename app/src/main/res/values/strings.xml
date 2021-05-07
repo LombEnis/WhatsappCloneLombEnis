@@ -29,4 +29,5 @@
     <string name="share">Condividi</string>
     <string name="my_code">IL MIO CODICE</string>
     <string name="frame_code">INQUADRA CODICE</string>
+    <string name="new_group_call">Nuova chiamata di gruppo</string>
 </resources>
