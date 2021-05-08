@@ -91,9 +91,14 @@ public class TabChatFragment extends Fragment {
                                 sampleStoryRelativeLayout.buildDrawingCache();
                                 Bitmap sampleBitmap = sampleStoryRelativeLayout.getDrawingCache();
 
-                                Story story = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                                        "Questo è un testo", "Questo è un caption", sampleBitmap);
-                                sampleStatusStories.add(story);
+                                Story firstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                        "Storia 1", "Questo è un caption", sampleBitmap);
+
+                                Story secondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                        "Storia 2", "Questo è un caption", sampleBitmap);
+
+                                sampleStatusStories.add(firstStory);
+                                sampleStatusStories.add(secondStory);
 
                                 contacts.add(new Contact("Leonardo DiCaprio", "3666875674", sampleImageUrlString,
                                         "Questo è il mio stato", sampleStatusStories));
