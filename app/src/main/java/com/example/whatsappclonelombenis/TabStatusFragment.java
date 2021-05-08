@@ -1,13 +1,18 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,10 +25,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TabStatusFragment extends Fragment {
     private RecyclerView recView;
-    private StatusRecViewAdapter recViewAdapter;
+    public static StatusRecViewAdapter recViewAdapter;
     private FloatingActionButton textFloatingButton;
 
     private LinearLayoutManager layoutManager;
@@ -36,31 +42,10 @@ public class TabStatusFragment extends Fragment {
         // Instantiate recycler view
         recView = view.findViewById(R.id.status_rec_view);
 
-        // Create contacts arraylist
-        ArrayList<Contact> contacts = new ArrayList<>();
-
-
-        ArrayList<Story> statusStories = new ArrayList<Story>();
-
-        Story story = new Story(R.color.black,
-                "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                "Main text test", R.color.white, "Captions test");
-        statusStories.add(story);
-
-
-        contacts.add(new Contact("Leonardo DiCaprio", "3666875674",
-                "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                "Questo è il mio stato", statusStories));
-        contacts.add(new Contact("Leonardo DiCaprio", "3666875674",
-                "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                "Questo è il mio stato", statusStories));
-        contacts.add(new Contact("Leonardo DiCaprio", "3666875674",
-                "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale",
-                "Questo è il mio stato", statusStories));
-
         // Set adapter for recyclerview
         recViewAdapter = new StatusRecViewAdapter(getContext());
-        recViewAdapter.setContacts(contacts);
+
+        recViewAdapter.setMyProfilePicture("https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale");
 
         recView.setAdapter(recViewAdapter);
 
@@ -69,7 +54,7 @@ public class TabStatusFragment extends Fragment {
         recView.setLayoutManager(layoutManager);
 
         // Set item divider for recyclerview
-        StatusRecViewItemDivider itemDivider = new StatusRecViewItemDivider(getContext());
+        RecViewItemDivider itemDivider = new RecViewItemDivider(getContext(), 1);
         recView.addItemDecoration(itemDivider);
 
         // Set click listener on text floating button

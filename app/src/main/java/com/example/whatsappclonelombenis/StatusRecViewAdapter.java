@@ -35,7 +35,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     @NonNull
     @Override
     public StatusRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate diffenret item layout depending on position
+        // Inflate different item layout depending on position
         View view;
         if (viewType == 1) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_first_item, parent, false);
@@ -64,7 +64,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             });
         } else {
             Glide.with(context)
-                    .load(contacts.get(position - 1).getProfilePicture())
+                    .load(contacts.get(position - 1).getStatusStories().get(0).getStoryPreviewBitmap())
                     .circleCrop()
                     .into(holder.profileImageButton);
 
@@ -81,6 +81,9 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     @Override
     public int getItemCount() {
         // Returning the number of contacts + my contact
+        if (contacts == null) {
+            return 0;
+        }
         return contacts.size() + 1;
     }
 
@@ -124,7 +127,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, StoriesActivity.class);
-            intent.putExtra("position", position);
+            intent.putExtra("position", position - 1);
 
             context.startActivity(intent);
         }

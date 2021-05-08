@@ -2,8 +2,6 @@ package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
@@ -17,9 +15,6 @@ import android.widget.Button;
 
 
 import com.google.android.material.tabs.TabLayout;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     // ActionBar

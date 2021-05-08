@@ -3,6 +3,7 @@ package com.example.whatsappclonelombenis;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -61,14 +62,14 @@ public class StoriesActivity extends AppCompatActivity {
         currentStory = currentContact.getStatusStories().get(0);
 
         // Set story values in the layout
-        rootLayout.setBackgroundColor(getResources().getColor(currentStory.getBackgroundColor()));
+        rootLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
 
         Glide.with(this)
-                .load(currentStory.getBackgroundImage())
+                .load(currentStory.getBackgroundImageString())
                 .into(backgroundImageView);
 
-        mainTextView.setTextColor(getResources().getColor(currentStory.getMainTextColor()));
         mainTextView.setText(currentStory.getMainTextString());
+
 
         // Create progress bars
 
