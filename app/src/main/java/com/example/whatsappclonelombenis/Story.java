@@ -1,23 +1,26 @@
 package com.example.whatsappclonelombenis;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 public class Story {
-
     private Date date;
-    private int backgroundColor;
-    private String backgroundImage;
+    private int backgroundColorResource;
+    private String backgroundImageUrlString;
     private String mainTextString;
-    private int mainTextColor;
     private String captionTextString;
 
+    private Bitmap storyPreviewBitmap;
+
     // Main constructor
-    public Story(int backgroundColor, String backgroundImage, String mainTextString, int mainTextColor, String captionTextString) {
-        this.backgroundColor = backgroundColor;
-        this.backgroundImage = backgroundImage;
+    public Story(Date date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
+        this.date = date;
+        this.backgroundColorResource = backgroundColorResource;
+        this.backgroundImageUrlString = backgroundImageString;
         this.mainTextString = mainTextString;
         this.captionTextString = captionTextString;
-        this.mainTextColor = mainTextColor;
+        this.storyPreviewBitmap = storyPreviewBitmap;
     }
 
     // Getter and setter
@@ -29,20 +32,20 @@ public class Story {
         this.date = date;
     }
 
-    public int getBackgroundColor() {
-        return backgroundColor;
+    public int getBackgroundColorResource() {
+        return backgroundColorResource;
     }
 
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
+    public void setBackgroundColorResource(int backgroundColorResource) {
+        this.backgroundColorResource = backgroundColorResource;
     }
 
-    public String getBackgroundImage() {
-        return backgroundImage;
+    public String getBackgroundImageString() {
+        return backgroundImageUrlString;
     }
 
-    public void setBackgroundImage(String backgroundImage) {
-        this.backgroundImage = backgroundImage;
+    public void setBackgroundImageString(String backgroundImageString) {
+        this.backgroundImageUrlString = backgroundImageString;
     }
 
     public String getMainTextString() {
@@ -61,11 +64,11 @@ public class Story {
         this.captionTextString = captionTextString;
     }
 
-    public int getMainTextColor() {
-        return mainTextColor;
+    public Bitmap getStoryPreviewBitmap() {
+        return storyPreviewBitmap;
     }
 
-    public void setMainTextColor(int mainTextColor) {
-        this.mainTextColor = mainTextColor;
+    public void setStoryPreviewBitmap(Bitmap storyPreviewBitmap) {
+        this.storyPreviewBitmap = storyPreviewBitmap;
     }
 }
