@@ -30,4 +30,13 @@
     <string name="my_code">IL MIO CODICE</string>
     <string name="frame_code">INQUADRA CODICE</string>
     <string name="new_group_call">Nuova chiamata di gruppo</string>
+    <string name="pin_chat">"Fissa chat "</string>
+    <string name="deactivate_notifications">Disattiva notifiche</string>
+    <string name="delete_chat">Elimina chat</string>
+    <string name="archive_chat">Archivia chat</string>
+    <string name="options">Opzioni</string>
+    <string name="create_direct_connection">Crea collegamento diretto</string>
+    <string name="show_contact">Mostra contatto</string>
+    <string name="mark_as_to_read">Segna come da leggere</string>
+    <string name="select_all">Seleziona tutte</string>
 </resources>

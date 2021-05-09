@@ -22,12 +22,13 @@ public class MainActivity extends AppCompatActivity {
     //TODO: adjust layout height
 
     // TabLayout
-    private TabLayout tabLayout;
+    static TabLayout tabLayout;
     private ViewPager viewPager;
 
     // ActionBar
-    private Toolbar actionBar;
+    static Toolbar actionBar;
     private View filters;
+    static Toolbar contextualToolbar;
 
     private androidx.appcompat.widget.SearchView searchView;
 
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Contextual Toolbar
+        contextualToolbar= findViewById(R.id.contextualToolbar);
+        contextualToolbar.inflateMenu(R.menu.chat_contextual_action_bar);
 
         // Instantiate ActionBar variables
         actionBar = findViewById(R.id.action_bar);
