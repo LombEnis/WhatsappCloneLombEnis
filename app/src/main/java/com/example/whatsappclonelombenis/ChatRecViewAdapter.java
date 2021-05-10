@@ -23,8 +23,12 @@ import java.util.zip.Inflater;
 public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.ViewHolder>{
     private Context context;
     private ArrayList<Contact> contacts= new ArrayList<>();
+    static ArrayList<View> views= new ArrayList<>();
+    static ArrayList<View> selected_views = new ArrayList<>();
 
-    private ActionMode mActionMode;
+    private ContextualToolbarListener contextualToolbar= new ContextualToolbarListener();
+    private RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
+    private SelectListener selectListener= new SelectListener();
 
     public ChatRecViewAdapter(Context context) {this.context=context;}
 
@@ -32,24 +36,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     @Override
     public ChatRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_recview_item, parent, false);
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                MainActivity.actionBar.setVisibility(View.GONE);
-                MainActivity.contextualToolbar.setVisibility(View.VISIBLE);
-                MainActivity.tabLayout.setBackgroundResource(R.color.contextual_background_color);
-
-                v.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MainActivity.actionBar.setVisibility(View.VISIBLE);
-                        MainActivity.contextualToolbar.setVisibility(View.GONE);
-                        MainActivity.tabLayout.setBackgroundResource(R.color.purple_500);
-                    }
-                });
-                return true;
-            }
-        });
+        views.add(view);
+        view.setOnLongClickListener(contextualToolbar);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -59,7 +47,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         holder.txtNameContact.setText(contacts.get(position).getName());
         holder.txtTime.setText("time");
         holder.txtMessageContact.setText(contacts.get(position).getMessage());
-        //holder.profileImg.setImageResource(R.drawable.ic_default_avatar);
         Glide.with(context)
                 .load(contacts.get(position).getProfilePicture())
                 .circleCrop()
@@ -88,34 +75,75 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         }
     }
 
-    //Contextual Action Bar
-    public ActionMode.Callback mActionModeCallback= new ActionMode.Callback() {
-        //This inflation occurs only when ActionMode is created
-        @SuppressLint("ResourceType")
+    public class ContextualToolbarListener implements View.OnLongClickListener {
         @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.chat_contextual_action_bar, menu);
+        public boolean onLongClick(View v) {
+            selected_views.add(v);
 
+            View check = v.findViewById(R.id.selectedCheck);
+            check.setVisibility(View.VISIBLE);
+
+            v.setOnLongClickListener(null);
+
+            MainActivity.actionBar.setVisibility(View.GONE);
+            MainActivity.contextualToolbar.setVisibility(View.VISIBLE);
+            MainActivity.tabLayout.setBackgroundResource(R.color.contextual_background_color);
+
+            MainActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
+            for (View view:views) {
+                if (view==v) {
+                    view.setOnClickListener(removeSelectedListener);
+                }
+                else {
+                    view.setOnClickListener(selectListener);
+                }
+            }
+            v.setOnLongClickListener(contextualToolbar);
             return true;
         }
+    }
 
-        //Always called after onCreateActionMode, each time ActionMode occurs
+    public class RemoveSelectedListener implements View.OnClickListener {
         @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
+        public void onClick(View v) {
+            View check=v.findViewById(R.id.selectedCheck);
+            check.setVisibility(View.GONE);
+            selected_views.remove(v);
+            MainActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
+            if (selected_views.size() == 0) {
+                MainActivity.actionBar.setVisibility(View.VISIBLE);
+                MainActivity.contextualToolbar.setVisibility(View.GONE);
+                MainActivity.tabLayout.setBackgroundResource(R.color.purple_500);
+            }
+
+            if (selected_views.size()!=0) {
+                v.setOnClickListener(selectListener);
+            }else {
+                for (View view : views) {
+                    view.setOnClickListener(null);
+                }
+            }
+
+        }
+    }
+
+    public class SelectListener
+            implements View.OnClickListener {
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            return false;
-        }
+        public void onClick(View v) {
+            View check=v.findViewById(R.id.selectedCheck);
+            check.setVisibility(View.VISIBLE);
+            if (!selected_views.contains(v)) {
+                selected_views.add(v);
+            }
+            MainActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
-        //Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode=null;
+            for(View view: selected_views) {
+                view.setOnClickListener(removeSelectedListener);
+            }
         }
-    };
-
+    }
 }
+
+//TODO: add contextual toolbar on chatTab and new message activity 

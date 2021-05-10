@@ -43,6 +43,22 @@ public class MainActivity extends AppCompatActivity {
         //Contextual Toolbar
         contextualToolbar= findViewById(R.id.contextualToolbar);
         contextualToolbar.inflateMenu(R.menu.chat_contextual_action_bar);
+        contextualToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionBar.setVisibility(View.VISIBLE);
+                contextualToolbar.setVisibility(View.GONE);
+                tabLayout.setBackgroundResource(R.color.purple_500);
+                ChatRecViewAdapter.selected_views.clear();
+
+                for(View view : ChatRecViewAdapter.views) {
+                    View check= view.findViewById(R.id.selectedCheck);
+                    check.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
         // Instantiate ActionBar variables
         actionBar = findViewById(R.id.action_bar);
