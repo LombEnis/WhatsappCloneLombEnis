@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     // ActionBar
     static Toolbar actionBar;
     private View filters;
-    static Toolbar contextualToolbar;
+    static Toolbar chatContextualToolbar;
+    static Toolbar callsContextualToolbar;
 
     private androidx.appcompat.widget.SearchView searchView;
 
@@ -40,20 +41,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Contextual Toolbar
-        contextualToolbar= findViewById(R.id.contextualToolbar);
-        contextualToolbar.inflateMenu(R.menu.chat_contextual_action_bar);
-        contextualToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-        contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        //Chat Contextual Toolbar
+        chatContextualToolbar= findViewById(R.id.chatContextualToolbar);
+        chatContextualToolbar.inflateMenu(R.menu.chat_contextual_action_bar);
+        chatContextualToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        chatContextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 actionBar.setVisibility(View.VISIBLE);
-                contextualToolbar.setVisibility(View.GONE);
+                chatContextualToolbar.setVisibility(View.GONE);
                 tabLayout.setBackgroundResource(R.color.purple_500);
+
+                for (View view : ChatRecViewAdapter.selected_views) {
+                    view.setOnLongClickListener(new ChatRecViewAdapter.ContextualToolbarListener());
+                }
+
                 ChatRecViewAdapter.selected_views.clear();
 
                 for(View view : ChatRecViewAdapter.views) {
                     View check= view.findViewById(R.id.selectedCheck);
+                    check.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        //Calls Contextual Toolbar
+        callsContextualToolbar=findViewById(R.id.callsContextualToolbar);
+        callsContextualToolbar.inflateMenu(R.menu.calls_contextual_action_bar);
+        callsContextualToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        callsContextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionBar.setVisibility(View.VISIBLE);
+                callsContextualToolbar.setVisibility(View.GONE);
+                tabLayout.setBackgroundResource(R.color.purple_500);
+                CallsRecViewAdapter.selected_views.clear();
+
+                for(View view : CallsRecViewAdapter.views) {
+                    View check= view.findViewById(R.id.callsSelectedCheck);
                     check.setVisibility(View.GONE);
                 }
 

@@ -1,12 +1,7 @@
 package com.example.whatsappclonelombenis;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.ViewHolder>{
     private Context context;
@@ -26,9 +20,10 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
 
-    private ContextualToolbarListener contextualToolbar= new ContextualToolbarListener();
-    private RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
-    private SelectListener selectListener= new SelectListener();
+    static ContextualToolbarListener contextualToolbarListener = new ContextualToolbarListener();
+    static RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
+    static SelectListener selectListener= new SelectListener();
+    static LongRemoveSelectedListener longRemoveSelectedListener= new LongRemoveSelectedListener();
 
     public ChatRecViewAdapter(Context context) {this.context=context;}
 
@@ -37,7 +32,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public ChatRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_recview_item, parent, false);
         views.add(view);
-        view.setOnLongClickListener(contextualToolbar);
+        view.setOnLongClickListener(contextualToolbarListener);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -75,7 +70,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         }
     }
 
-    public class ContextualToolbarListener implements View.OnLongClickListener {
+    public static class ContextualToolbarListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View v) {
             selected_views.add(v);
@@ -86,34 +81,35 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             v.setOnLongClickListener(null);
 
             MainActivity.actionBar.setVisibility(View.GONE);
-            MainActivity.contextualToolbar.setVisibility(View.VISIBLE);
+            MainActivity.chatContextualToolbar.setVisibility(View.VISIBLE);
             MainActivity.tabLayout.setBackgroundResource(R.color.contextual_background_color);
 
-            MainActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
+            MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
             for (View view:views) {
-                if (view==v) {
+                if (selected_views.contains(view)) {
                     view.setOnClickListener(removeSelectedListener);
+                    view.setOnLongClickListener(longRemoveSelectedListener);
                 }
                 else {
                     view.setOnClickListener(selectListener);
                 }
             }
-            v.setOnLongClickListener(contextualToolbar);
+            //v.setOnLongClickListener(contextualToolbarListener);
             return true;
         }
     }
 
-    public class RemoveSelectedListener implements View.OnClickListener {
+    public static class RemoveSelectedListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             View check=v.findViewById(R.id.selectedCheck);
             check.setVisibility(View.GONE);
             selected_views.remove(v);
-            MainActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
+            MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             if (selected_views.size() == 0) {
                 MainActivity.actionBar.setVisibility(View.VISIBLE);
-                MainActivity.contextualToolbar.setVisibility(View.GONE);
+                MainActivity.chatContextualToolbar.setVisibility(View.GONE);
                 MainActivity.tabLayout.setBackgroundResource(R.color.purple_500);
             }
 
@@ -122,13 +118,42 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
+                    view.setOnLongClickListener(contextualToolbarListener);
                 }
             }
 
         }
     }
 
-    public class SelectListener
+    public static class LongRemoveSelectedListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View v) {
+            View check=v.findViewById(R.id.selectedCheck);
+            check.setVisibility(View.GONE);
+            selected_views.remove(v);
+            MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
+
+            if (selected_views.size() == 0) {
+                MainActivity.actionBar.setVisibility(View.VISIBLE);
+                MainActivity.chatContextualToolbar.setVisibility(View.GONE);
+                MainActivity.tabLayout.setBackgroundResource(R.color.purple_500);
+            }
+
+            if (selected_views.size()!=0) {
+                //v.setOnClickListener(selectListener);
+                v.setOnLongClickListener(contextualToolbarListener);
+            }else {
+                for (View view : views) {
+                    view.setOnClickListener(null);
+                    view.setOnLongClickListener(contextualToolbarListener);
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public static class SelectListener
             implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -137,7 +162,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
             }
-            MainActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
+            MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             for(View view: selected_views) {
                 view.setOnClickListener(removeSelectedListener);
@@ -146,4 +171,4 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 }
 
-//TODO: add contextual toolbar on chatTab and new message activity 
+//TODO add contextual toolbar on chatTab and new message activity

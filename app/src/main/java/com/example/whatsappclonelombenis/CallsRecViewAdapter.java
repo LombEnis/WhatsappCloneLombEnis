@@ -16,8 +16,14 @@ import java.util.ArrayList;
 
 public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapter.ViewHolder>{
     Context context;
-
     ArrayList<Call> calls;
+
+    static ArrayList<View> views= new ArrayList<>();
+    static ArrayList<View> selected_views = new ArrayList<>();
+
+    static ContextualToolbarListener contextualToolbarListener= new ContextualToolbarListener();
+    static SelectListener selectListener= new SelectListener();
+    static RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
 
     public CallsRecViewAdapter(Context context) {
         this.context = context;
@@ -27,6 +33,8 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     @Override
     public CallsRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.calls_recview_item, parent, false);
+        views.add(view);
+        view.setOnLongClickListener(contextualToolbarListener);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -91,6 +99,76 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                     System.out.println("dsad");
                 }
             });
+        }
+    }
+
+    public static class ContextualToolbarListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View v) {
+            selected_views.add(v);
+
+            View check = v.findViewById(R.id.callsSelectedCheck);
+            check.setVisibility(View.VISIBLE);
+
+            v.setOnLongClickListener(null);
+
+            MainActivity.actionBar.setVisibility(View.GONE);
+            MainActivity.callsContextualToolbar.setVisibility(View.VISIBLE);
+            MainActivity.tabLayout.setBackgroundResource(R.color.contextual_background_color);
+
+            MainActivity.callsContextualToolbar.setTitle(Integer.toString(selected_views.size()));
+            for (View view:views) {
+                if (view==v) {
+                    view.setOnClickListener(removeSelectedListener);
+                }
+                else {
+                    view.setOnClickListener(selectListener);
+                }
+            }
+            v.setOnLongClickListener(contextualToolbarListener);
+            return true;
+        }
+    }
+
+    public static class RemoveSelectedListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            View check=v.findViewById(R.id.callsSelectedCheck);
+            check.setVisibility(View.GONE);
+            selected_views.remove(v);
+            MainActivity.callsContextualToolbar.setTitle(Integer.toString(selected_views.size()));
+
+            if (selected_views.size() == 0) {
+                MainActivity.actionBar.setVisibility(View.VISIBLE);
+                MainActivity.callsContextualToolbar.setVisibility(View.GONE);
+                MainActivity.tabLayout.setBackgroundResource(R.color.purple_500);
+            }
+
+            if (selected_views.size()!=0) {
+                v.setOnClickListener(selectListener);
+            }else {
+                for (View view : views) {
+                    view.setOnClickListener(null);
+                }
+            }
+
+        }
+    }
+
+    public static class SelectListener
+            implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            View check=v.findViewById(R.id.callsSelectedCheck);
+            check.setVisibility(View.VISIBLE);
+            if (!selected_views.contains(v)) {
+                selected_views.add(v);
+            }
+            MainActivity.callsContextualToolbar.setTitle(Integer.toString(selected_views.size()));
+
+            for(View view: selected_views) {
+                view.setOnClickListener(removeSelectedListener);
+            }
         }
     }
 }

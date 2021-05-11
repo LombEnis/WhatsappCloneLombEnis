@@ -39,4 +39,5 @@
     <string name="show_contact">Mostra contatto</string>
     <string name="mark_as_to_read">Segna come da leggere</string>
     <string name="select_all">Seleziona tutte</string>
+    <string name="remove_from_call_log">Rimuovi dal registro chiamate</string>
 </resources>
