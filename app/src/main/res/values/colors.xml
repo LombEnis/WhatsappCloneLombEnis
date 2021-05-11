@@ -12,6 +12,7 @@
     <color name="tab_selected">#C1C0C0</color>
     <color name="transparent_white">#40000000</color>
     <color name="transparent_black">#70000000</color>
+    <color name="transparent_grey">#70CCCCCC</color>
 
     <color name="turquoise">#40e0d0</color>
     <color name="dark_turquoise">#0BC8B5</color>

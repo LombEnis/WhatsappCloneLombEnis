@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
+    android:fitsSystemWindows="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StoriesActivity">
@@ -11,20 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
     </LinearLayout>
 
     <androidx.appcompat.widget.Toolbar
@@ -34,7 +22,8 @@
         android:layout_below="@id/progress_linearlayout"
         android:background="@android:color/transparent"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="@style/AppTheme.Toolbar"
+        app:titleTextColor="@color/white" />
 
     <ImageView
         android:id="@+id/background_imageview"
@@ -45,32 +34,32 @@
         android:id="@+id/main_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:layout_centerInParent="true"
         android:gravity="center"
+        android:textColor="@color/white"
         android:textSize="50sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_below="@id/action_bar"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/left_button"
-            android:background="@android:color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/right_button"
-            android:background="@android:color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 
@@ -80,10 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="17dp"
         android:background="@drawable/grey_ripple_rectangle_transparent"
         android:drawableTop="@drawable/ic_arrow_up_vector_24"
-        android:textColor="@color/white"
-        android:layout_marginBottom="17dp"
-        android:text="@string/rispondi" />
+        android:text="@string/rispondi"
+        android:textColor="@color/white" />
 
 </RelativeLayout>
