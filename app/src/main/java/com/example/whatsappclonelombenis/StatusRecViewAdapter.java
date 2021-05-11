@@ -2,6 +2,10 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +67,14 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     System.out.println(true);
                 }
             });
+
+            holder.myProfileImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.constraintLayout.performClick();
+                    performRipple(holder.constraintLayout);
+                }
+            });
         } else {
             Glide.with(context)
                     .load(contacts.get(position - 1)
@@ -73,11 +86,15 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             holder.nameTextView.setText(contacts.get(position - 1).getName());
 
-            ItemClick clickListener = new ItemClick(position);
+            holder.constraintLayout.setOnClickListener(new ItemClick(position));
 
-            holder.constraintLayout.setOnClickListener(clickListener);
-
-            holder.profileImageButton.setOnClickListener(clickListener);
+            holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.constraintLayout.performClick();
+                    performRipple(holder.constraintLayout);
+                }
+            });
         }
     }
 
@@ -116,6 +133,24 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
             profileImageButton = itemView.findViewById(R.id.profile_image_button);
             nameTextView = itemView.findViewById(R.id.name_text_view);
+        }
+    }
+
+    // Custom methods
+    public void performRipple(View view) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            RippleDrawable rippleDrawable = (RippleDrawable) view.getBackground();
+
+            rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
+
+            Handler exitRippleHandler = new Handler();
+            exitRippleHandler.postDelayed(new Runnable()
+            {
+                @Override public void run()
+                {
+                    rippleDrawable.setState(new int[]{});
+                }
+            }, 200);
         }
     }
 
