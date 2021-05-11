@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 actionBar.setVisibility(View.VISIBLE);
                 callsContextualToolbar.setVisibility(View.GONE);
                 tabLayout.setBackgroundResource(R.color.purple_500);
+
+                for (View view : CallsRecViewAdapter.selected_views) {
+                    view.setOnLongClickListener(new CallsRecViewAdapter.ContextualToolbarListener());
+                }
                 CallsRecViewAdapter.selected_views.clear();
 
                 for(View view : CallsRecViewAdapter.views) {
