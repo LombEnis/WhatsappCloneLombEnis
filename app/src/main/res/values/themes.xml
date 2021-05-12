@@ -29,4 +29,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- StoriesActivity ActionBar Title theme -->
+    <style name="StoriesTitleTextStyle">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <!-- StoriesActivity ActionBar SubTitle theme -->
+    <style name="StoriesSubtitleTextStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

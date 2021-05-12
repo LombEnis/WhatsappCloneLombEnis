@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         // Inflate ActionBar menu
         getMenuInflater().inflate(R.menu.main_options_menu, menu);
 
-        // Instante the button showing the selected filter
+        // Instantiate the button showing the selected filter
         filterButtonItem = menu.findItem(R.id.app_bar_filter_button);
         searchFilterButton = filterButtonItem.getActionView().findViewById(R.id.filter_button);
 

@@ -1,11 +1,15 @@
 package com.example.whatsappclonelombenis;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 
@@ -62,7 +69,6 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
 
-
         // Set ActionBar
         setSupportActionBar(actionBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,7 +80,6 @@ public class StoriesActivity extends AppCompatActivity {
 
             if (controller != null) {
                 controller.hide(WindowInsets.Type.statusBars());
-                controller.hide(WindowInsets.Type.navigationBars());
             }
 
             getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
@@ -169,14 +174,35 @@ public class StoriesActivity extends AppCompatActivity {
     }
 
     private void setCurrentStoryLayout() {
+        // Set actionBar title and subtitle
+        getSupportActionBar().setTitle(currentContact.getName());
+        getSupportActionBar().setSubtitle("Ora");
+
+        // Set actionBar icon
+        Glide.with(this)
+                .load(currentContact.getProfilePicture())
+                .circleCrop()
+                .apply(new RequestOptions().override(100, 100))
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        getSupportActionBar().setLogo(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {}
+                });
+
         // Create progress bars
         int statusStoriesSize = currentContact.getStatusStories().size();
         for (int i = 0; i < statusStoriesSize; i++) {
             ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
 
+            // Create LayoutParams for the ProgressBar
             LinearLayout.LayoutParams progressBarLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, 3, 1);
 
+            // Set margins
             if (i == 0) {
                 progressBarLayoutParams.setMargins(10, statusBarHeight, 5, 0);
             } else if (i == (statusStoriesSize - 1)) {
@@ -189,6 +215,7 @@ public class StoriesActivity extends AppCompatActivity {
             progressBar.setBackgroundColor(getResources().getColor(R.color.transparent_grey));
             progressBar.setMax(2000);
 
+            // Add ProgressBar to the layout
             progressLinearLayout.addView(progressBar);
         }
 

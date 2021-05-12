@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappCloneLombEnis">
 
-        <activity android:name=".StoriesActivity"
+        <activity
+            android:name=".StoriesActivity"
             android:parentActivityName=".MainActivity"></activity>
 
         <activity
