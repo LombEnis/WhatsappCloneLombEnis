@@ -16,7 +16,8 @@ import java.util.ArrayList;
 
 public class NewMessageActivity extends AppCompatActivity {
     //Toolbar
-    private Toolbar newmessageToolbar;
+    static Toolbar newmessageToolbar;
+    static Toolbar newmessageContextualToolbar;
 
     //Recycler View
     private RecyclerView newmessageRecView;
@@ -28,6 +29,29 @@ public class NewMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
+
+        //Contextual Toolbar
+        newmessageContextualToolbar=findViewById(R.id.newmessageContextualToolbar);
+        newmessageContextualToolbar.inflateMenu(R.menu.newmessage_contextual_action_bar);
+        newmessageContextualToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        newmessageContextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newmessageToolbar.setVisibility(View.VISIBLE);
+                newmessageContextualToolbar.setVisibility(View.GONE);
+
+                for (View view: NewMessageRecViewAdapter.selected_views) {
+                    view.setOnLongClickListener(new NewMessageRecViewAdapter.ContextualToolbarListener());
+                }
+
+                NewMessageRecViewAdapter.selected_views.clear();
+
+                for(View view : NewMessageRecViewAdapter.views) {
+                    View check= view.findViewById(R.id.newmessageSelectedCheck);
+                    check.setVisibility(View.GONE);
+                }
+            }
+        });
 
         //Toolbar
         newmessageToolbar=findViewById(R.id.newmessageActivityToolbar);

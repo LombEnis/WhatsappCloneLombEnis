@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:background="@drawable/grey_ripple_rectangle_transparent">
+    android:background="@drawable/grey_ripple_rectangle_transparent"
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/newmessageContactProfilePic"
@@ -16,6 +15,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_default_avatar" />
+
+    <ImageView
+        android:id="@+id/newmessageSelectedCheck"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/circular_check_background"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="@+id/newmessageContactProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/newmessageContactProfilePic"
+        app:srcCompat="@drawable/ic_check"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/newmessageContactName"

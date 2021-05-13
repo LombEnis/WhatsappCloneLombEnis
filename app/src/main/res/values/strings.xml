@@ -40,4 +40,6 @@
     <string name="mark_as_to_read">Segna come da leggere</string>
     <string name="select_all">Seleziona tutte</string>
     <string name="remove_from_call_log">Rimuovi dal registro chiamate</string>
+    <string name="uppercase_new_broadcast">NUOVO BROADCAST</string>
+    <string name="uppercase_new_group">NUOVO GRUPPO</string>
 </resources>

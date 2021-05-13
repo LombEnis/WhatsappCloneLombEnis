@@ -16,10 +16,21 @@
         app:title="@string/select"
         app:subtitle="10 contatti" />
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newmessageContextualToolbar"
+        android:background="@color/contextual_background_color"
+        android:theme="@style/NewMessageContextualToolbar"
+        app:titleTextColor="?attr/colorOnPrimary"
+        android:layout_below="@id/newmessageActivityToolbar"
+        android:visibility="gone"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/newmessageRecView"
-        android:layout_below="@+id/newmessageActivityToolbar" />
+        android:layout_below="@+id/newmessageContextualToolbar" />
 
 </RelativeLayout>

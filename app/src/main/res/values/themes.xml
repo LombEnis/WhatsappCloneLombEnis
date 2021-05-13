@@ -29,6 +29,19 @@
         <item name="android:textColorHint">@color/grey</item>
     </style>
 
+    <!--New Message Activity Contextual Toolbar Theme -->
+    <style name="NewMessageContextualToolbar" parent="Theme.WhatsappCloneLombEnis">
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="actionMenuTextAppearance">@style/ContextualToolbarText</item>
+    </style>
+
+    <!--New Message Activity Contextual Toolbar Text Size-->
+    <style name="ContextualToolbarText">
+        <item name="android:textSize">12.8sp</item>
+    </style>
+
     <!-- QR Code Activity Toolbar theme -->
     <style name="AppTheme.QRCodeToolbar" parent="Theme.WhatsappCloneLombEnis">
         <!--This line changes the color of icons in toolbar (back, overflow menu icons)-->
