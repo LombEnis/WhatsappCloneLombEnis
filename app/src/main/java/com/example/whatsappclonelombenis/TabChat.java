@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class TabChat extends Fragment {
     private RecyclerView chatRecView;
     private FloatingActionButton chatFloatingButton;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

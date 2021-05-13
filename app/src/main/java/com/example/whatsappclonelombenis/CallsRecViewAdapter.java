@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,6 +163,8 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public static class LongRemoveSelectedListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View v) {
+            v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+
             View check=v.findViewById(R.id.callsSelectedCheck);
             check.setVisibility(View.GONE);
             selected_views.remove(v);

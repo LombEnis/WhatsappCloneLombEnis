@@ -1,6 +1,8 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.os.Vibrator;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.ViewHolder>{
-    private Context context;
+    private static Context context;
     private ArrayList<Contact> contacts= new ArrayList<>();
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
@@ -24,6 +26,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     static RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
     static SelectListener selectListener= new SelectListener();
     static LongRemoveSelectedListener longRemoveSelectedListener= new LongRemoveSelectedListener();
+
+    //final Vibrator vibe= (Vibrator) ChatRecViewAdapter.this.getSystemService(Context.VIBRATOR_SERVICE);
 
     public ChatRecViewAdapter(Context context) {this.context=context;}
 
@@ -102,6 +106,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public static class RemoveSelectedListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+
             View check=v.findViewById(R.id.selectedCheck);
             check.setVisibility(View.GONE);
             selected_views.remove(v);
@@ -129,6 +134,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public static class LongRemoveSelectedListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View v) {
+            v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+
             View check=v.findViewById(R.id.selectedCheck);
             check.setVisibility(View.GONE);
             selected_views.remove(v);
