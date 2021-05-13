@@ -148,6 +148,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
 
             if (selected_views.size()!=0) {
                 v.setOnClickListener(selectListener);
+                v.setOnLongClickListener(contextualToolbarListener);
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
@@ -192,6 +193,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         public void onClick(View v) {
             View check=v.findViewById(R.id.callsSelectedCheck);
             check.setVisibility(View.VISIBLE);
+            v.setOnLongClickListener(null);
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
             }
@@ -199,6 +201,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
 
             for(View view: selected_views) {
                 view.setOnClickListener(removeSelectedListener);
+                view.setOnLongClickListener(longRemoveSelectedListener);
             }
         }
     }

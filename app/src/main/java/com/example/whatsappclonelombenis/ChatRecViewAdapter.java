@@ -115,6 +115,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
             if (selected_views.size()!=0) {
                 v.setOnClickListener(selectListener);
+                v.setOnLongClickListener(contextualToolbarListener);  //////
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
@@ -159,6 +160,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         public void onClick(View v) {
             View check=v.findViewById(R.id.selectedCheck);
             check.setVisibility(View.VISIBLE);
+            v.setOnLongClickListener(null); //////
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
             }
@@ -166,6 +168,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
             for(View view: selected_views) {
                 view.setOnClickListener(removeSelectedListener);
+                view.setOnLongClickListener(longRemoveSelectedListener); ////
             }
         }
     }
