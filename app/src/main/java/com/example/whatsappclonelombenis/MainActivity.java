@@ -48,21 +48,7 @@ public class MainActivity extends AppCompatActivity {
         chatContextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionBar.setVisibility(View.VISIBLE);
-                chatContextualToolbar.setVisibility(View.GONE);
-                tabLayout.setBackgroundResource(R.color.purple_500);
-
-                for (View view : ChatRecViewAdapter.selected_views) {
-                    view.setOnLongClickListener(new ChatRecViewAdapter.ContextualToolbarListener());
-                }
-
-                ChatRecViewAdapter.selected_views.clear();
-
-                for(View view : ChatRecViewAdapter.views) {
-                    View check= view.findViewById(R.id.selectedCheck);
-                    check.setVisibility(View.GONE);
-                }
-
+                closeChatContextualToolbar();
             }
         });
 
@@ -73,20 +59,7 @@ public class MainActivity extends AppCompatActivity {
         callsContextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionBar.setVisibility(View.VISIBLE);
-                callsContextualToolbar.setVisibility(View.GONE);
-                tabLayout.setBackgroundResource(R.color.purple_500);
-
-                for (View view : CallsRecViewAdapter.selected_views) {
-                    view.setOnLongClickListener(new CallsRecViewAdapter.ContextualToolbarListener());
-                }
-                CallsRecViewAdapter.selected_views.clear();
-
-                for(View view : CallsRecViewAdapter.views) {
-                    View check= view.findViewById(R.id.callsSelectedCheck);
-                    check.setVisibility(View.GONE);
-                }
-
+                closeCallsContextualToolbar();
             }
         });
 
@@ -140,6 +113,14 @@ public class MainActivity extends AppCompatActivity {
                 filterButtonItem.setVisible(false);
                 tabLayout.setVisibility(View.VISIBLE);
                 searchView.setIconified(true);
+
+                if (ChatRecViewAdapter.selected_views.size()!=0) {
+                    closeChatContextualToolbar();
+                }
+
+                if (CallsRecViewAdapter.selected_views.size()!=0) {
+                    closeCallsContextualToolbar();
+                }
             }
 
             @Override
@@ -151,8 +132,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
+    public void closeChatContextualToolbar() {
+        actionBar.setVisibility(View.VISIBLE);
+        chatContextualToolbar.setVisibility(View.GONE);
+        tabLayout.setBackgroundResource(R.color.purple_500);
+
+        for (View view : ChatRecViewAdapter.selected_views) {
+            view.setOnLongClickListener(new ChatRecViewAdapter.ContextualToolbarListener());
+        }
+
+        ChatRecViewAdapter.selected_views.clear();
+
+        for(View view : ChatRecViewAdapter.views) {
+            View check= view.findViewById(R.id.selectedCheck);
+            check.setVisibility(View.GONE);
+        }
+    }
+
+    public void closeCallsContextualToolbar() {
+        actionBar.setVisibility(View.VISIBLE);
+        callsContextualToolbar.setVisibility(View.GONE);
+        tabLayout.setBackgroundResource(R.color.purple_500);
+
+        for (View view : CallsRecViewAdapter.selected_views) {
+            view.setOnLongClickListener(new CallsRecViewAdapter.ContextualToolbarListener());
+        }
+        CallsRecViewAdapter.selected_views.clear();
+
+        for(View view : CallsRecViewAdapter.views) {
+            View check= view.findViewById(R.id.callsSelectedCheck);
+            check.setVisibility(View.GONE);
+        }
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflating ActionBar menu
