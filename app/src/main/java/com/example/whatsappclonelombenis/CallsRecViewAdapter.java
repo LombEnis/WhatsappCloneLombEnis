@@ -2,6 +2,7 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,14 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     static RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
     static LongRemoveSelectedListener longRemoveSelectedListener= new LongRemoveSelectedListener();
 
+    //EXTRAS
+    public static final String EXTRA_NAME="com.example.whatsappclonelombenis";
+    public static final String EXTRA_INFO="com.example.whatsappclonelombenis";
+    public static final String EXTRA_DAY="com.example.whatsappclonelombenis";
+    public static final String EXTRA_IS_ACCEPTED="com.example.whatsappclonelombenis";
+    public static final String EXTRA_IS_INCOMING="com.example.whatsappclonelombenis";
+    public static final String EXTRA_TIME="com.example.whatsappclonelombenis";
+
     public CallsRecViewAdapter(Context context) {
         this.context = context;
     }
@@ -42,6 +51,14 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             @Override
             public void onClick(View v) {
                 Intent showCallInfo= new Intent(context, CallInfoActivity.class);
+
+                showCallInfo.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
+                showCallInfo.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getInfoText());
+                showCallInfo.putExtra(EXTRA_DAY, calls.get(views.indexOf(v)).getCallDay());
+                showCallInfo.putExtra(EXTRA_TIME, calls.get(views.indexOf(v)).getCallTime());
+                showCallInfo.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
+                showCallInfo.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());
+                
                 context.startActivity(showCallInfo);
             }
         });

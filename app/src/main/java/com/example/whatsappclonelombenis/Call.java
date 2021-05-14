@@ -2,15 +2,16 @@ package com.example.whatsappclonelombenis;
 
 public class Call {
     private Contact contact;
-    private String callTime;
+    private String callTime, callDay;
     private boolean callAccepted, isIncomingCall, isVoiceCall;
 
-    public Call(Contact contact, String callTime, boolean callAccepted, boolean incomingCall, boolean isVoiceCall) {
+    public Call(Contact contact, String callDay, String callTime, boolean callAccepted, boolean incomingCall, boolean isVoiceCall) {
         this.contact = contact;
         this.callTime = callTime;
         this.callAccepted = callAccepted;
         this.isIncomingCall = incomingCall;
         this.isVoiceCall= isVoiceCall;
+        this.callDay= callDay;
     }
 
     public Contact getContact() {
@@ -19,6 +20,14 @@ public class Call {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public String getCallDay() {
+        return callDay;
+    }
+
+    public void setCallDay(String callDay) {
+        this.callDay = callDay;
     }
 
     public String getCallTime() {
