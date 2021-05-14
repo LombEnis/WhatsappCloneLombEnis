@@ -116,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (ChatRecViewAdapter.selected_views.size()!=0) {
                     closeChatContextualToolbar();
-                }
-
-                if (CallsRecViewAdapter.selected_views.size()!=0) {
+                } else if (CallsRecViewAdapter.selected_views.size()!=0) {
                     closeCallsContextualToolbar();
                 }
+
+
             }
 
             @Override

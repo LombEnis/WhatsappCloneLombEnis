@@ -22,6 +22,6 @@
         android:layout_marginRight="15dp"
         android:backgroundTint="?attr/colorPrimary"
         android:id="@+id/chatContactsFloatingButton"
-        android:src="@drawable/ic_newmessage"/>
+        android:src="@drawable/ic_message"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

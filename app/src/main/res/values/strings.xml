@@ -42,4 +42,7 @@
     <string name="remove_from_call_log">Rimuovi dal registro chiamate</string>
     <string name="uppercase_new_broadcast">NUOVO BROADCAST</string>
     <string name="uppercase_new_group">NUOVO GRUPPO</string>
+    <string name="call_info">Info chiamata</string>
+    <string name="new_chat">Nuova chat</string>
+    <string name="block">Blocca</string>
 </resources>

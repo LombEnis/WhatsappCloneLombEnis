@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="@string/new_chat"
+        android:icon="@drawable/ic_message"
+        app:showAsAction="always"
+        android:id="@+id/new_message"/>
+
+    <item
+        android:title="@string/remove_from_call_log"
+        app:showAsAction="never" />
+
+    <item
+        android:title="@string/block"
+        app:showAsAction="never" />
+
+</menu>

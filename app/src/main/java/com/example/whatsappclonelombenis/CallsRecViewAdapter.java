@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,13 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         View view= LayoutInflater.from(context).inflate(R.layout.calls_recview_item, parent, false);
         views.add(view);
         view.setOnLongClickListener(contextualToolbarListener);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent showCallInfo= new Intent(context, CallInfoActivity.class);
+                context.startActivity(showCallInfo);
+            }
+        });
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
