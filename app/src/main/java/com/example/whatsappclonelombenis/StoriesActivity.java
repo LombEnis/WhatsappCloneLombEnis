@@ -141,8 +141,8 @@ public class StoriesActivity extends AppCompatActivity {
         }
 
         // Set swipe down listener
-        rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this));
-        leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this));
+        rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this, rightButton));
+        leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this, leftButton));
 
         // Set current contact
         currentContactPos = getIntent().getIntExtra("position", -1);
@@ -217,23 +217,7 @@ public class StoriesActivity extends AppCompatActivity {
                  return;
              } else {
                  // This is not the last contact
-                 progressLinearLayout.removeAllViews();
-
-                 currentContactPos += 1;
-                 currentContact = contacts.get(currentContactPos);
-
-                 currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-                 currentContact.increaseCurrentStoriesPos();
-                 currentContact.increaseLastStoriesPos();
-
-                 if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
-                     currentContact.setLastStoriesPos(-1);
-                     currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-                     currentContact.increaseCurrentStoriesPos();
-                     currentContact.increaseLastStoriesPos();
-                 }
-
-                 changeContactLayout();
+                 increaseContact();
              }
          } else {
              // This is not the last story
@@ -263,11 +247,7 @@ public class StoriesActivity extends AppCompatActivity {
                  return;
              } else {
                  // This is not the first contact
-                 progressLinearLayout.removeAllViews();
-
-                 currentContactPos -= 1;
-                 currentContact = contacts.get(currentContactPos);
-                 changeContactLayout();
+                 decreaseContact();
              }
          } else {
              // This is not the first story
@@ -284,17 +264,44 @@ public class StoriesActivity extends AppCompatActivity {
          startCurrentStory();
      }
 
-     private void setCurrentStoryLayout() {
-        // Set actionBar subtitle
-        getSupportActionBar().setSubtitle("Ora");
+    private void increaseContact() {
+        progressLinearLayout.removeAllViews();
 
-        rootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
+        currentContactPos += 1;
+        currentContact = contacts.get(currentContactPos);
 
-        Glide.with(this)
-                .load(currentStory.getBackgroundImageString())
-                .into(backgroundImageView);
+        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        currentContact.increaseCurrentStoriesPos();
+        currentContact.increaseLastStoriesPos();
 
-        mainTextView.setText(currentStory.getMainTextString());
+        if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
+            currentContact.setLastStoriesPos(-1);
+            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+            currentContact.increaseCurrentStoriesPos();
+            currentContact.increaseLastStoriesPos();
+        }
+
+        changeContactLayout();
+    }
+
+    private void decreaseContact() {
+        progressLinearLayout.removeAllViews();
+
+        currentContactPos -= 1;
+        currentContact = contacts.get(currentContactPos);
+
+        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        currentContact.increaseCurrentStoriesPos();
+        currentContact.increaseLastStoriesPos();
+
+        if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
+            currentContact.setLastStoriesPos(-1);
+            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+            currentContact.increaseCurrentStoriesPos();
+            currentContact.increaseLastStoriesPos();
+        }
+
+        changeContactLayout();
     }
 
     private void changeContactLayout() {
@@ -352,6 +359,19 @@ public class StoriesActivity extends AppCompatActivity {
         }
     }
 
+    private void setCurrentStoryLayout() {
+        // Set actionBar subtitle
+        getSupportActionBar().setSubtitle("Ora");
+
+        rootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
+
+        Glide.with(this)
+                .load(currentStory.getBackgroundImageString())
+                .into(backgroundImageView);
+
+        mainTextView.setText(currentStory.getMainTextString());
+    }
+
     public void startCurrentStory() {
         currentProgressBar = currentStory.getProgressBar();
         currentProgressBar.setProgress(0);
@@ -394,27 +414,30 @@ public class StoriesActivity extends AppCompatActivity {
 
          private final GestureDetector gestureDetector;
 
-         public OnSwipeDownTouchListener (Context context){
-             gestureDetector = new GestureDetector(context, new GestureListener());
+         public OnSwipeDownTouchListener (Context context, View view){
+             gestureDetector = new GestureDetector(context, new GestureListener(view));
          }
 
          @Override
          public boolean onTouch(View view, MotionEvent event) {
-             // Check if it is a click or scroll event
-             switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                 case MotionEvent.ACTION_DOWN:
-                     view.performClick();
-                     break;
-                 case MotionEvent.ACTION_MOVE:
-                     return gestureDetector.onTouchEvent(event);
-             }
-             return true;
+             return gestureDetector.onTouchEvent(event);
          }
 
          private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
              private static final int SWIPE_THRESHOLD = 100;
              private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+             private View view;
+
+             public GestureListener(View view) {
+                 this.view = view;
+             }
+
+             @Override
+             public boolean onSingleTapUp(MotionEvent e) {
+                 onClick(view);
+                 return super.onSingleTapUp(e);
+             }
 
              @Override
              public boolean onDown(MotionEvent e) {
@@ -427,8 +450,17 @@ public class StoriesActivity extends AppCompatActivity {
                  try {
                      float diffY = e2.getY() - e1.getY();
                      float diffX = e2.getX() - e1.getX();
-                     if (Math.abs(diffY) > Math.abs(diffX) &&
-                             Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                     if (Math.abs(diffX) > Math.abs(diffY)) {
+                         if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                             if (diffX > 0) {
+                                 onSwipeRight();
+                             } else {
+                                 onSwipeLeft();
+                             }
+                             result = true;
+                         }
+                     }
+                     else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                          if (diffY > 0) {
                              onSwipeBottom();
                          }
@@ -438,6 +470,50 @@ public class StoriesActivity extends AppCompatActivity {
                      exception.printStackTrace();
                  }
                  return result;
+             }
+         }
+
+         private void onClick(View view) {
+             view.performClick();
+         }
+
+         public void onSwipeRight() {
+             if (currentContactPos == 0) {
+                 // This is the first contact
+                 onBackPressed();
+                 return;
+             } else {
+                 // This is not the first contact
+                 decreaseContact();
+
+                 // Set progress bar 0% and stop animator of the previous story
+                 progressBarAnimator.cancel();
+                 currentProgressBar.setProgress(0);
+                 // Set current story
+                 currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+                 // Start current story
+                 setCurrentStoryLayout();
+                 startCurrentStory();
+             }
+          }
+
+         public void onSwipeLeft() {
+             if (currentContactPos == (contacts.size() - 1)) {
+                 // This is the last contact
+                 onBackPressed();
+                 return;
+             } else {
+                 // This is not the last contact
+                 increaseContact();
+
+                 // Set progress bar 100% and stop animator of the previous story
+                 progressBarAnimator.cancel();
+                 currentProgressBar.setProgress(100);
+                 // Set current story
+                 currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+                 // Start current story
+                 setCurrentStoryLayout();
+                 startCurrentStory();
              }
          }
 
