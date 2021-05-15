@@ -6,9 +6,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +21,9 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +36,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import static android.icu.text.Normalizer.NO;
 
 public class StoriesActivity extends AppCompatActivity {
     // Layout view
@@ -50,6 +62,10 @@ public class StoriesActivity extends AppCompatActivity {
     private Button leftButton;
     private Button rightButton;
 
+    // Progress bar
+    private ProgressBar currentProgressBar;
+    private ObjectAnimator progressBarAnimator;
+
 
     private int statusBarHeight;
 
@@ -58,7 +74,7 @@ public class StoriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stories);
 
-        // Instantiate layout view
+        // Instantiate variables
         rootRelativeLayout = findViewById(R.id.root_layout);
         progressLinearLayout = findViewById(R.id.progress_linearlayout);
         actionBar = findViewById(R.id.action_bar);
@@ -68,6 +84,8 @@ public class StoriesActivity extends AppCompatActivity {
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
+
+        contacts = StatusRecViewAdapter.contacts;
 
         // Set ActionBar
         setSupportActionBar(actionBar);
@@ -109,55 +127,40 @@ public class StoriesActivity extends AppCompatActivity {
         actionBar.setLayoutParams(actionBarLayoutParams);
 
         // Set current contact
-        contacts = StatusRecViewAdapter.contacts;
-
         currentContactPos = getIntent().getIntExtra("position", -1);
         currentContact = contacts.get(currentContactPos);
 
-        // Get current contact attributes
-        currentStory = currentContact.getStatusStories().get(currentContact.getLastStoriesPos());
-        currentContact.setLastStoriesPos(currentContact.getLastStoriesPos() + 1);
+        // Set current story
+        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        currentContact.increaseCurrentStoriesPos();
+        currentContact.increaseLastStoriesPos();
 
-        // Set first story layout
+        if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
+            currentContact.setLastStoriesPos(-1);
+            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+            currentContact.increaseCurrentStoriesPos();
+            currentContact.increaseLastStoriesPos();
+        }
+
+        currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+
+        // Start first story
+        changeContactLayout();
         setCurrentStoryLayout();
+        startCurrentStory();
 
-        // Set change story listener
-        leftButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentContact.getCurrentStoriesPos() == 0) {
-                    if (currentContactPos == 0) {
-                        onBackPressed();
-                    } else {
-                        currentContactPos -= 1;
-                        currentContact = contacts.get(currentContactPos);
-                    }
-                } else {
-                    currentContact.decreaseCurrentStoriesPos();
-                }
-
-                currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-                setCurrentStoryLayout();
-            }
-        });
-
+        // Set change story listeners
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentContact.getCurrentStoriesPos() == (currentContact.getStatusStories().size() - 1)) {
-                    if (currentContactPos == (contacts.size() - 1)) {
-                        onBackPressed();
-                    } else {
-                        currentContactPos += 1;
-                        currentContact = contacts.get(currentContactPos);
-                    }
-                } else {
-                    currentContact.increaseCurrentStoriesPos();
-                    currentContact.setLastStoriesPos(currentContact.getLastStoriesPos() + 1);
-                }
+                nextStory();
+            }
+        });
 
-                currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-                setCurrentStoryLayout();
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previousStory();
             }
         });
     }
@@ -166,6 +169,10 @@ public class StoriesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                progressBarAnimator.cancel();
+                currentProgressBar.setProgress(100);
+                progressLinearLayout.removeAllViews();
+                currentContact.setCurrentStoriesPos(0);
                 super.onBackPressed();
                 return true;
             default:
@@ -173,13 +180,110 @@ public class StoriesActivity extends AppCompatActivity {
         }
     }
 
-    private void setCurrentStoryLayout() {
-        // Set actionBar title and subtitle
-        getSupportActionBar().setTitle(currentContact.getName());
+     @Override
+     public void onBackPressed() {
+         progressBarAnimator.cancel();
+         currentProgressBar.setProgress(100);
+         progressLinearLayout.removeAllViews();
+         currentContact.setCurrentStoriesPos(0);
+         super.onBackPressed();
+     }
+
+     public void nextStory() {
+         // Check last story
+         if (currentContact.getCurrentStoriesPos() == (currentContact.getStatusStories().size() - 1)) {
+             // This is the last story
+             if (currentContactPos == (contacts.size() - 1)) {
+                 // This is the last contact
+                 onBackPressed();
+                 return;
+             } else {
+                 // This is not the last contact
+                 progressLinearLayout.removeAllViews();
+
+                 currentContactPos += 1;
+                 currentContact = contacts.get(currentContactPos);
+
+                 currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+                 currentContact.increaseCurrentStoriesPos();
+                 currentContact.increaseLastStoriesPos();
+
+                 if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
+                     currentContact.setLastStoriesPos(-1);
+                     currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+                     currentContact.increaseCurrentStoriesPos();
+                     currentContact.increaseLastStoriesPos();
+                 }
+
+                 changeContactLayout();
+             }
+         } else {
+             // This is not the last story
+             currentContact.increaseCurrentStoriesPos();
+             if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
+                 currentContact.setLastStoriesPos(currentContact.getCurrentStoriesPos());
+             }
+         }
+
+         // Set progress bar 100% and stop animator of the previous story
+         progressBarAnimator.cancel();
+         currentProgressBar.setProgress(100);
+         // Set current story
+         currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+         // Start current story
+         setCurrentStoryLayout();
+         startCurrentStory();
+     }
+
+     public void previousStory() {
+         // Set current contact
+         if (currentContact.getCurrentStoriesPos() == 0) {
+             // This is the first story
+             if (currentContactPos == 0) {
+                 // This is the first contact
+                 onBackPressed();
+                 return;
+             } else {
+                 // This is not the first contact
+                 progressLinearLayout.removeAllViews();
+
+                 currentContactPos -= 1;
+                 currentContact = contacts.get(currentContactPos);
+                 changeContactLayout();
+             }
+         } else {
+             // This is not the first story
+             currentContact.decreaseCurrentStoriesPos();
+         }
+
+        // Set progress bar 0% and stop animator of the previous story
+         progressBarAnimator.cancel();
+         currentProgressBar.setProgress(0);
+         // Set current story
+         currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+         // Start current story
+         setCurrentStoryLayout();
+         startCurrentStory();
+     }
+
+     private void setCurrentStoryLayout() {
+        // Set actionBar subtitle
         getSupportActionBar().setSubtitle("Ora");
 
-        // Set actionBar icon
+        rootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
+
         Glide.with(this)
+                .load(currentStory.getBackgroundImageString())
+                .into(backgroundImageView);
+
+        mainTextView.setText(currentStory.getMainTextString());
+    }
+
+    private void changeContactLayout() {
+        // Set action bar title
+        getSupportActionBar().setTitle(currentContact.getName());
+        // Set actionBar icon
+        Glide.with(StoriesActivity.this)
                 .load(currentContact.getProfilePicture())
                 .circleCrop()
                 .apply(new RequestOptions().override(100, 100))
@@ -193,48 +297,77 @@ public class StoriesActivity extends AppCompatActivity {
                     public void onLoadCleared(@Nullable Drawable placeholder) {}
                 });
 
-        // Create progress bars
-        int statusStoriesSize = currentContact.getStatusStories().size();
+        // Add progress bars for the current contact to the layout
+        ArrayList<Story> statusStories = currentContact.getStatusStories();
+        int statusStoriesSize = statusStories.size();
         for (int i = 0; i < statusStoriesSize; i++) {
-            ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+            StoryProgressBar progressBar;
+            if (statusStories.get(i).getProgressBar() == null) {
+                progressBar = new StoryProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
 
-            // Create LayoutParams for the ProgressBar
-            LinearLayout.LayoutParams progressBarLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 3, 1);
+                // Create LayoutParams for the ProgressBar
+                LinearLayout.LayoutParams progressBarLayoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 4, 1);
 
-            // Set margins
-            if (i == 0) {
-                progressBarLayoutParams.setMargins(10, statusBarHeight, 5, 0);
-            } else if (i == (statusStoriesSize - 1)) {
-                progressBarLayoutParams.setMargins(5, statusBarHeight, 10, 0);
+                // Set margins
+                if (i == 0) {
+                    progressBarLayoutParams.setMargins(12, statusBarHeight, 5, 0);
+                } else if (i == (statusStoriesSize - 1)) {
+                    progressBarLayoutParams.setMargins(5, statusBarHeight, 12, 0);
+                } else {
+                    progressBarLayoutParams.setMargins(5, statusBarHeight, 5, 0);
+                }
+
+                progressBar.setLayoutParams(progressBarLayoutParams);
+                progressBar.setBackgroundColor(getResources().getColor(R.color.transparent_white));
+                progressBar.getProgressDrawable().setColorFilter(
+                        getResources().getColor(R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                progressBar.setMax(100);
+
+                statusStories.get(i).setProgressBar(progressBar);
             } else {
-                progressBarLayoutParams.setMargins(5, statusBarHeight, 5, 0);
+                progressBar = statusStories.get(i).getProgressBar();
             }
-
-            progressBar.setLayoutParams(progressBarLayoutParams);
-            progressBar.setBackgroundColor(getResources().getColor(R.color.transparent_grey));
-            progressBar.setMax(2000);
 
             // Add ProgressBar to the layout
             progressLinearLayout.addView(progressBar);
         }
-
-        rootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
-
-        Glide.with(this)
-                .load(currentStory.getBackgroundImageString())
-                .into(backgroundImageView);
-
-        mainTextView.setText(currentStory.getMainTextString());
     }
 
-    public void startStory() {
-        Thread thread = new Thread(new Runnable() {
+    public void startCurrentStory() {
+        currentProgressBar = currentStory.getProgressBar();
+        currentProgressBar.setProgress(0);
+        progressBarAnimator = ObjectAnimator
+                .ofInt(currentProgressBar, "progress", 100)
+                .setDuration(2000);
+        progressBarAnimator.setInterpolator(new LinearInterpolator());
+        progressBarAnimator.addListener(new Animator.AnimatorListener() {
             @Override
-            public void run() {
+            public void onAnimationStart(Animator animation) {}
 
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (currentProgressBar.getProgress() == 100) {
+                    nextStory();
+                }
             }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
         });
-        thread.start();
+        progressBarAnimator.start();
     }
-}
+
+    // Progress Bar class
+    class StoryProgressBar extends ProgressBar {
+         private Context context;
+
+         public StoryProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+             super(context, attrs, defStyleAttr);
+             this.context = context;
+         }
+     }
+ }

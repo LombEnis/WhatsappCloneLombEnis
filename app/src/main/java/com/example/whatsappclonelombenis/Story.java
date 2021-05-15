@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.graphics.Bitmap;
+import android.widget.ProgressBar;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ public class Story {
     private String captionTextString;
 
     private Bitmap storyPreviewBitmap;
+    private StoriesActivity.StoryProgressBar progressBar = null;
 
     // Main constructor
     public Story(Date date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
@@ -70,5 +72,13 @@ public class Story {
 
     public void setStoryPreviewBitmap(Bitmap storyPreviewBitmap) {
         this.storyPreviewBitmap = storyPreviewBitmap;
+    }
+
+    public StoriesActivity.StoryProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public void setProgressBar(StoriesActivity.StoryProgressBar progressBar) {
+        this.progressBar = progressBar;
     }
 }

@@ -20,8 +20,8 @@ public class Contact {
         this.profilePicture = profilePicture;
         this.infoText = infoText;
         this.statusStories = statusStories;
-        this.currentStoriesPos = 0;
-        this.lastStoriesPos = 0;
+        this.currentStoriesPos = -1;
+        this.lastStoriesPos = -1;
     }
 
     // Getter and Setter
@@ -69,12 +69,14 @@ public class Contact {
         return currentStoriesPos;
     }
 
+    public void setCurrentStoriesPos(int currentStoriesPos) { this.currentStoriesPos = currentStoriesPos; }
+
     public void increaseCurrentStoriesPos() {
-        this.currentStoriesPos += 1;
+        this.currentStoriesPos++;
     }
 
     public void decreaseCurrentStoriesPos() {
-        this.currentStoriesPos -= 1;
+        this.currentStoriesPos--;
     }
 
     public int getLastStoriesPos() {
@@ -83,5 +85,9 @@ public class Contact {
 
     public void setLastStoriesPos(int lastStoriesPos) {
         this.lastStoriesPos = lastStoriesPos;
+    }
+
+    public void increaseLastStoriesPos() {
+        lastStoriesPos++;
     }
 }

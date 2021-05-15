@@ -1,34 +1,19 @@
 package com.example.whatsappclonelombenis;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.loader.content.AsyncTaskLoader;
 
-import com.bumptech.glide.Glide;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -58,56 +43,74 @@ public class TabChatFragment extends Fragment {
         Thread createContactsThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                URL url;
+                /*URL url;
                 try {
                     url = new URL(sampleImageUrlString);
                     Bitmap sampleImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+*/
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /*sampleBackgroundImageView.setImageBitmap(sampleImage);*/
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            sampleBackgroundImageView.setImageBitmap(sampleImage);
+                        ArrayList<Contact> contacts = new ArrayList<>();
 
-                            ArrayList<Contact> contacts = new ArrayList<>();
+                        sampleStoryRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                sampleStoryRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                            ArrayList<Story> sampleStatusStories = new ArrayList<Story>();
+                                sampleStoryRelativeLayout.setDrawingCacheEnabled(true);
+                                sampleStoryRelativeLayout.buildDrawingCache();
+                                Bitmap sampleBitmap = sampleStoryRelativeLayout.getDrawingCache();
 
-                            sampleStoryRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                @Override
-                                public void onGlobalLayout() {
-                                    sampleStoryRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                // Create stories
+                                ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();
+                                Story firstContactFirstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                        "Storia 1", "Questo è un caption", sampleBitmap);
+                                Story firstContactSecondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                        "Storia 2", "Questo è un caption", sampleBitmap);
+                                Story firstContactThirdStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
+                                        "Storia 3", "Questo è un caption", sampleBitmap);
+                                firstContactStatusStories.add(firstContactFirstStory);
+                                firstContactStatusStories.add(firstContactSecondStory);
+                                firstContactStatusStories.add(firstContactThirdStory);
 
-                                    sampleStoryRelativeLayout.setDrawingCacheEnabled(true);
-                                    sampleStoryRelativeLayout.buildDrawingCache();
-                                    Bitmap sampleBitmap = sampleStoryRelativeLayout.getDrawingCache();
+                                ArrayList<Story> secondContactStatusStories = new ArrayList<Story>();
+                                Story secondContactfirstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                        "Storia 1", "Questo è un caption", sampleBitmap);
+                                Story secondContactsecondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                        "Storia 2", "Questo è un caption", sampleBitmap);
+                                secondContactStatusStories.add(secondContactfirstStory);
+                                secondContactStatusStories.add(secondContactsecondStory);
 
-                                    Story firstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                                            "Storia 1", "Questo è un caption", sampleBitmap);
+                                ArrayList<Story> thirdContactStatusStories = new ArrayList<Story>();
+                                Story thirdContactfirstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                        "Storia 1", "Questo è un caption", sampleBitmap);
+                                Story thirdContactsecondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                        "Storia 2", "Questo è un caption", sampleBitmap);
+                                thirdContactStatusStories.add(thirdContactfirstStory);
+                                thirdContactStatusStories.add(thirdContactsecondStory);
 
-                                    Story secondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                                            "Storia 2", "Questo è un caption", sampleBitmap);
-
-                                    sampleStatusStories.add(firstStory);
-                                    sampleStatusStories.add(secondStory);
-
-                                    contacts.add(new Contact("Leonardo DiCaprio", "3666875674", sampleImageUrlString,
-                                            "Questo è il mio stato", sampleStatusStories));
-                                    contacts.add(new Contact("Leonardo DiCaprio", "3666875674", sampleImageUrlString,
-                                            "Questo è il mio stato", sampleStatusStories));
-                                    contacts.add(new Contact("Leonardo DiCaprio", "3666875674", sampleImageUrlString,
-                                            "Questo è il mio stato", sampleStatusStories));
+                                // Create contacts
+                                contacts.add(new Contact("Leonardo DiCaprio1", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", firstContactStatusStories));
+                                contacts.add(new Contact("Leonardo DiCaprio2", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", secondContactStatusStories));
+                                contacts.add(new Contact("Leonardo DiCaprio3", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", thirdContactStatusStories));
 
 
-                                    TabStatusFragment.recViewAdapter.setContacts(contacts);
-                                }
-                            });
-                        }
-                    });
-                } catch (MalformedURLException e) {
+                                TabStatusFragment.recViewAdapter.setContacts(contacts);
+                            }
+                        });
+                    }
+                });
+                /*} catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
         createContactsThread.start();

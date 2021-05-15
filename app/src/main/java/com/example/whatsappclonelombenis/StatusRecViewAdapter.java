@@ -79,7 +79,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             Glide.with(context)
                     .load(contacts.get(position - 1)
                             .getStatusStories()
-                            .get(contacts.get(position - 1).getLastStoriesPos())
+                            .get(contacts.get(position - 1).getLastStoriesPos() + 1)
                             .getStoryPreviewBitmap())
                     .circleCrop()
                     .into(holder.profileImageButton);
