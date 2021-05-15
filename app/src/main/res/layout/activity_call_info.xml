@@ -16,10 +16,10 @@
         android:id="@+id/callInfoToolbar"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/callLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/callInfoToolbar"
-        android:id="@+id/callLayout">
+        android:layout_below="@id/callInfoToolbar">
 
         <ImageView
             android:id="@+id/callContactProfileImg"
@@ -39,14 +39,14 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            app:srcCompat="@drawable/ic_videocall"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_videocall" />
 
         <ImageView
             android:id="@+id/callContactInfoProfileImg"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="12dp"
@@ -61,23 +61,27 @@
             android:id="@+id/callContactInfoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:text="Contact Name"
-            app:layout_constraintStart_toEndOf="@+id/callContactInfoProfileImg"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/guideline4"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/CallContactInfoInfo"
+            android:id="@+id/callContactInfoInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
             android:text="Contact Info"
-            app:layout_constraintStart_toEndOf="@+id/callContactInfoProfileImg"
+            app:layout_constraintStart_toEndOf="@+id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/callContactInfoName" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="75dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,49 +90,49 @@
         android:layout_below="@id/callLayout">
 
         <TextView
-            android:id="@+id/CallContactInfoTime"
+            android:id="@+id/callContactInfoCallTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="72dp"
-            android:layout_marginLeft="72dp"
             android:layout_marginTop="4dp"
             android:text="Time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/callContactCallInfo" />
+            app:layout_constraintStart_toEndOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/callContactInfoCallInfo" />
 
         <TextView
-            android:id="@+id/callContactCallInfo"
+            android:id="@+id/callContactInfoCallInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="72dp"
-            android:layout_marginLeft="72dp"
             android:layout_marginTop="16dp"
             android:text="Info"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/callContactInfoDay" />
+            app:layout_constraintStart_toEndOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/callContactInfoCallDay" />
 
         <TextView
-            android:id="@+id/callContactInfoDay"
+            android:id="@+id/callContactInfoCallDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="72dp"
-            android:layout_marginLeft="72dp"
             android:layout_marginTop="6dp"
             android:text="Day"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginLeft="18dp"
-
-            android:layout_marginTop="44dp"
+            android:id="@+id/callContactInfoImageInfo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="75dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

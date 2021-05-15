@@ -33,9 +33,9 @@ public class TabCalls extends Fragment {
 
         //Calls
         ArrayList<Call> calls= new ArrayList<>();
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne"), "14/05/2021", "18:28", true, true, true));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne"), "14/05/2021","18:28", true, true, true));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3"),"14/05/2021","15:12",true, false, true));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), "14/05/2021", "18:28", true, true, true));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), "14/05/2021","18:28", true, true, true));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Enis is my love :))"),"14/05/2021","15:12",true, false, true));
 
         //Adapter
         callsAdapter= new CallsRecViewAdapter(getContext());

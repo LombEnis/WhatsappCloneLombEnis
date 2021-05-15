@@ -32,12 +32,13 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     static OpenCallInfo openCallInfo = new OpenCallInfo();
 
     //EXTRAS
-    public static final String EXTRA_NAME="com.example.whatsappclonelombenis";
-    /*public static final String EXTRA_INFO="com.example.whatsappclonelombenis";
-    public static final String EXTRA_DAY="com.example.whatsappclonelombenis";
-    public static final String EXTRA_IS_ACCEPTED="com.example.whatsappclonelombenis";
-    public static final String EXTRA_IS_INCOMING="com.example.whatsappclonelombenis";
-    public static final String EXTRA_TIME="com.example.whatsappclonelombenis";*/
+    public static final String EXTRA_IMAGE="url";
+    public static final String EXTRA_NAME="name";
+    public static final String EXTRA_INFO="info";
+    public static final String EXTRA_DAY="day";
+    public static final String EXTRA_IS_ACCEPTED="isAccepted";
+    public static final String EXTRA_IS_INCOMING="isIncoming";
+    public static final String EXTRA_TIME="com.example.whatsappclonelombenis";
 
     public CallsRecViewAdapter(Context context) {
         this.context = context;
@@ -221,13 +222,13 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         public void onClick(View v) {
             Intent showCallInfo= new Intent(context, CallInfoActivity.class);
 
-            System.out.println("2"+views);
+            showCallInfo.putExtra(EXTRA_IMAGE, calls.get(views.indexOf(v)).getContact().getProfilePicture());
             showCallInfo.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
-                /*showCallInfo.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getInfoText());
-                showCallInfo.putExtra(EXTRA_DAY, calls.get(views.indexOf(v)).getCallDay());
-                showCallInfo.putExtra(EXTRA_TIME, calls.get(views.indexOf(v)).getCallTime());
-                showCallInfo.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
-                showCallInfo.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());*/
+            showCallInfo.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getMessage());
+            showCallInfo.putExtra(EXTRA_DAY, calls.get(views.indexOf(v)).getCallDay());
+            showCallInfo.putExtra(EXTRA_TIME, calls.get(views.indexOf(v)).getCallTime());
+            showCallInfo.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
+            showCallInfo.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());
 
             context.startActivity(showCallInfo);
         }

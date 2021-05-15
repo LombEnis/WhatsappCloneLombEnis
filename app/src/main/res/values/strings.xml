@@ -45,4 +45,7 @@
     <string name="call_info">Info chiamata</string>
     <string name="new_chat">Nuova chat</string>
     <string name="block">Blocca</string>
+    <string name="incoming">In arrivo</string>
+    <string name="lost">Persa</string>
+    <string name="outgoing">In uscita</string>
 </resources>
