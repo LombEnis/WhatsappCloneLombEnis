@@ -14,8 +14,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -138,6 +140,10 @@ public class StoriesActivity extends AppCompatActivity {
             }
         }
 
+        // Set swipe down listener
+        rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this));
+        leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this));
+
         // Set current contact
         currentContactPos = getIntent().getIntExtra("position", -1);
         currentContact = contacts.get(currentContactPos);
@@ -181,11 +187,7 @@ public class StoriesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                progressBarAnimator.cancel();
-                currentProgressBar.setProgress(100);
-                progressLinearLayout.removeAllViews();
-                currentContact.setCurrentStoriesPos(0);
-                super.onBackPressed();
+                leaveActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -194,6 +196,10 @@ public class StoriesActivity extends AppCompatActivity {
 
      @Override
      public void onBackPressed() {
+         leaveActivity();
+     }
+
+     public void leaveActivity() {
          progressBarAnimator.cancel();
          currentProgressBar.setProgress(100);
          progressLinearLayout.removeAllViews();
@@ -380,6 +386,63 @@ public class StoriesActivity extends AppCompatActivity {
          public StoryProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
              super(context, attrs, defStyleAttr);
              this.context = context;
+         }
+     }
+
+     // Swipe listener class
+     class OnSwipeDownTouchListener implements View.OnTouchListener {
+
+         private final GestureDetector gestureDetector;
+
+         public OnSwipeDownTouchListener (Context context){
+             gestureDetector = new GestureDetector(context, new GestureListener());
+         }
+
+         @Override
+         public boolean onTouch(View view, MotionEvent event) {
+             // Check if it is a click or scroll event
+             switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                 case MotionEvent.ACTION_DOWN:
+                     view.performClick();
+                     break;
+                 case MotionEvent.ACTION_MOVE:
+                     return gestureDetector.onTouchEvent(event);
+             }
+             return true;
+         }
+
+         private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+             private static final int SWIPE_THRESHOLD = 100;
+             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+             @Override
+             public boolean onDown(MotionEvent e) {
+                 return true;
+             }
+
+             @Override
+             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                 boolean result = false;
+                 try {
+                     float diffY = e2.getY() - e1.getY();
+                     float diffX = e2.getX() - e1.getX();
+                     if (Math.abs(diffY) > Math.abs(diffX) &&
+                             Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                         if (diffY > 0) {
+                             onSwipeBottom();
+                         }
+                         result = true;
+                     }
+                 } catch (Exception exception) {
+                     exception.printStackTrace();
+                 }
+                 return result;
+             }
+         }
+
+         public void onSwipeBottom() {
+             leaveActivity();
          }
      }
  }
