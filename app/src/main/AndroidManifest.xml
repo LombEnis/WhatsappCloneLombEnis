@@ -14,11 +14,12 @@
 
         <activity
             android:name=".StoriesActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.WhatsappCloneLombEnis.FullScreenActivity" />
 
         <activity
             android:name=".NewStatusTextActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

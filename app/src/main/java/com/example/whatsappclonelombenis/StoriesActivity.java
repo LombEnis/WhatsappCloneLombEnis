@@ -112,19 +112,31 @@ public class StoriesActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
 
-
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        // Set top margin for the action bar
+        int statusBarResourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (statusBarResourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(statusBarResourceId);
         }
 
-        // Set top margin for the action bar
         RelativeLayout.LayoutParams actionBarLayoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         actionBarLayoutParams.setMargins(0, statusBarHeight + 5, 0, 0);
         actionBar.setLayoutParams(actionBarLayoutParams);
+
+        // Set bottom margin for the reply button
+        if (Build.VERSION.SDK_INT >= 19) {
+            int navigationBarResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            if (navigationBarResourceId > 0) {
+                int navigationBarHeight = getResources().getDimensionPixelSize(navigationBarResourceId);
+
+                RelativeLayout.LayoutParams replyButtonLayoutParams = (RelativeLayout.LayoutParams) replyButton.getLayoutParams();
+                replyButtonLayoutParams.bottomMargin = navigationBarHeight + 20;
+
+                replyButton.setLayoutParams(replyButtonLayoutParams);
+            }
+        }
 
         // Set current contact
         currentContactPos = getIntent().getIntExtra("position", -1);
