@@ -9,7 +9,7 @@
     android:background="@drawable/grey_ripple_rectangle_transparent">
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/newMessageNewContactImageButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -25,9 +25,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/new_contact"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
-        app:layout_constraintTop_toTopOf="@+id/imageButton2" />
+        app:layout_constraintBottom_toBottomOf="@+id/newMessageNewContactImageButton"
+        app:layout_constraintStart_toEndOf="@+id/newMessageNewContactImageButton"
+        app:layout_constraintTop_toTopOf="@+id/newMessageNewContactImageButton" />
 
     <ImageButton
         android:layout_width="40dp"

@@ -2,11 +2,15 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,6 +58,15 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
                    context.startActivity(newGroupIntent);
                }
            });
+
+           ImageButton newGroupImageButton= view.findViewById(R.id.newMessageNewGroupImageButton);
+           newGroupImageButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   view.performClick();
+                   performRipple(view);
+               }
+           });
         }
         else if (viewType==1) {
             view= LayoutInflater.from(parent.getContext()).inflate(R.layout.newmessage_recview_item2,parent,false);
@@ -63,6 +76,15 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
                     Intent newContactIntent = new Intent(Intent.ACTION_INSERT);
                     newContactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                     context.startActivity(newContactIntent);
+                }
+            });
+
+            ImageButton newContactImageButton= view.findViewById(R.id.newMessageNewContactImageButton);
+            newContactImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    view.performClick();
+                    performRipple(view);
                 }
             });
         }
@@ -207,4 +229,20 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
         }
     }
 
+    public void performRipple(View view) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            RippleDrawable rippleDrawable = (RippleDrawable) view.getBackground();
+
+            rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
+
+            Handler exitRippleHandler = new Handler();
+            exitRippleHandler.postDelayed(new Runnable()
+            {
+                @Override public void run()
+                {
+                    rippleDrawable.setState(new int[]{});
+                }
+            }, 200);
+        }
+    }
 }

@@ -7,8 +7,8 @@
     android:layout_height="wrap_content"
     android:padding="12dp">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <ImageButton
+        android:id="@+id/newCallNewGroupCallImageButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -26,8 +26,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/new_group_call"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintBottom_toBottomOf="@+id/newCallNewGroupCallImageButton"
+        app:layout_constraintStart_toEndOf="@+id/newCallNewGroupCallImageButton"
+        app:layout_constraintTop_toTopOf="@+id/newCallNewGroupCallImageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

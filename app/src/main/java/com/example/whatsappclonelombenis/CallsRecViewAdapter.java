@@ -38,7 +38,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public static final String EXTRA_DAY="day";
     public static final String EXTRA_IS_ACCEPTED="isAccepted";
     public static final String EXTRA_IS_INCOMING="isIncoming";
-    public static final String EXTRA_TIME="com.example.whatsappclonelombenis";
+    public static final String EXTRA_TIME="time";
 
     public CallsRecViewAdapter(Context context) {
         this.context = context;

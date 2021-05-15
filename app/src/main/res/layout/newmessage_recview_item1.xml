@@ -9,7 +9,7 @@
     android:background="@drawable/grey_ripple_rectangle_transparent">
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/newMessageNewGroupImageButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -25,8 +25,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/new_group"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/newMessageNewGroupImageButton"
+        app:layout_constraintStart_toEndOf="@+id/newMessageNewGroupImageButton"
+        app:layout_constraintTop_toTopOf="@+id/newMessageNewGroupImageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
