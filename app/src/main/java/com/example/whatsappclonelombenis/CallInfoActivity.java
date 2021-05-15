@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,10 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class CallInfoActivity extends AppCompatActivity {
     //Toolbar
     Toolbar callInfoToolbar;
+
+    TextView contactNameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,22 @@ public class CallInfoActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        Intent intent= getIntent();
+
+        //EXTRAS
+        String contactName= intent.getStringExtra(CallsRecViewAdapter.EXTRA_NAME);
+        /*String contactInfo= intent.getStringExtra(CallsRecViewAdapter.EXTRA_INFO);
+        String callDay= intent.getStringExtra(CallsRecViewAdapter.EXTRA_DAY);
+        boolean isAcceptedCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_ACCEPTED, false);
+        boolean isIncomingCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_INCOMING, false);*/
+
+        contactNameView=findViewById(R.id.callContactInfoName);
+        contactNameView.setText(contactName);
+
+        System.out.println(contactName);
+
+        //TODO: adjust not transporting data
     }
 
     @Override

@@ -180,5 +180,3 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         }
     }
 }
-
-//TODO add contextual toolbar on chatTab and new message activity

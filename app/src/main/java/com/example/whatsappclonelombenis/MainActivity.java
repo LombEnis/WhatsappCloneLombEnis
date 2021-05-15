@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.widget.LinearLayout;
 
 import android.view.Menu;
@@ -18,7 +19,6 @@ import com.google.android.material.tabs.TabLayout;
 
 
 public class MainActivity extends AppCompatActivity {
-    //TODO: delete divider custom layout when finished
     //TODO: adjust layout height
 
     // TabLayout
@@ -118,6 +118,16 @@ public class MainActivity extends AppCompatActivity {
                     closeChatContextualToolbar();
                 } else if (CallsRecViewAdapter.selected_views.size()!=0) {
                     closeCallsContextualToolbar();
+                }
+
+                if (tab.getPosition()==3) {
+                    if (CallsRecViewAdapter.views.size()!=0) {
+                        CallsRecViewAdapter.views.clear();
+                        //System.out.println("yes");
+                        //System.out.println(CallsRecViewAdapter.views);
+                        TabCalls.callsRecView.setAdapter(null);
+                        TabCalls.callsRecView.setAdapter(TabCalls.callsAdapter);
+                    }
                 }
 
 

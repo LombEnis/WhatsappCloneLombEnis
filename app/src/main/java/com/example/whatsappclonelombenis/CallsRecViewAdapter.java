@@ -18,8 +18,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapter.ViewHolder>{
-    Context context;
-    ArrayList<Call> calls;
+    static Context context;
+    static ArrayList<Call> calls;
 
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
@@ -29,13 +29,15 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     static RemoveSelectedListener removeSelectedListener= new RemoveSelectedListener();
     static LongRemoveSelectedListener longRemoveSelectedListener= new LongRemoveSelectedListener();
 
+    static OpenCallInfo openCallInfo = new OpenCallInfo();
+
     //EXTRAS
     public static final String EXTRA_NAME="com.example.whatsappclonelombenis";
-    public static final String EXTRA_INFO="com.example.whatsappclonelombenis";
+    /*public static final String EXTRA_INFO="com.example.whatsappclonelombenis";
     public static final String EXTRA_DAY="com.example.whatsappclonelombenis";
     public static final String EXTRA_IS_ACCEPTED="com.example.whatsappclonelombenis";
     public static final String EXTRA_IS_INCOMING="com.example.whatsappclonelombenis";
-    public static final String EXTRA_TIME="com.example.whatsappclonelombenis";
+    public static final String EXTRA_TIME="com.example.whatsappclonelombenis";*/
 
     public CallsRecViewAdapter(Context context) {
         this.context = context;
@@ -46,22 +48,9 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public CallsRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.calls_recview_item, parent, false);
         views.add(view);
+        //System.out.println("1"+views);
         view.setOnLongClickListener(contextualToolbarListener);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent showCallInfo= new Intent(context, CallInfoActivity.class);
-
-                showCallInfo.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
-                showCallInfo.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getInfoText());
-                showCallInfo.putExtra(EXTRA_DAY, calls.get(views.indexOf(v)).getCallDay());
-                showCallInfo.putExtra(EXTRA_TIME, calls.get(views.indexOf(v)).getCallTime());
-                showCallInfo.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
-                showCallInfo.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());
-                
-                context.startActivity(showCallInfo);
-            }
-        });
+        view.setOnClickListener(openCallInfo);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -119,13 +108,6 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             name=itemView.findViewById(R.id.callContactName);
             time=itemView.findViewById(R.id.callTime);
             voiceOrVideoCall=itemView.findViewById(R.id.callImageView);
-
-            voiceOrVideoCall.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("dsad");
-                }
-            });
         }
     }
 
@@ -231,6 +213,23 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                 view.setOnClickListener(removeSelectedListener);
                 view.setOnLongClickListener(longRemoveSelectedListener);
             }
+        }
+    }
+
+    public static class OpenCallInfo implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent showCallInfo= new Intent(context, CallInfoActivity.class);
+
+            System.out.println("2"+views);
+            showCallInfo.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
+                /*showCallInfo.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getInfoText());
+                showCallInfo.putExtra(EXTRA_DAY, calls.get(views.indexOf(v)).getCallDay());
+                showCallInfo.putExtra(EXTRA_TIME, calls.get(views.indexOf(v)).getCallTime());
+                showCallInfo.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
+                showCallInfo.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());*/
+
+            context.startActivity(showCallInfo);
         }
     }
 }

@@ -20,11 +20,12 @@ import java.util.ArrayList;
 
 public class TabCalls extends Fragment {
     //RecyclerView
-    RecyclerView callsRecView;
+    static RecyclerView callsRecView;
 
     //FloatingButtons
-    FloatingActionButton callContacts;
+    private FloatingActionButton callContacts;
 
+    static CallsRecViewAdapter callsAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,9 +35,10 @@ public class TabCalls extends Fragment {
         ArrayList<Call> calls= new ArrayList<>();
         calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne"), "14/05/2021", "18:28", true, true, true));
         calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne"), "14/05/2021","18:28", true, true, true));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3"),"14/05/2021","15:12",true, false, true));
 
         //Adapter
-        CallsRecViewAdapter callsAdapter= new CallsRecViewAdapter(getContext());
+        callsAdapter= new CallsRecViewAdapter(getContext());
         callsAdapter.setData(calls);
 
         //RecyclerView
