@@ -21,6 +21,9 @@ import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity {
     //TODO: adjust layout height
 
+    //Toolbar Menu
+    Menu menu;
+
     // TabLayout
     static TabLayout tabLayout;
     private ViewPager viewPager;
@@ -35,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuItem filterButtonItem;
     private Button searchFilterButton;
+
+    //MenuItems Toolbar
+    private MenuItem newGroupItem;
+    private MenuItem newBroadcastItem;
+    private MenuItem whatsAppWebItem;
+    private MenuItem starredMessagesItem;
+    private MenuItem settingsItem;
+    private MenuItem statusPrivacyItem;
+    private MenuItem deleteCallLogItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,18 +132,39 @@ public class MainActivity extends AppCompatActivity {
                     closeCallsContextualToolbar();
                 }
 
-                if (tab.getPosition()==3) {
+                if (tab.getPosition()==1) {
+                    newGroupItem.setVisible(true);
+                    newBroadcastItem.setVisible(true);
+                    whatsAppWebItem.setVisible(true);
+                    starredMessagesItem.setVisible(true);
+                    statusPrivacyItem.setVisible(false);
+                    deleteCallLogItem.setVisible(false);
+                }
+                else if (tab.getPosition()==2) {
+                    newGroupItem.setVisible(false);
+                    newBroadcastItem.setVisible(false);
+                    whatsAppWebItem.setVisible(false);
+                    starredMessagesItem.setVisible(false);
+                    statusPrivacyItem.setVisible(true);
+                    deleteCallLogItem.setVisible(false);
+                }
+                else if (tab.getPosition()==3) {
+                    newGroupItem.setVisible(false);
+                    newBroadcastItem.setVisible(false);
+                    whatsAppWebItem.setVisible(false);
+                    starredMessagesItem.setVisible(false);
+                    statusPrivacyItem.setVisible(false);
+                    deleteCallLogItem.setVisible(true);
+
                     if (CallsRecViewAdapter.views.size()!=0) {
                         CallsRecViewAdapter.views.clear();
-                        //System.out.println("yes");
-                        //System.out.println(CallsRecViewAdapter.views);
                         TabCalls.callsRecView.setAdapter(null);
                         TabCalls.callsRecView.setAdapter(TabCalls.callsAdapter);
                     }
                 }
 
-
             }
+
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -178,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflating ActionBar menu
@@ -186,6 +220,15 @@ public class MainActivity extends AppCompatActivity {
         // Instantiating the button showing the selected filter
         filterButtonItem = menu.findItem(R.id.app_bar_filter_button);
         searchFilterButton = filterButtonItem.getActionView().findViewById(R.id.filter_button);
+
+        //Instantiating menu items
+        newGroupItem=menu.findItem(R.id.app_bar_new_group);
+        newBroadcastItem=menu.findItem(R.id.app_bar_new_broadcast);
+        whatsAppWebItem=menu.findItem(R.id.app_bar_whatsapp_web);
+        starredMessagesItem=menu.findItem(R.id.app_bar_starred_messages);
+        settingsItem=menu.findItem(R.id.app_bar_settings);
+        statusPrivacyItem=menu.findItem(R.id.app_bar_status_privacy);
+        deleteCallLogItem=menu.findItem(R.id.app_bar_delete_call_log);
 
         // Instantiating SearchView
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
@@ -240,6 +283,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        this.menu=menu;
 
         return super.onCreateOptionsMenu(menu);
     }

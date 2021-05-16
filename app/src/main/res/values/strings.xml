@@ -7,7 +7,7 @@
     <string name="new_group">Nuovo gruppo</string>
     <string name="new_broadcast">Nuovo broadcast</string>
     <string name="whatsapp_web">Whatsapp Web</string>
-    <string name="important_messages">Messaggi importanti</string>
+    <string name="starred_messages">Messaggi importanti</string>
     <string name="settings">Impostazioni</string>
     <string name="foto">Foto</string>
     <string name="video">Video</string>
@@ -48,4 +48,6 @@
     <string name="incoming">In arrivo</string>
     <string name="lost">Persa</string>
     <string name="outgoing">In uscita</string>
+    <string name="status_privacy">Privacy dello stato</string>
+    <string name="delete_call_log">Cancella registro chiamate</string>
 </resources>

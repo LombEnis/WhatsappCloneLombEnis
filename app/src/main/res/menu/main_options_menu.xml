@@ -37,13 +37,27 @@
     <item
         android:id="@+id/app_bar_starred_messages"
         android:orderInCategory="4"
-        android:title="@string/important_messages"
+        android:title="@string/starred_messages"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/app_bar_settings"
-        android:orderInCategory="5"
+        android:orderInCategory="7"
         android:title="@string/settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/app_bar_status_privacy"
+        android:orderInCategory="6"
+        android:title="@string/status_privacy"
+        app:showAsAction="never"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/app_bar_delete_call_log"
+        android:orderInCategory="5"
+        android:title="@string/delete_call_log"
+        app:showAsAction="never"
+        android:visible="false" />
 
 </menu>
