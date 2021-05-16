@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
 import android.view.Menu;
@@ -174,9 +175,8 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
-
     }
+
 
     public void closeChatContextualToolbar() {
         actionBar.setVisibility(View.VISIBLE);
@@ -210,6 +210,21 @@ public class MainActivity extends AppCompatActivity {
             check.setVisibility(View.GONE);
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK) {
+            if(ChatRecViewAdapter.selected_views.size()!=0) {
+                closeChatContextualToolbar();
+                return true;
+            }
+            else if (CallsRecViewAdapter.selected_views.size()!=0) {
+                closeCallsContextualToolbar();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
