@@ -69,7 +69,7 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
            });
         }
         else if (viewType==1) {
-            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.newmessage_recview_item2,parent,false);
+            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.new_contact_layout,parent,false);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +89,7 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
             });
         }
         else {
-            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.newmessage_recview_item,parent,false);
+            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.all_contacts_recview_item,parent,false);
             views.add(view);
             view.setOnLongClickListener(contextualToolbarListener);
         }

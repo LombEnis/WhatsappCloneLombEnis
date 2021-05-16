@@ -26,7 +26,7 @@ public class NewGroupRecViewAdapter extends RecyclerView.Adapter<NewGroupRecView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.newmessage_recview_item, parent, false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.all_contacts_recview_item, parent, false);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }

@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,16 @@ public class NewCallRecViewAdapter extends RecyclerView.Adapter<NewCallRecViewAd
         View view;
         if (viewType==0) {
             view=LayoutInflater.from(context).inflate(R.layout.new_call_recview_item1, parent, false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent newGroupCallIntent= new Intent(context, NewGroupCallActivity.class);
+                    context.startActivity(newGroupCallIntent);
+                }
+            });
         }
         else if (viewType==1) {
-            view= LayoutInflater.from(context).inflate(R.layout.new_call_recview_item2, parent, false);
+            view= LayoutInflater.from(context).inflate(R.layout.new_contact_layout, parent, false);
         }
         else {
             view= LayoutInflater.from(context).inflate(R.layout.new_call_recview_item, parent, false);
