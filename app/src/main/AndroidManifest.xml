@@ -14,7 +14,7 @@
         android:theme="@style/Theme.WhatsappCloneLombEnis">
         <activity android:name=".NewGroupCallActivity"></activity>
         <activity android:name=".CallInfoActivity" />
-        <activity android:name=".CallContactsActivity" />
+        <activity android:name=".NewCallActivity" />
         <activity android:name=".QRCodeActivity" />
         <activity android:name=".NewGroupActivity" />
         <activity android:name=".NewMessageActivity" />

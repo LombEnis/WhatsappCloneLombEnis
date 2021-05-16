@@ -8,7 +8,7 @@
     android:padding="12dp">
 
     <ImageView
-        android:id="@+id/newmessageContactProfilePic"
+        android:id="@+id/allContactsProfilePic"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -25,13 +25,13 @@
         android:layout_marginTop="21dp"
         android:background="@drawable/circular_check_background"
         android:padding="4dp"
-        app:layout_constraintStart_toStartOf="@+id/newmessageContactProfilePic"
-        app:layout_constraintTop_toTopOf="@+id/newmessageContactProfilePic"
+        app:layout_constraintStart_toStartOf="@+id/allContactsProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/allContactsProfilePic"
         app:srcCompat="@drawable/ic_check"
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/newmessageContactName"
+        android:id="@+id/allContactsName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,17 +39,17 @@
         android:layout_marginTop="2dp"
         android:text="Name"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/newmessageContactProfilePic"
+        app:layout_constraintStart_toEndOf="@+id/allContactsProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/newmessageContactInfo"
+        android:id="@+id/allContactsInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:text="Message"
-        app:layout_constraintStart_toEndOf="@+id/newmessageContactProfilePic"
-        app:layout_constraintTop_toBottomOf="@+id/newmessageContactName" />
+        app:layout_constraintStart_toEndOf="@+id/allContactsProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/allContactsName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

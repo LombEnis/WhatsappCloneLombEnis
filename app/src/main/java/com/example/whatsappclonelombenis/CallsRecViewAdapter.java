@@ -49,7 +49,6 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public CallsRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.calls_recview_item, parent, false);
         views.add(view);
-        //System.out.println("1"+views);
         view.setOnLongClickListener(contextualToolbarListener);
         view.setOnClickListener(openCallInfo);
         ViewHolder holder= new ViewHolder(view);

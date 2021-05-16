@@ -79,7 +79,7 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
                 }
             });
 
-            ImageButton newContactImageButton= view.findViewById(R.id.newMessageNewContactImageButton);
+            ImageButton newContactImageButton= view.findViewById(R.id.newContactImageButton);
             newContactImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,9 +125,9 @@ public class NewMessageRecViewAdapter extends RecyclerView.Adapter<NewMessageRec
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.newmessageContactName);
-            message=itemView.findViewById(R.id.newmessageContactInfo);
-            profilePic=itemView.findViewById(R.id.newmessageContactProfilePic);
+            name=itemView.findViewById(R.id.allContactsName);
+            message=itemView.findViewById(R.id.allContactsInfo);
+            profilePic=itemView.findViewById(R.id.allContactsProfilePic);
         }
     }
 

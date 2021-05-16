@@ -2,9 +2,14 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,9 +49,35 @@ public class NewCallRecViewAdapter extends RecyclerView.Adapter<NewCallRecViewAd
                     context.startActivity(newGroupCallIntent);
                 }
             });
+
+            ImageButton newGroupCallImageButton= view.findViewById(R.id.newGroupCallImageButton);
+            newGroupCallImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    view.performClick();
+                    performRipple(view);
+                }
+            });
         }
         else if (viewType==1) {
             view= LayoutInflater.from(context).inflate(R.layout.new_contact_layout, parent, false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent newContactIntent = new Intent(Intent.ACTION_INSERT);
+                    newContactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                    context.startActivity(newContactIntent);
+                }
+            });
+
+            ImageButton newContactImageButton= view.findViewById(R.id.newContactImageButton);
+            newContactImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    view.performClick();
+                    performRipple(view);
+                }
+            });
         }
         else {
             view= LayoutInflater.from(context).inflate(R.layout.new_call_recview_item, parent, false);
@@ -86,6 +117,23 @@ public class NewCallRecViewAdapter extends RecyclerView.Adapter<NewCallRecViewAd
             profilePic= itemView.findViewById(R.id.callNewContactProfileImg);
             contactName= itemView.findViewById(R.id.callNewContactName);
             contactInfo= itemView.findViewById(R.id.callNewContactInfo);
+        }
+    }
+
+    public void performRipple(View view) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            RippleDrawable rippleDrawable = (RippleDrawable) view.getBackground();
+
+            rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
+
+            Handler exitRippleHandler = new Handler();
+            exitRippleHandler.postDelayed(new Runnable()
+            {
+                @Override public void run()
+                {
+                    rippleDrawable.setState(new int[]{});
+                }
+            }, 200);
         }
     }
 }

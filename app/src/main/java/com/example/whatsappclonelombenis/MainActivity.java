@@ -254,9 +254,11 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // When search view expanded
-                filters.setVisibility(View.VISIBLE);
-                tabLayout.setVisibility(View.GONE);
+                if (tabLayout.getSelectedTabPosition()==1) {
+                    // When search view expanded
+                    filters.setVisibility(View.VISIBLE);
+                    tabLayout.setVisibility(View.GONE);
+                }
             }
         });
 

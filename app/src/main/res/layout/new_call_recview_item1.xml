@@ -5,10 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:background="@drawable/grey_ripple_rectangle_transparent">
 
     <ImageButton
-        android:id="@+id/newCallNewGroupCallImageButton"
+        android:id="@+id/newGroupCallImageButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -26,8 +27,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/new_group_call"
-        app:layout_constraintBottom_toBottomOf="@+id/newCallNewGroupCallImageButton"
-        app:layout_constraintStart_toEndOf="@+id/newCallNewGroupCallImageButton"
-        app:layout_constraintTop_toTopOf="@+id/newCallNewGroupCallImageButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/newGroupCallImageButton"
+        app:layout_constraintStart_toEndOf="@+id/newGroupCallImageButton"
+        app:layout_constraintTop_toTopOf="@+id/newGroupCallImageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,25 +14,25 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class NewGroupRecViewAdapter extends RecyclerView.Adapter<NewGroupRecViewAdapter.ViewHolder> {
+public class NewGroupCallRecViewAdapter extends RecyclerView.Adapter<NewGroupCallRecViewAdapter.ViewHolder> {
     Context context;
 
     ArrayList<Contact> contacts;
 
-    public NewGroupRecViewAdapter(Context context) {
-        this.context=context;
+    public NewGroupCallRecViewAdapter(Context context) {
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewGroupCallRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.all_contacts_recview_item, parent, false);
-        ViewHolder holder= new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NewGroupCallRecViewAdapter.ViewHolder holder, int position) {
         holder.info.setText(contacts.get(position).getMessage());
         holder.name.setText(contacts.get(position).getName());
         Glide.with(context)
@@ -41,14 +41,13 @@ public class NewGroupRecViewAdapter extends RecyclerView.Adapter<NewGroupRecView
                 .into(holder.profilePic);
     }
 
+    public void setData(ArrayList<Contact> contacts) {
+        this.contacts=contacts;
+    }
+
     @Override
     public int getItemCount() {
         return contacts.size();
-    }
-
-    public void setData(ArrayList<Contact> contacts) {
-        this.contacts=contacts;
-        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,9 +55,9 @@ public class NewGroupRecViewAdapter extends RecyclerView.Adapter<NewGroupRecView
         ImageView profilePic;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.allContactsName);
-            info =itemView.findViewById(R.id.allContactsInfo);
-            profilePic=itemView.findViewById(R.id.allContactsProfilePic);
+            name= itemView.findViewById(R.id.allContactsName);
+            info= itemView.findViewById(R.id.allContactsInfo);
+            profilePic= itemView.findViewById(R.id.allContactsProfilePic);
         }
     }
 }

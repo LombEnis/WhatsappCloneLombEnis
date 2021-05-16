@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class CallContactsActivity extends AppCompatActivity {
+public class NewCallActivity extends AppCompatActivity {
     //Toolbar
     Toolbar callContactsToolbar;
 
@@ -82,5 +83,10 @@ public class CallContactsActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    public void onQRButtonClick(View view) {
+        Intent showQRCodeIntent= new Intent(this, QRCodeActivity.class);
+        startActivity(showQRCodeIntent);
     }
 }
