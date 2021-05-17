@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class StoriesActivity extends AppCompatActivity {
 
     // Contacts
     private ArrayList<Contact> contacts;
+    private int contactsType;
     private int currentContactPos;
     private Contact currentContact;
 
@@ -76,6 +78,9 @@ public class StoriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stories);
 
+        // Get intent
+        Intent intent = getIntent();
+
         // Instantiate variables
         rootRelativeLayout = findViewById(R.id.root_layout);
         progressLinearLayout = findViewById(R.id.progress_linearlayout);
@@ -87,7 +92,16 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
 
-        contacts = StatusRecViewAdapter.contacts;
+        // Set contacts and contactsType
+        contactsType = intent.getIntExtra("contactsType", -1);
+
+        if (contactsType == 1) {
+            contacts = StatusRecViewAdapter.recentContacts;
+        } else if (contactsType == 2) {
+            contacts = StatusRecViewAdapter.seenContacts;
+        } else {
+            contacts = StatusRecViewAdapter.disabledContacts;
+        }
 
         // Set ActionBar
         setSupportActionBar(actionBar);
@@ -145,20 +159,11 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this, leftButton));
 
         // Set current contact
-        currentContactPos = getIntent().getIntExtra("position", -1);
+        currentContactPos = intent.getIntExtra("position", -1);
         currentContact = contacts.get(currentContactPos);
 
         // Set current story
         currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-        currentContact.increaseCurrentStoriesPos();
-        currentContact.increaseLastStoriesPos();
-
-        if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
-            currentContact.setLastStoriesPos(-1);
-            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-            currentContact.increaseCurrentStoriesPos();
-            currentContact.increaseLastStoriesPos();
-        }
 
         currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
 
@@ -203,11 +208,55 @@ public class StoriesActivity extends AppCompatActivity {
          progressBarAnimator.cancel();
          currentProgressBar.setProgress(100);
          progressLinearLayout.removeAllViews();
+
+         // Increase last story pos and set last story as seen
+         currentContact.increaseLastStoriesPos();
+         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
          currentContact.setCurrentStoriesPos(0);
+
+         ArrayList<Contact> updatedContacts = new ArrayList<>();
+
+         if (contactsType == 1) {
+             for (Contact contact:contacts) {
+                 updatedContacts.add(contact);
+             }
+             for (Contact contact:StatusRecViewAdapter.seenContacts) {
+                 updatedContacts.add(contact);
+             }
+             for (Contact contact:StatusRecViewAdapter.disabledContacts) {
+                 updatedContacts.add(contact);
+             }
+         } else if (contactsType == 2) {
+             for (Contact contact:StatusRecViewAdapter.recentContacts) {
+                 updatedContacts.add(contact);
+             }
+             for (Contact contact:contacts) {
+                 updatedContacts.add(contact);
+             }
+             for (Contact contact:StatusRecViewAdapter.disabledContacts) {
+                 updatedContacts.add(contact);
+             }
+         } else {
+             for (Contact contact:StatusRecViewAdapter.recentContacts) {
+                 updatedContacts.add(contact);
+             }
+             for (Contact contact:StatusRecViewAdapter.seenContacts) {
+                 updatedContacts.add(contact);
+             }
+             for (Contact contact:contacts) {
+                 updatedContacts.add(contact);
+             }
+         }
+
+         TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
+
          super.onBackPressed();
      }
 
      public void nextStory() {
+         // Set previous story as seen
+         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
+
          // Check last story
          if (currentContact.getCurrentStoriesPos() == (currentContact.getStatusStories().size() - 1)) {
              // This is the last story
@@ -217,13 +266,17 @@ public class StoriesActivity extends AppCompatActivity {
                  return;
              } else {
                  // This is not the last contact
+                 currentContact.increaseCurrentStoriesPos();
+                 if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
+                     currentContact.increaseLastStoriesPos();
+                 }
                  increaseContact();
              }
          } else {
              // This is not the last story
              currentContact.increaseCurrentStoriesPos();
              if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
-                 currentContact.setLastStoriesPos(currentContact.getCurrentStoriesPos());
+                 currentContact.increaseLastStoriesPos();
              }
          }
 
@@ -271,15 +324,6 @@ public class StoriesActivity extends AppCompatActivity {
         currentContact = contacts.get(currentContactPos);
 
         currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-        currentContact.increaseCurrentStoriesPos();
-        currentContact.increaseLastStoriesPos();
-
-        if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
-            currentContact.setLastStoriesPos(-1);
-            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-            currentContact.increaseCurrentStoriesPos();
-            currentContact.increaseLastStoriesPos();
-        }
 
         changeContactLayout();
     }
@@ -291,15 +335,6 @@ public class StoriesActivity extends AppCompatActivity {
         currentContact = contacts.get(currentContactPos);
 
         currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-        currentContact.increaseCurrentStoriesPos();
-        currentContact.increaseLastStoriesPos();
-
-        if (currentContact.getCurrentStoriesPos() == currentContact.getStatusStories().size()) {
-            currentContact.setLastStoriesPos(-1);
-            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-            currentContact.increaseCurrentStoriesPos();
-            currentContact.increaseLastStoriesPos();
-        }
 
         changeContactLayout();
     }
@@ -508,7 +543,7 @@ public class StoriesActivity extends AppCompatActivity {
 
                  // Set progress bar 100% and stop animator of the previous story
                  progressBarAnimator.cancel();
-                 currentProgressBar.setProgress(100);
+                 currentProgressBar.setProgress(0);
                  // Set current story
                  currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
                  // Start current story

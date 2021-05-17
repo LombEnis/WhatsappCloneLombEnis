@@ -20,7 +20,7 @@
         <!--This line changes the color of icons in toolbar (back, overflow menu icons)-->
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
-        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColorHint">@color/light_grey</item>
     </style>
 
     <!-- Tabs theme -->

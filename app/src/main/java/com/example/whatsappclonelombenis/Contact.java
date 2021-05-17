@@ -12,6 +12,8 @@ public class Contact {
     private ArrayList<Story> statusStories;
     private int currentStoriesPos;
     private int lastStoriesPos;
+    private boolean allStoriesSeen;
+    private boolean statusDisabled;
 
     // Main constructor
     public Contact(String name, String telNumber, String profilePicture, String infoText, ArrayList<Story> statusStories) {
@@ -20,8 +22,10 @@ public class Contact {
         this.profilePicture = profilePicture;
         this.infoText = infoText;
         this.statusStories = statusStories;
-        this.currentStoriesPos = -1;
-        this.lastStoriesPos = -1;
+        this.currentStoriesPos = 0;
+        this.lastStoriesPos = 0;
+        allStoriesSeen = false;
+        statusDisabled = false;
     }
 
     // Getter and Setter
@@ -89,5 +93,25 @@ public class Contact {
 
     public void increaseLastStoriesPos() {
         lastStoriesPos++;
+        if (lastStoriesPos == statusStories.size()) {
+            allStoriesSeen = true;
+            lastStoriesPos = 0;
+        }
+    }
+
+    public boolean isAllStoriesSeen() {
+        return allStoriesSeen;
+    }
+
+    public void setAllStoriesSeen(boolean allStoriesSeen) {
+        this.allStoriesSeen = allStoriesSeen;
+    }
+
+    public boolean isStatusDisabled() {
+        return statusDisabled;
+    }
+
+    public void setStatusDisabled(boolean statusDisabled) {
+        this.statusDisabled = statusDisabled;
     }
 }

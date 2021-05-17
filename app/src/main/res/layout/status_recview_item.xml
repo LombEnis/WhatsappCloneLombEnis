@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/grey_ripple_rectangle_transparent"
-    android:paddingLeft="15dp">
+    android:paddingLeft="10dp">
 
     <ImageButton
         android:id="@+id/profile_image_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@android:color/transparent"
@@ -19,6 +20,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <com.devlomi.circularstatusview.CircularStatusView
+        android:id="@+id/profile_image_circular_status_view"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:portion_color="@color/grey"
+        app:portion_spacing="4dp"
+        app:portion_width="2dp" />
 
     <TextView
         android:id="@+id/name_text_view"

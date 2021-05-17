@@ -15,6 +15,8 @@ public class Story {
     private Bitmap storyPreviewBitmap;
     private StoriesActivity.StoryProgressBar progressBar = null;
 
+    private boolean seen;
+
     // Main constructor
     public Story(Date date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
         this.date = date;
@@ -23,6 +25,7 @@ public class Story {
         this.mainTextString = mainTextString;
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
+        this.seen = false;
     }
 
     // Getter and setter
@@ -80,5 +83,13 @@ public class Story {
 
     public void setProgressBar(StoriesActivity.StoryProgressBar progressBar) {
         this.progressBar = progressBar;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
+
+    public boolean isSeen() {
+        return this.seen;
     }
 }
