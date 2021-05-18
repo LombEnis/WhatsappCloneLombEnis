@@ -3,6 +3,9 @@ package com.example.whatsappclonelombenis;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.os.Handler;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +54,15 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         views.add(view);
         view.setOnLongClickListener(contextualToolbarListener);
         view.setOnClickListener(openCallInfo);
+
+        ImageView callImage= view.findViewById(R.id.callImageView);
+        callImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performRipple(callImage);
+            }
+        });
+
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -232,4 +244,22 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             context.startActivity(showCallInfo);
         }
     }
+
+    public void performRipple(View view) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            RippleDrawable rippleDrawable = (RippleDrawable) view.getBackground();
+
+            rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
+
+            Handler exitRippleHandler = new Handler();
+            exitRippleHandler.postDelayed(new Runnable()
+            {
+                @Override public void run()
+                {
+                    rippleDrawable.setState(new int[]{});
+                }
+            }, 200);
+        }
+    }
+
 }
