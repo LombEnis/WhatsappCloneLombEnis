@@ -17,6 +17,8 @@
     <string name="documenti">Documenti</string>
     <string name="cerca">Cerca...</string>
     <string name="aggiornamenti_recenti">Aggiornamenti recenti</string>
+    <string name="aggiornamenti_visti">Aggiornamenti visti</string>
+    <string name="aggiornamenti_disattivati">Aggiornamenti disattivati</string>
     <string name="tocca_per_aggiornare_lo_stato">tocca per aggiornare lo stato</string>
     <string name="il_mio_stato">Il mio stato</string>
     <string name="scrivi_il_tuo_stato">Scrivi il tuo stato</string>

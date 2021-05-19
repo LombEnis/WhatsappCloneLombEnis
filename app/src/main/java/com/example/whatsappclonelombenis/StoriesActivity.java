@@ -92,7 +92,7 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
 
-        // Set contacts and contactsType
+        // Get contactsType and contacts list
         contactsType = intent.getIntExtra("contactsType", -1);
 
         if (contactsType == 1) {
@@ -214,38 +214,21 @@ public class StoriesActivity extends AppCompatActivity {
          currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
          currentContact.setCurrentStoriesPos(0);
 
+         // Update contacts of recycler view
          ArrayList<Contact> updatedContacts = new ArrayList<>();
 
          if (contactsType == 1) {
-             for (Contact contact:contacts) {
-                 updatedContacts.add(contact);
-             }
-             for (Contact contact:StatusRecViewAdapter.seenContacts) {
-                 updatedContacts.add(contact);
-             }
-             for (Contact contact:StatusRecViewAdapter.disabledContacts) {
-                 updatedContacts.add(contact);
-             }
+             updatedContacts.addAll(contacts);
+             updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
+             updatedContacts.addAll(StatusRecViewAdapter.disabledContacts);
          } else if (contactsType == 2) {
-             for (Contact contact:StatusRecViewAdapter.recentContacts) {
-                 updatedContacts.add(contact);
-             }
-             for (Contact contact:contacts) {
-                 updatedContacts.add(contact);
-             }
-             for (Contact contact:StatusRecViewAdapter.disabledContacts) {
-                 updatedContacts.add(contact);
-             }
+             updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
+             updatedContacts.addAll(contacts);
+             updatedContacts.addAll(StatusRecViewAdapter.disabledContacts);
          } else {
-             for (Contact contact:StatusRecViewAdapter.recentContacts) {
-                 updatedContacts.add(contact);
-             }
-             for (Contact contact:StatusRecViewAdapter.seenContacts) {
-                 updatedContacts.add(contact);
-             }
-             for (Contact contact:contacts) {
-                 updatedContacts.add(contact);
-             }
+             updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
+             updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
+             updatedContacts.addAll(contacts);
          }
 
          TabStatusFragment.recViewAdapter.setContacts(updatedContacts);

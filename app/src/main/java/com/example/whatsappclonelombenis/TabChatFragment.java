@@ -93,12 +93,15 @@ public class TabChatFragment extends Fragment {
                                 thirdContactStatusStories.add(thirdContactsecondStory);
 
                                 // Create contacts
-                                contacts.add(new Contact("Leonardo DiCaprio1", "3666875674", sampleImageUrlString,
-                                        "Questo è il mio stato", firstContactStatusStories));
-                                contacts.add(new Contact("Leonardo DiCaprio2", "3666875674", sampleImageUrlString,
-                                        "Questo è il mio stato", secondContactStatusStories));
-                                contacts.add(new Contact("Leonardo DiCaprio3", "3666875674", sampleImageUrlString,
-                                        "Questo è il mio stato", thirdContactStatusStories));
+                                Contact contact1 = new Contact("Leonardo DiCaprio1", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", firstContactStatusStories);
+                                contacts.add(contact1);
+                                Contact contact2 = new Contact("Leonardo DiCaprio2", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", secondContactStatusStories);
+                                contacts.add(contact2);
+                                Contact contact3 = new Contact("Leonardo DiCaprio3", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", thirdContactStatusStories);
+                                contacts.add(contact3);
 
 
                                 TabStatusFragment.recViewAdapter.setContacts(contacts);

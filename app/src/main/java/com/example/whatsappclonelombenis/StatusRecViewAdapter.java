@@ -2,8 +2,6 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Handler;
@@ -14,14 +12,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.devlomi.circularstatusview.CircularStatusView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdapter.ViewHolder> {
     private String myProfilePicture;
@@ -39,11 +40,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     public int getItemViewType(int position) {
         // Return different viewType depending on position
         if (position == 0) return 1;
-        else if (position == 1
-                || position == (recentContacts.size() + 2)
-                || position == (recentContacts.size() + seenContacts.size() + 3))
-            return 2;
-        else return 3;
+        else return 2;
     }
 
     @NonNull
@@ -53,10 +50,8 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         View view;
         if (viewType == 1) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_first_item, parent, false);
-        } else if (viewType == 2) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_divider, parent, false);
         } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_sub_recview, parent, false);
         }
 
         ViewHolder holder = new ViewHolder(view);
@@ -72,7 +67,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     .circleCrop()
                     .into(holder.myProfileImageButton);
 
-            holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            holder.myConstraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     System.out.println(true);
@@ -82,137 +77,53 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             holder.myProfileImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.constraintLayout.performClick();
-                    performRipple(holder.constraintLayout);
+                    holder.myConstraintLayout.performClick();
+                    performRipple(holder.myConstraintLayout);
                 }
             });
-        } else if (recentContacts.size() > 0 && position < (recentContacts.size() + 2)) {
-            // Recent contacts
-            if (position == 1) {
-                holder.statusDividerTextView.setText(R.string.aggiornamenti_recenti);
-            } else {
-                Glide.with(context)
-                        .load(recentContacts.get(position - 2)
-                                .getStatusStories()
-                                .get(recentContacts.get(position - 2).getLastStoriesPos())
-                                .getStoryPreviewBitmap())
-                        .circleCrop()
-                        .into(holder.profileImageButton);
-
-                holder.nameTextView.setText(recentContacts.get(position - 2).getName());
-
-                // Set stories count for circular status view
-                holder.circularStatusView.setPortionsCount(recentContacts.get(position - 2).getStatusStories().size());
-                // Set different colors for seen stories in circular status view
-                ArrayList<Story> currentStatusStories = recentContacts.get(position - 2).getStatusStories();
-                for (int i = 0; i < currentStatusStories.size(); i++) {
-                    if (currentStatusStories.get(i).isSeen()) {
-                        holder.circularStatusView.setPortionColorForIndex(i, context.getResources().getColor(R.color.teal_500));
-                    }
-                }
-
-                holder.constraintLayout.setOnClickListener(new ItemClick(position, 1));
-
-                holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.constraintLayout.performClick();
-                        performRipple(holder.constraintLayout);
-                    }
-                });
-            }
-
-        } else if (seenContacts.size() > 0 && position < (recentContacts.size() + seenContacts.size() + 4)) {
-            // Seen contacts
-            if (position == (recentContacts.size() + 2)) {
-                holder.statusDividerTextView.setText("Ciao");
-            } else {
-                Glide.with(context)
-                        .load(seenContacts.get(position - recentContacts.size() - 3)
-                                .getStatusStories()
-                                .get(seenContacts.get(position - recentContacts.size() - 3).getLastStoriesPos())
-                                .getStoryPreviewBitmap())
-                        .circleCrop()
-                        .into(holder.profileImageButton);
-
-                holder.nameTextView.setText(seenContacts.get(position - recentContacts.size() - 3).getName());
-
-                // Set stories count for circular status view
-                holder.circularStatusView.setPortionsCount(seenContacts.get(position - recentContacts.size() - 3).getStatusStories().size());
-                // Set different colors for seen stories in cricular status view
-                ArrayList<Story> currentStatusStories = seenContacts.get(position - recentContacts.size() - 3).getStatusStories();
-                for (int i = 0; i < currentStatusStories.size(); i++) {
-                    if (currentStatusStories.get(i).isSeen()) {
-                        holder.circularStatusView.setPortionColorForIndex(i, context.getResources().getColor(R.color.teal_500));
-                    }
-                }
-
-                holder.constraintLayout.setOnClickListener(new ItemClick(position, 2));
-
-                holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.constraintLayout.performClick();
-                        performRipple(holder.constraintLayout);
-                    }
-                });
-            }
-        } else if (disabledContacts.size() > 0) {
-            // Disabled contacts
-            if (position == (recentContacts.size() + seenContacts.size() + 3)) {
-
-            } else {
-                Glide.with(context)
-                        .load(disabledContacts.get(position - 1)
-                                .getStatusStories()
-                                .get(disabledContacts.get(position - 1).getLastStoriesPos())
-                                .getStoryPreviewBitmap())
-                        .circleCrop()
-                        .into(holder.profileImageButton);
-
-                holder.nameTextView.setText(disabledContacts.get(position - 1).getName());
-
-                // Set stories count for circular status view
-                holder.circularStatusView.setPortionsCount(disabledContacts.get(position - 1).getStatusStories().size());
-                // Set different colors for seen stories in cricular status view
-                ArrayList<Story> currentStatusStories = disabledContacts.get(position - 1).getStatusStories();
-                for (int i = 0; i < currentStatusStories.size(); i++) {
-                    if (currentStatusStories.get(i).isSeen()) {
-                        holder.circularStatusView.setPortionColorForIndex(i, context.getResources().getColor(R.color.teal_500));
-                    }
-                }
-
-                holder.constraintLayout.setOnClickListener(new ItemClick(position, 3));
-
-                holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.constraintLayout.performClick();
-                        performRipple(holder.constraintLayout);
-                    }
-                });
-            }
+            return;
         }
+
+        // Instantiate recycler view
+        RecyclerView contactsRecView = holder.subRecView;
+        // Instantiate recycler view adapter
+        ContactsRecViewAdapter contactsRecViewAdapter;
+
+        if (position != 2 && position != 3 && recentContacts != null && recentContacts.size() > 0) {
+            // Recent contacts
+            contactsRecViewAdapter = new ContactsRecViewAdapter(context, 1);
+            contactsRecViewAdapter.setContacts(recentContacts);
+        } else if (position != 3 && seenContacts != null && seenContacts.size() > 0) {
+            // Seen contacts
+            contactsRecViewAdapter = new ContactsRecViewAdapter(context, 2);
+            contactsRecViewAdapter.setContacts(seenContacts);
+        } else {
+            // Disabled contacts
+            contactsRecViewAdapter = new ContactsRecViewAdapter(context, 3);
+            contactsRecViewAdapter.setContacts(disabledContacts);
+        }
+
+        // Set LayoutManager for recyclerview
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        contactsRecView.setLayoutManager(layoutManager);
+
+        // Set divider for recyclerview
+        RecViewItemDivider itemDivider = new RecViewItemDivider(context, 1);
+        contactsRecView.addItemDecoration(itemDivider);
+
+        // Set adapter for recyclerview
+        contactsRecView.setAdapter(contactsRecViewAdapter);
     }
 
     @Override
     public int getItemCount() {
-        // Returning the number of contacts + my contact
-        int size = 0;
-        if (recentContacts != null && recentContacts.size() > 0) {
-            // Add recent contacts size + table title item
-            size += recentContacts.size() + 1;
-        }
-        if (seenContacts != null && seenContacts.size() > 0) {
-            // Add seen contacts size + table title item
-            size += seenContacts.size() + 1;
-        }
-        if (disabledContacts != null && disabledContacts.size() > 0) {
-            // Add disabled contacts size + table title item
-            size += disabledContacts.size() + 1;
-        }
+        int itemCount = 4;
 
-        return size + 1;
+        if (recentContacts == null || recentContacts.size() == 0) itemCount--;
+        if (seenContacts == null || seenContacts.size() == 0) itemCount--;
+        if (disabledContacts == null || disabledContacts.size() == 0) itemCount--;
+
+        return itemCount;
     }
 
     public void setMyProfilePicture(String myProfilePicture) {
@@ -223,7 +134,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     public void setContacts(ArrayList<Contact> contacts) {
         StatusRecViewAdapter.contacts = contacts;
 
-        // Initialize the arraylists of contacts
+        // Initialize the array lists of contacts
         recentContacts = new ArrayList<>();
         seenContacts = new ArrayList<>();
         disabledContacts = new ArrayList<>();
@@ -239,18 +150,10 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             }
         }
 
-        notifyDataSetChanged();
-    }
-
-    public void addContact(Contact contact) {
-        // Insert the new contact in the correct arraylist
-        if (contact.isStatusDisabled()) {
-            disabledContacts.add(contact);
-        } else if (contact.isAllStoriesSeen()) {
-            seenContacts.add(contact);
-        } else {
-            recentContacts.add(contact);
-        }
+        // Sort contact arraylist by date
+        Collections.sort(recentContacts, new ContactsDateComparator());
+        Collections.sort(seenContacts, new ContactsDateComparator());
+        Collections.sort(disabledContacts, new ContactsDateComparator());
 
         notifyDataSetChanged();
     }
@@ -273,31 +176,158 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         }
     }
 
-    // Click listeners
-    class ItemClick implements View.OnClickListener {
-        private int position;
-        private int contactsType;
-
-        public ItemClick(int position, int contactsType) {
-            this.position = position;
-            this.contactsType = contactsType;
-        }
-
+    // Comparator class to sort contacts by last story date
+    class ContactsDateComparator implements Comparator<Contact> {
         @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(context, StoriesActivity.class);
-            intent.putExtra("contactsType", contactsType);
-            intent.putExtra("position", position - 2);
-
-            context.startActivity(intent);
+        public int compare(Contact o1, Contact o2) {
+            return o1.getStatusStories().get(o1.getStatusStories().size() - 1).getDate()
+                    .compareTo(o2.getStatusStories().get(o2.getStatusStories().size() - 1).getDate());
         }
     }
 
     // ViewHolder class
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageButton myProfileImageButton;
+        private ConstraintLayout myConstraintLayout;
+        private ImageButton profileImageButton;
+        private CircularStatusView myCircularStatusView;
+        private TextView myNnameTextView;
 
-        private TextView statusDividerTextView;
+        private RecyclerView subRecView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            // Instantiate my contact variables
+            myConstraintLayout = itemView.findViewById(R.id.constraint_layout);
+            myProfileImageButton = itemView.findViewById(R.id.my_profile_image_button);
+            myCircularStatusView = itemView.findViewById(R.id.profile_image_circular_status_view);
+            myNnameTextView = itemView.findViewById(R.id.name_text_view);
+
+            // Sub recview
+            subRecView = itemView.findViewById(R.id.status_sub_recview);
+        }
+    }
+}
+
+// Adapter class for contacts recycler view
+class ContactsRecViewAdapter extends RecyclerView.Adapter<ContactsRecViewAdapter.ViewHolder> {
+    private Context context;
+    private int contactsType;
+    private ArrayList<Contact> contacts;
+
+    public ContactsRecViewAdapter(Context context, int contactsType) {
+        this.context = context;
+        this.contactsType = contactsType;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) return 1;
+        else return 2;
+    }
+
+    @NonNull
+    @Override
+    public ContactsRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == 1)
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_divider, parent, false);
+        else
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_item, parent, false);
+
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (position == 0) {
+            if (contactsType == 1) {
+                // Recent contacts
+                holder.dividerTextView.setText(R.string.aggiornamenti_recenti);
+            } else if (contactsType ==2) {
+                // Seen contacts
+                holder.dividerTextView.setText(R.string.aggiornamenti_visti);
+            } else {
+                // Disabled contacts
+                holder.dividerTextView.setText(R.string.aggiornamenti_disattivati);
+            }
+        } else {
+            // Set profile image
+            Glide.with(context)
+                    .load(contacts.get(position - 1)
+                            .getStatusStories()
+                            .get(contacts.get(position - 1).getLastStoriesPos())
+                            .getStoryPreviewBitmap())
+                    .circleCrop()
+                    .into(holder.profileImageButton);
+
+            // Set contact name
+            holder.nameTextView.setText(contacts.get(position - 1).getName());
+
+            // Set stories count for circular status view
+            holder.circularStatusView.setPortionsCount(contacts.get(position - 1).getStatusStories().size());
+            // Set different colors for seen stories in circular status view
+            ArrayList<Story> currentStatusStories = contacts.get(position - 1).getStatusStories();
+            for (int i = 0; i < currentStatusStories.size(); i++) {
+                if (currentStatusStories.get(i).isSeen()) {
+                    holder.circularStatusView.setPortionColorForIndex(i, context.getResources().getColor(R.color.teal_500));
+                }
+            }
+
+            // Set click listener
+            holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, StoriesActivity.class);
+                    intent.putExtra("contactsType", contactsType);
+                    intent.putExtra("position", position - 1);
+
+                    context.startActivity(intent);
+                }
+            });
+
+            // Set click listener on profile image click (background click and ripple)
+            holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Perform click
+                    holder.constraintLayout.performClick();
+
+                    // Perform ripple
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        RippleDrawable rippleDrawable = (RippleDrawable) holder.constraintLayout.getBackground();
+
+                        rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
+
+                        Handler exitRippleHandler = new Handler();
+                        exitRippleHandler.postDelayed(new Runnable()
+                        {
+                            @Override public void run()
+                            {
+                                rippleDrawable.setState(new int[]{});
+                            }
+                        }, 200);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return contacts.size() + 1;
+    }
+
+    public void setContacts(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
+        notifyDataSetChanged();
+    }
+
+    // ViewHolder class
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView dividerTextView;
 
         private ConstraintLayout constraintLayout;
         private ImageButton profileImageButton;
@@ -307,10 +337,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Instantiate ActionBar variables
-            myProfileImageButton = itemView.findViewById(R.id.my_profile_image_button);
-
-            statusDividerTextView = itemView.findViewById(R.id.status_divider_textview);
+            dividerTextView = itemView.findViewById(R.id.status_divider_textview);
 
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
             profileImageButton = itemView.findViewById(R.id.profile_image_button);

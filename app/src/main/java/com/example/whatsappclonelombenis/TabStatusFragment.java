@@ -53,10 +53,6 @@ public class TabStatusFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recView.setLayoutManager(layoutManager);
 
-        // Set item divider for recyclerview
-        RecViewItemDivider itemDivider = new RecViewItemDivider(getContext(), 1);
-        recView.addItemDecoration(itemDivider);
-
         // Set click listener on text floating button
         textFloatingButton = view.findViewById(R.id.text_floating_button);
 
