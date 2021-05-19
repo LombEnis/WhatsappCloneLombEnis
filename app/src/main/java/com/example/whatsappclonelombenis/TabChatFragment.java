@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -66,28 +67,28 @@ public class TabChatFragment extends Fragment {
 
                                 // Create stories
                                 ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();
-                                Story firstContactFirstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                Story firstContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
                                         "Storia 1", "Questo è un caption", sampleBitmap);
-                                Story firstContactSecondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                Story firstContactSecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
                                         "Storia 2", "Questo è un caption", sampleBitmap);
-                                Story firstContactThirdStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
+                                Story firstContactThirdStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
                                         "Storia 3", "Questo è un caption", sampleBitmap);
                                 firstContactStatusStories.add(firstContactFirstStory);
                                 firstContactStatusStories.add(firstContactSecondStory);
                                 firstContactStatusStories.add(firstContactThirdStory);
 
                                 ArrayList<Story> secondContactStatusStories = new ArrayList<Story>();
-                                Story secondContactfirstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                Story secondContactfirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
                                         "Storia 1", "Questo è un caption", sampleBitmap);
-                                Story secondContactsecondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                Story secondContactsecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
                                         "Storia 2", "Questo è un caption", sampleBitmap);
                                 secondContactStatusStories.add(secondContactfirstStory);
                                 secondContactStatusStories.add(secondContactsecondStory);
 
                                 ArrayList<Story> thirdContactStatusStories = new ArrayList<Story>();
-                                Story thirdContactfirstStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                Story thirdContactfirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
                                         "Storia 1", "Questo è un caption", sampleBitmap);
-                                Story thirdContactsecondStory = new Story(new Date(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                Story thirdContactsecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
                                         "Storia 2", "Questo è un caption", sampleBitmap);
                                 thirdContactStatusStories.add(thirdContactfirstStory);
                                 thirdContactStatusStories.add(thirdContactsecondStory);

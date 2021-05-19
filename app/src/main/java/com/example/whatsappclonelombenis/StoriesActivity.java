@@ -176,6 +176,7 @@ public class StoriesActivity extends AppCompatActivity {
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println(true);
                 nextStory();
             }
         });
@@ -183,6 +184,7 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println(true);
                 previousStory();
             }
         });

@@ -20,9 +20,9 @@ import com.bumptech.glide.Glide;
 import com.devlomi.circularstatusview.CircularStatusView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdapter.ViewHolder> {
     private String myProfilePicture;
@@ -254,22 +254,65 @@ class ContactsRecViewAdapter extends RecyclerView.Adapter<ContactsRecViewAdapter
                 holder.dividerTextView.setText(R.string.aggiornamenti_disattivati);
             }
         } else {
+            Contact currentContact = contacts.get(position - 1);
             // Set profile image
             Glide.with(context)
-                    .load(contacts.get(position - 1)
+                    .load(currentContact
                             .getStatusStories()
-                            .get(contacts.get(position - 1).getLastStoriesPos())
+                            .get(currentContact.getLastStoriesPos())
                             .getStoryPreviewBitmap())
                     .circleCrop()
                     .into(holder.profileImageButton);
 
-            // Set contact name
-            holder.nameTextView.setText(contacts.get(position - 1).getName());
+            // Set name textview
+            holder.nameTextView.setText(currentContact.getName());
+            // Set date textview
+            Calendar currentContactsDate = currentContact
+                    .getStatusStories()
+                    .get(currentContact.getStatusStories().size() - 1)
+                    .getDate();
+
+            int currentContactsDateDay = currentContactsDate.get(Calendar.DAY_OF_MONTH);
+            int currentContactsDateHour = currentContactsDate.get(Calendar.HOUR_OF_DAY);
+            int currentContactsDateMinute = currentContactsDate.get(Calendar.MINUTE);
+
+            Calendar currentDate = Calendar.getInstance();
+            int currentDateDay = currentDate.get(Calendar.DAY_OF_MONTH);
+            int currentDateHour = currentDate.get(Calendar.HOUR_OF_DAY);
+            int currentDateMinute = currentDate.get(Calendar.MINUTE);
+
+            String currentContactDateString;
+            if (currentContactsDateMinute == currentDateMinute) {
+                // Less than a minute ago
+                currentContactDateString = context.getString(R.string.ora);
+            } else {
+                if (currentContactsDateDay == currentDateDay &&
+                        currentDateHour == currentContactsDateHour) {
+                    // Less than an hour ago
+                    if ((currentDateMinute - currentContactsDateMinute) == 1) {
+                        // 1 minute ago (singular)
+                        currentContactDateString = 1 + context.getString(R.string.minuto_fa);
+                    } else {
+                        // More than 1 minute ago (plural)
+                        currentContactDateString = (currentDateMinute - currentContactsDateMinute)  + context.getString(R.string.minuti_fa);
+                    }
+                } else {
+                    if (currentContactsDateDay == currentDateDay) {
+                        // More than an hour ago, the day before
+                        currentContactDateString = context.getString(R.string.ieri) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
+                    } else {
+                        // More than an hour ago, this day
+                        currentContactDateString = context.getString(R.string.oggi) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
+                    }
+                }
+            }
+
+            holder.dateTextView.setText(currentContactDateString);
 
             // Set stories count for circular status view
-            holder.circularStatusView.setPortionsCount(contacts.get(position - 1).getStatusStories().size());
+            holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
             // Set different colors for seen stories in circular status view
-            ArrayList<Story> currentStatusStories = contacts.get(position - 1).getStatusStories();
+            ArrayList<Story> currentStatusStories = currentContact.getStatusStories();
             for (int i = 0; i < currentStatusStories.size(); i++) {
                 if (currentStatusStories.get(i).isSeen()) {
                     holder.circularStatusView.setPortionColorForIndex(i, context.getResources().getColor(R.color.teal_500));
@@ -333,6 +376,7 @@ class ContactsRecViewAdapter extends RecyclerView.Adapter<ContactsRecViewAdapter
         private ImageButton profileImageButton;
         private CircularStatusView circularStatusView;
         private TextView nameTextView;
+        private TextView dateTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -343,6 +387,7 @@ class ContactsRecViewAdapter extends RecyclerView.Adapter<ContactsRecViewAdapter
             profileImageButton = itemView.findViewById(R.id.profile_image_button);
             circularStatusView = itemView.findViewById(R.id.profile_image_circular_status_view);
             nameTextView = itemView.findViewById(R.id.name_text_view);
+            dateTextView = itemView.findViewById(R.id.date_text_view);
         }
     }
 }

@@ -42,6 +42,7 @@
         <TextView
             android:id="@+id/my_status_textview"
             android:layout_width="wrap_content"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="@string/il_mio_stato"
             android:textStyle="bold" />

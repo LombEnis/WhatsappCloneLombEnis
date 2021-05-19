@@ -1,12 +1,11 @@
 package com.example.whatsappclonelombenis;
 
 import android.graphics.Bitmap;
-import android.widget.ProgressBar;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class Story {
-    private Date date;
+    private Calendar date;
     private int backgroundColorResource;
     private String backgroundImageUrlString;
     private String mainTextString;
@@ -18,7 +17,7 @@ public class Story {
     private boolean seen;
 
     // Main constructor
-    public Story(Date date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
+    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
         this.date = date;
         this.backgroundColorResource = backgroundColorResource;
         this.backgroundImageUrlString = backgroundImageString;
@@ -29,11 +28,11 @@ public class Story {
     }
 
     // Getter and setter
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 

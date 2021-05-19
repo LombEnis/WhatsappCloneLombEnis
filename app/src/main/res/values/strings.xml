@@ -24,4 +24,9 @@
     <string name="scrivi_il_tuo_stato">Scrivi il tuo stato</string>
     <string name="stato_contatti">Stato (Contatti)</string>
     <string name="rispondi">Rispondi</string>
+    <string name="ora">Ora</string>
+    <string name="minuto_fa">minuto fa</string>
+    <string name="minuti_fa">minuti fa</string>
+    <string name="ieri">Ieri</string>
+    <string name="oggi">Oggi</string>
 </resources>
