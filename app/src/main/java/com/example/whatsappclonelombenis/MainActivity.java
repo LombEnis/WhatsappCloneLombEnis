@@ -84,10 +84,16 @@ public class MainActivity extends AppCompatActivity {
                 // When a tab is selected
                 viewPager.setCurrentItem(tab.getPosition());
 
+                // Close searchview
                 filters.setVisibility(View.GONE);
                 filterButtonItem.setVisible(false);
                 tabLayout.setVisibility(View.VISIBLE);
                 searchView.setIconified(true);
+
+                if (tab.getPosition() == 2) {
+                    // When status tab is selected update the recycler view (to update the date)
+                    TabStatusFragment.recViewAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override

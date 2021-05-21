@@ -92,10 +92,10 @@ public class Contact {
     }
 
     public void increaseLastStoriesPos() {
-        lastStoriesPos++;
-        if (lastStoriesPos == statusStories.size()) {
+        if (lastStoriesPos != (statusStories.size() - 1)) {
+            lastStoriesPos++;
+        } else {
             allStoriesSeen = true;
-            lastStoriesPos = 0;
         }
     }
 

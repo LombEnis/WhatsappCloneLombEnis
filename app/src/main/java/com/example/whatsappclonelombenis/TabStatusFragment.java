@@ -45,8 +45,6 @@ public class TabStatusFragment extends Fragment {
         // Set adapter for recyclerview
         recViewAdapter = new StatusRecViewAdapter(getContext());
 
-        recViewAdapter.setMyProfilePicture("https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale");
-
         recView.setAdapter(recViewAdapter);
 
         // Set LayoutManager for recyclerview

@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,11 +60,27 @@ public class TabChatFragment extends Fragment {
                         sampleStoryRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                             @Override
                             public void onGlobalLayout() {
+                                // Create sample story layout
                                 sampleStoryRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                                 sampleStoryRelativeLayout.setDrawingCacheEnabled(true);
                                 sampleStoryRelativeLayout.buildDrawingCache();
                                 Bitmap sampleBitmap = sampleStoryRelativeLayout.getDrawingCache();
+
+                                // Create my contact + stories
+                                ArrayList<Story> myContactStatusStories = new ArrayList<Story>();
+                                Story myContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
+                                        "Storia 1", "Questo è un caption", sampleBitmap);
+                                Story myContactSecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
+                                        "Storia 2", "Questo è un caption", sampleBitmap);
+                                Story myContactThirdStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
+                                        "Storia 3", "Questo è un caption", sampleBitmap);
+                                myContactStatusStories.add(myContactFirstStory);
+                                myContactStatusStories.add(myContactSecondStory);
+                                myContactStatusStories.add(myContactThirdStory);
+
+                                Contact myContact = new Contact("Matteo", "3666875674", sampleImageUrlString,
+                                        "Questo è il mio stato", myContactStatusStories);
 
                                 // Create stories
                                 ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();
@@ -104,7 +121,7 @@ public class TabChatFragment extends Fragment {
                                         "Questo è il mio stato", thirdContactStatusStories);
                                 contacts.add(contact3);
 
-
+                                TabStatusFragment.recViewAdapter.setMyContact(myContact);
                                 TabStatusFragment.recViewAdapter.setContacts(contacts);
                             }
                         });

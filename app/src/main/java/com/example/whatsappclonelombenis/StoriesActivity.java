@@ -2,18 +2,18 @@ package com.example.whatsappclonelombenis;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -24,9 +24,7 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,11 +37,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import static android.icu.text.Normalizer.NO;
 
 public class StoriesActivity extends AppCompatActivity {
     // Layout view
@@ -69,6 +63,8 @@ public class StoriesActivity extends AppCompatActivity {
     // Progress bar
     private ProgressBar currentProgressBar;
     private ObjectAnimator progressBarAnimator;
+
+    private long currentStoryTime;
 
 
     private int statusBarHeight;
@@ -176,7 +172,6 @@ public class StoriesActivity extends AppCompatActivity {
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(true);
                 nextStory();
             }
         });
@@ -184,10 +179,31 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(true);
                 previousStory();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.status_options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        // Stop story
+        currentStoryTime = stopStory();
+
+        return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
+    public void onPanelClosed(int featureId, @NonNull Menu menu) {
+        // Resume story
+        //resumeStory(currentStoryTime);
+
+        super.onPanelClosed(featureId, menu);
     }
 
     @Override
@@ -196,9 +212,45 @@ public class StoriesActivity extends AppCompatActivity {
             case android.R.id.home:
                 leaveActivity();
                 return true;
+            case R.id.disable:
+                // Create and show alert dialog that allow to disable contact status
+                AlertDialog.Builder disableAlertDialog = new AlertDialog.Builder(this);
+
+                disableAlertDialog.setTitle(getString(R.string.disable_status_dialog_title) + currentContact.getName());
+                disableAlertDialog.setMessage(getString(R.string.disable_status_message1) +
+                        currentContact.getName() +
+                        getString(R.string.disable_status_message_2));
+                disableAlertDialog.setPositiveButton(R.string.disattiva, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        currentContact.setStatusDisabled(true);
+                        resumeStory(currentStoryTime);
+                    }
+                });
+                disableAlertDialog.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        resumeStory(currentStoryTime);
+                    }
+                });
+
+                disableAlertDialog.show();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private long stopStory() {
+        // Cancel progress bar animator and return current progress time
+        long progressBarAnimatorStopTime = progressBarAnimator.getCurrentPlayTime();
+        progressBarAnimator.cancel();
+        return progressBarAnimatorStopTime;
+    }
+
+    private void resumeStory(long progressBarAnimatorStopTime) {
+        progressBarAnimator.setIntValues(currentProgressBar.getProgress(), 100);
+        progressBarAnimator.setDuration(2000 - progressBarAnimatorStopTime);
+        progressBarAnimator.start();
     }
 
      @Override
