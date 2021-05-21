@@ -27,13 +27,12 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     static ArrayList<View> selected_views = new ArrayList<>();
 
     static HashMap<View, Contact> selected_views_contacts= new HashMap<View, Contact>();
+    static HashMap<View, ViewHolder> selected_views_holders= new HashMap<View, ViewHolder>();
 
     static ContextualToolbarListener contextualToolbarListener;
     static RemoveSelectedListener removeSelectedListener;
     static SelectListener selectListener;
     static LongRemoveSelectedListener longRemoveSelectedListener;
-
-    //final Vibrator vibe= (Vibrator) ChatRecViewAdapter.this.getSystemService(Context.VIBRATOR_SERVICE);
 
     public ChatRecViewAdapter(Context context) {this.context=context;}
 
@@ -101,6 +100,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         public boolean onLongClick(View v) {
             selected_views.add(v);
             selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
+            selected_views_holders.put(v, holder);
+            System.out.println(selected_views_holders);
             System.out.println(selected_views_contacts);
 
             View check = v.findViewById(R.id.selectedCheck);
@@ -140,6 +141,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
             selected_views.remove(v);
             selected_views_contacts.remove(v);
+            selected_views_holders.remove(v);
+            System.out.println(selected_views_holders);
             System.out.println(selected_views_contacts); ////
 
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
@@ -179,6 +182,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
             selected_views.remove(v);
             selected_views_contacts.remove(v);
+            selected_views_holders.remove(v);
+            System.out.println(selected_views_holders);
             System.out.println(selected_views_contacts); ////
 
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
@@ -218,6 +223,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
                 selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
+                selected_views_holders.put(v, holder);
+                System.out.println(selected_views_holders);
                 System.out.println(selected_views_contacts); ////
             }
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));

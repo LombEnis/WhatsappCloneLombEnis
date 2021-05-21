@@ -180,9 +180,6 @@ public class MainActivity extends AppCompatActivity {
         chatContextualToolbar.setVisibility(View.GONE);
         tabLayout.setBackgroundResource(R.color.purple_500);
 
-        /*for (View view : ChatRecViewAdapter.selected_views) {
-            view.setOnLongClickListener(new ChatRecViewAdapter.ContextualToolbarListener());
-        }*/
         //I reinstantiate the adapter instead of passing the onLongClickListener because I can't get the view's holder
         ChatRecViewAdapter.views.clear();
         TabChat.chatRecView.setAdapter(null);
@@ -190,11 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
         ChatRecViewAdapter.selected_views.clear();
         ChatRecViewAdapter.selected_views_contacts.clear();
-
-        for(View view : ChatRecViewAdapter.views) {
-            View check= view.findViewById(R.id.selectedCheck);
-            check.setVisibility(View.GONE);
-        }
     }
 
     public void closeCallsContextualToolbar() {
@@ -323,6 +315,9 @@ public class MainActivity extends AppCompatActivity {
             TabChat.archivedView.setVisibility(View.VISIBLE);
             String archivedText= getResources().getString(R.string.archived)+" ("+TabChat.archivedViews.size()+")";
             TabChat.archivedView.setText(archivedText);
+
+            ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_holders.get(view).getAdapterPosition());
+
             closeChatContextualToolbar();
         }
     }
