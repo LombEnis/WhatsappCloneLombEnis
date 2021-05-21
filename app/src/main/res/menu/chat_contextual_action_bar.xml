@@ -24,6 +24,7 @@
         android:title="@string/archive_chat"
         app:showAsAction="always"
         android:icon="@drawable/ic_archive"
+        android:onClick="onArchiveButtonClick"
          />
 
     <item

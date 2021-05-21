@@ -9,6 +9,8 @@ public class Contact {
     private String infoText;
     private ArrayList<String> status;
     private String message;
+    private boolean isArchived;
+
 
     public Contact(String profilePicture, String name, int telNumber, String infoText, ArrayList<String> status) {
         this.profilePicture = profilePicture;
@@ -24,19 +26,39 @@ public class Contact {
         this.message=message;
     }
 
+    public Contact(String profilePicture, String name, String message, boolean isArchived) {
+        this.profilePicture=profilePicture;
+        this.name=name;
+        this.message=message;
+        this.isArchived=isArchived;
+    }
+
     public Contact(String profilePicture, String name) {
         this.profilePicture=profilePicture;
         this.name=name;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public Contact(String profilePicture, String name, ArrayList<String> status) {
         this.profilePicture = profilePicture;
         this.name = name;
         this.status = status;
+    }
+
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public String getProfilePicture() {

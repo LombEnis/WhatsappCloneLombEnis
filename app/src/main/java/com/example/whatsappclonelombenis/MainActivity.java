@@ -22,9 +22,6 @@ import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity {
     //TODO: adjust layout height
 
-    //Toolbar Menu
-    Menu menu;
-
     // TabLayout
     static TabLayout tabLayout;
     private ViewPager viewPager;
@@ -183,11 +180,16 @@ public class MainActivity extends AppCompatActivity {
         chatContextualToolbar.setVisibility(View.GONE);
         tabLayout.setBackgroundResource(R.color.purple_500);
 
-        for (View view : ChatRecViewAdapter.selected_views) {
+        /*for (View view : ChatRecViewAdapter.selected_views) {
             view.setOnLongClickListener(new ChatRecViewAdapter.ContextualToolbarListener());
-        }
+        }*/
+        //I reinstantiate the adapter instead of passing the onLongClickListener because I can't get the view's holder
+        ChatRecViewAdapter.views.clear();
+        TabChat.chatRecView.setAdapter(null);
+        TabChat.chatRecView.setAdapter(new ChatRecViewAdapter(this));
 
         ChatRecViewAdapter.selected_views.clear();
+        ChatRecViewAdapter.selected_views_contacts.clear();
 
         for(View view : ChatRecViewAdapter.views) {
             View check= view.findViewById(R.id.selectedCheck);
@@ -301,8 +303,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.menu=menu;
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -315,5 +315,15 @@ public class MainActivity extends AppCompatActivity {
 
         filterButtonItem.setVisible(true);
         filters.setVisibility(View.GONE);
+    }
+
+    public void onArchiveButtonClick(MenuItem item) {
+        for (View view : ChatRecViewAdapter.selected_views) {
+            TabChat.archivedViews.add(view);
+            TabChat.archivedView.setVisibility(View.VISIBLE);
+            String archivedText= getResources().getString(R.string.archived)+" ("+TabChat.archivedViews.size()+")";
+            TabChat.archivedView.setText(archivedText);
+            closeChatContextualToolbar();
+        }
     }
 }
