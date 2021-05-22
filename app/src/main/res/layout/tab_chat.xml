@@ -35,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/chatRecyclerView"
         android:gravity="center"
         android:visibility="gone"
-        android:id="@+id/archivedChats"/>
+        android:id="@+id/archivedChats"
+        android:background="@drawable/grey_ripple_rectangle_transparent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

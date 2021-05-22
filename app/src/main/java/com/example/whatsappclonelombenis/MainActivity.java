@@ -321,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onArchiveButtonClick(MenuItem item) {
+        int i=ChatRecViewAdapter.selected_views_contacts.size()-1;
         for (View view : ChatRecViewAdapter.selected_views) {
             TabChat.archivedViews.add(view);
             TabChat.archivedView.setVisibility(View.VISIBLE);
@@ -329,9 +330,12 @@ public class MainActivity extends AppCompatActivity {
 
             archived_contacts.add(ChatRecViewAdapter.selected_views_contacts.get(view));
 
-            ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_holders.get(view).getAdapterPosition());
-
-            closeChatContextualToolbar();
+            System.out.println(ChatRecViewAdapter.selected_views_contacts);
+            System.out.println(i);
+            ChatRecViewAdapter.contacts.remove(i);
+            //ChatRecViewAdapter.selected_views_holders.remove(view);
+            i-=1;
         }
+        closeChatContextualToolbar();
     }
 }

@@ -37,6 +37,10 @@ public class TabChat extends Fragment {
         ArrayList<Contact> contacts = new ArrayList<>();
         contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Ho l'impressione che", false));
         contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg","Leonardo","Ei Enis, sai dov'è Margot?", false));
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Ho l'impressione che", false));
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg","Leonardo","Ei Enis, sai dov'è Margot?", false));
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Ho l'impressione che", false));
+        contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg","Leonardo","Ei Enis, sai dov'è Margot?", false));
 
         chatRecViewAdapter= new ChatRecViewAdapter(this.getContext());
         chatRecViewAdapter.setData(contacts);
@@ -53,11 +57,11 @@ public class TabChat extends Fragment {
             }
         }
 
-        if (archivedViews.size()!=0) {
+        /*if (archivedViews.size()!=0) {
             archivedView.setVisibility(View.VISIBLE);
             String archivedText= getResources().getString(R.string.archived)+" ("+archivedViews.size()+")";
             archivedView.setText(archivedText);
-        }
+        }*/
 
         archivedView.setOnClickListener(new View.OnClickListener() {
             @Override
