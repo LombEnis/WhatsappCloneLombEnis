@@ -95,7 +95,7 @@ public class Contact {
         if (lastStoriesPos != (statusStories.size() - 1)) {
             lastStoriesPos++;
         } else {
-            allStoriesSeen = true;
+            setAllStoriesSeen(true);
         }
     }
 
@@ -105,6 +105,9 @@ public class Contact {
 
     public void setAllStoriesSeen(boolean allStoriesSeen) {
         this.allStoriesSeen = allStoriesSeen;
+        for (Story story:statusStories) {
+            story.getProgressBar().setProgress(0);
+        }
     }
 
     public boolean isStatusDisabled() {

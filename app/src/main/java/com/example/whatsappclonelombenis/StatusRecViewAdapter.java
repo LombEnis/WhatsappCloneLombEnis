@@ -46,6 +46,15 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     public StatusRecViewAdapter(Context context) {
         this.context = context;
+
+        registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                recentContactsCreated = false;
+                seenContactsCreated = false;
+                super.onChanged();
+            }
+        });
     }
 
     @Override
@@ -120,8 +129,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             holder.dividerTextView.setText(R.string.aggiornamenti_visti);
 
             // Seen contacts
-            RecyclerView seenContactsRecView = holder.subRecView;
-
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 2);
             contactsRecViewAdapter.setContacts(seenContacts);
 
@@ -305,6 +312,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
         public ContactsRecViewAdapter(Context context, int contactsType) {
             this.context = context;
+            this.contactsType = contactsType;
         }
 
         @NonNull
@@ -372,15 +380,19 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             holder.dateTextView.setText(currentContactDateString);
 
-            // Set stories count for circular status view
-            holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
-            // Set different colors for seen stories in circular status view
-            ArrayList<Story> currentStatusStories = currentContact.getStatusStories();
-            for (int i = 0; i < currentStatusStories.size(); i++) {
-                if (!currentStatusStories.get(i).isSeen()) {
-                    holder.circularStatusView.setPortionColorForIndex(i,
-                            MaterialColors.getColor(context, R.attr.colorPrimary, Color.BLACK));
+            if (contactsType != 3) {
+                // Set stories count for circular status view
+                holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
+                // Set different colors for seen stories in circular status view
+                ArrayList<Story> currentStatusStories = currentContact.getStatusStories();
+                for (int i = 0; i < currentStatusStories.size(); i++) {
+                    if (!currentStatusStories.get(i).isSeen()) {
+                        holder.circularStatusView.setPortionColorForIndex(i,
+                                MaterialColors.getColor(context, R.attr.colorPrimary, Color.BLACK));
+                    }
                 }
+            } else {
+                holder.circularStatusView.setVisibility(View.GONE);
             }
 
             // Set click listener

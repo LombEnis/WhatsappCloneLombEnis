@@ -76,32 +76,6 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams3 = (LinearLayout.LayoutParams) layout3.getLayoutParams();
         layoutParams3.weight = 8;
         layout3.setLayoutParams(layoutParams3);
-
-        // Set tab selected listener
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // When a tab is selected
-                viewPager.setCurrentItem(tab.getPosition());
-
-                // Close searchview
-                filters.setVisibility(View.GONE);
-                filterButtonItem.setVisible(false);
-                tabLayout.setVisibility(View.VISIBLE);
-                searchView.setIconified(true);
-
-                if (tab.getPosition() == 2) {
-                    // When status tab is selected update the recycler view (to update the date)
-                    TabStatusFragment.recViewAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
-        });
     }
 
     @Override
@@ -166,6 +140,32 @@ public class MainActivity extends AppCompatActivity {
                     tabLayout.setVisibility(View.VISIBLE);
                 }
             }
+        });
+
+        // Set tab selected listener
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // When a tab is selected
+                viewPager.setCurrentItem(tab.getPosition());
+
+                // Close searchview
+                filters.setVisibility(View.GONE);
+                filterButtonItem.setVisible(false);
+                tabLayout.setVisibility(View.VISIBLE);
+                searchView.setIconified(true);
+
+                if (tab.getPosition() == 2) {
+                    // When status tab is selected update the recycler view (to update the date)
+                    TabStatusFragment.recViewAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
 
         return super.onCreateOptionsMenu(menu);

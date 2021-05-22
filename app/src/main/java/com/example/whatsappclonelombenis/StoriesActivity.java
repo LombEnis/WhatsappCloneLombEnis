@@ -279,6 +279,13 @@ public class StoriesActivity extends AppCompatActivity {
              updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
              updatedContacts.addAll(contacts);
              updatedContacts.addAll(StatusRecViewAdapter.disabledContacts);
+
+             // Set progress bar value to 0
+             for (Contact contact:contacts) {
+                 for (Story story:contact.getStatusStories()) {
+                     story.getProgressBar().setProgress(0);
+                 }
+             }
          } else {
              updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
              updatedContacts.addAll(StatusRecViewAdapter.seenContacts);

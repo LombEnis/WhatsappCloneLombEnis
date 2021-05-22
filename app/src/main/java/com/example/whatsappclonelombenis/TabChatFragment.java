@@ -31,7 +31,7 @@ public class TabChatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sample_story_layout, container, false);
 
-        sampleImageUrlString = "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale";
+        /*sampleImageUrlString = "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale";
 
         // Set background color
         sampleStoryRelativeLayout = view.findViewById(R.id.sample_root_layout);
@@ -45,15 +45,15 @@ public class TabChatFragment extends Fragment {
         Thread createContactsThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                /*URL url;
+                *//*URL url;
                 try {
                     url = new URL(sampleImageUrlString);
                     Bitmap sampleImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-*/
+*//*
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*sampleBackgroundImageView.setImageBitmap(sampleImage);*/
+                        *//*sampleBackgroundImageView.setImageBitmap(sampleImage);*//*
 
                         ArrayList<Contact> contacts = new ArrayList<>();
 
@@ -113,7 +113,6 @@ public class TabChatFragment extends Fragment {
                                 // Create contacts
                                 Contact contact1 = new Contact("Leonardo DiCaprio1", "3666875674", sampleImageUrlString,
                                         "Questo è il mio stato", firstContactStatusStories);
-                                contact1.setStatusDisabled(true);
                                 contacts.add(contact1);
                                 Contact contact2 = new Contact("Leonardo DiCaprio2", "3666875674", sampleImageUrlString,
                                         "Questo è il mio stato", secondContactStatusStories);
@@ -128,14 +127,14 @@ public class TabChatFragment extends Fragment {
                         });
                     }
                 });
-                /*} catch (MalformedURLException e) {
+                *//*} catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }*/
+                }*//*
             }
         });
-        createContactsThread.start();
+        createContactsThread.start();*/
 
         return view;
     }
