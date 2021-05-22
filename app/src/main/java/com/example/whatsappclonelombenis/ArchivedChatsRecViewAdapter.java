@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedChatsRecViewAdapter.ViewHolder> {
     Context context;
 
-    ArrayList<Contact> contacts= new ArrayList<>();
+    static ArrayList<Contact> contacts= new ArrayList<>();
 
     static ArrayList<View> views= new ArrayList<>();
 

@@ -20,7 +20,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     private static Context context;
 
     static ArrayList<Contact> contacts= new ArrayList<>();
-    static ArrayList<Contact> selected_contacts= new ArrayList<>();
 
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
@@ -98,8 +97,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             selected_views.add(v);
             selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
             selected_views_holders.put(v, holder);
-            System.out.println(selected_views_holders);
-            System.out.println(selected_views_contacts);
 
             View check = v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);
@@ -139,8 +136,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             selected_views.remove(v);
             selected_views_contacts.remove(v);
             selected_views_holders.remove(v);
-            System.out.println(selected_views_holders);
-            System.out.println(selected_views_contacts); ////
 
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
@@ -180,8 +175,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             selected_views.remove(v);
             selected_views_contacts.remove(v);
             selected_views_holders.remove(v);
-            System.out.println(selected_views_holders);
-            System.out.println(selected_views_contacts); ////
 
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
@@ -221,8 +214,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 selected_views.add(v);
                 selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
                 selected_views_holders.put(v, holder);
-                System.out.println(selected_views_holders);
-                System.out.println(selected_views_contacts); ////
             }
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 

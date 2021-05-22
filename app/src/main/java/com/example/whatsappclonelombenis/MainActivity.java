@@ -18,6 +18,10 @@ import android.widget.Button;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
     //TODO: adjust layout height
@@ -42,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem newBroadcastItem;
     private MenuItem whatsAppWebItem;
     private MenuItem starredMessagesItem;
-    private MenuItem settingsItem;
     private MenuItem statusPrivacyItem;
     private MenuItem deleteCallLogItem;
+
+    //Archived
+    static ArrayList<Contact> archived_contacts= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (tab.getPosition()==1) {
+                    if (ChatRecViewAdapter.views.size()!=0) {
+                        ChatRecViewAdapter.views.clear();
+                        TabChat.chatRecView.setAdapter(null);
+                        TabChat.chatRecView.setAdapter(TabChat.chatRecViewAdapter);
+                    }
+
                     newGroupItem.setVisible(true);
                     newBroadcastItem.setVisible(true);
                     whatsAppWebItem.setVisible(true);
@@ -235,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
         newBroadcastItem=menu.findItem(R.id.app_bar_new_broadcast);
         whatsAppWebItem=menu.findItem(R.id.app_bar_whatsapp_web);
         starredMessagesItem=menu.findItem(R.id.app_bar_starred_messages);
-        settingsItem=menu.findItem(R.id.app_bar_settings);
         statusPrivacyItem=menu.findItem(R.id.app_bar_status_privacy);
         deleteCallLogItem=menu.findItem(R.id.app_bar_delete_call_log);
 
@@ -315,6 +326,8 @@ public class MainActivity extends AppCompatActivity {
             TabChat.archivedView.setVisibility(View.VISIBLE);
             String archivedText= getResources().getString(R.string.archived)+" ("+TabChat.archivedViews.size()+")";
             TabChat.archivedView.setText(archivedText);
+
+            archived_contacts.add(ChatRecViewAdapter.selected_views_contacts.get(view));
 
             ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_holders.get(view).getAdapterPosition());
 
