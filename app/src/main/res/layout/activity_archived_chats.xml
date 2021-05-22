@@ -15,4 +15,10 @@
         app:title="@string/archived_chats"
         android:id="@+id/archivedChatsToolbar"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/archivedChatsToolbar"
+        android:id="@+id/archivedChatsRecView" />
+
 </RelativeLayout>

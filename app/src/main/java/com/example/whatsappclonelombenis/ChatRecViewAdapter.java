@@ -1,7 +1,6 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
-import android.os.Vibrator;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +40,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public ChatRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_recview_item, parent, false);
         views.add(view);
-        view.setOnLongClickListener(contextualToolbarListener);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -79,10 +77,9 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtNameContact, txtMessageContact, txtTime;
         private ImageView profileImg;
-        private int pos;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNameContact= itemView.findViewById(R.id.chatNameContact);
+            txtNameContact= itemView.findViewById(R.id.chatContactName);
             txtMessageContact= itemView.findViewById(R.id.chatMessage);
             txtTime= itemView.findViewById(R.id.chatTime);
             profileImg= itemView.findViewById(R.id.chatProfileImg);
@@ -104,7 +101,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             System.out.println(selected_views_holders);
             System.out.println(selected_views_contacts);
 
-            View check = v.findViewById(R.id.selectedCheck);
+            View check = v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);
 
             v.setOnLongClickListener(null);
@@ -136,7 +133,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
         @Override
         public void onClick(View v) {
-            View check=v.findViewById(R.id.selectedCheck);
+            View check=v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.GONE);
 
             selected_views.remove(v);
@@ -177,7 +174,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         public boolean onLongClick(View v) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
-            View check=v.findViewById(R.id.selectedCheck);
+            View check=v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.GONE);
 
             selected_views.remove(v);
@@ -217,7 +214,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
         @Override
         public void onClick(View v) {
-            View check=v.findViewById(R.id.selectedCheck);
+            View check=v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);
             v.setOnLongClickListener(null);
             if (!selected_views.contains(v)) {
