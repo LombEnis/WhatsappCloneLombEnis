@@ -11,4 +11,6 @@
     <color name="tab_selected">#C1C0C0</color>
     <color name="qrtoolbar_popup_color">#686e6a</color>
     <color name="contextual_background_color">#823AEA</color>
+    <color name="light_black">#A1A1A1</color>
+
 </resources>
