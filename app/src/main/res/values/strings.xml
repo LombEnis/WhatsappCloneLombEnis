@@ -51,4 +51,5 @@
     <string name="status_privacy">Privacy dello stato</string>
     <string name="delete_call_log">Cancella registro chiamate</string>
     <string name="archived">Archiviate</string>
+    <string name="archived_chats">Chat archiviate</string>
 </resources>

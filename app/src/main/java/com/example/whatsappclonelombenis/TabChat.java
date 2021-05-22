@@ -59,6 +59,14 @@ public class TabChat extends Fragment {
             archivedView.setText(archivedText);
         }
 
+        archivedView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openArchivedChatsIntent= new Intent(getContext(), ArchivedChatsActivity.class);
+                startActivity(openArchivedChatsIntent);
+            }
+        });
+
         //FloatingButton
         chatFloatingButton=chat_layout.findViewById(R.id.chatContactsFloatingButton);
         chatFloatingButton.setOnClickListener(new View.OnClickListener() {

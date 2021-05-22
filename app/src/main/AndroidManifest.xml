@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappCloneLombEnis">
-        <activity android:name=".NewGroupCallActivity"></activity>
+        <activity android:name=".ArchivedChatsActivity"></activity>
+        <activity android:name=".NewGroupCallActivity" />
         <activity android:name=".CallInfoActivity" />
         <activity android:name=".NewCallActivity" />
         <activity android:name=".QRCodeActivity" />
