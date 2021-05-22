@@ -28,11 +28,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TabStatusFragment extends Fragment {
-    private RecyclerView recView;
+    private static RecyclerView recView;
     public static StatusRecViewAdapter recViewAdapter;
     private FloatingActionButton textFloatingButton;
 
-    private LinearLayoutManager layoutManager;
+    private static LinearLayoutManager layoutManager;
 
     @Nullable
     @Override

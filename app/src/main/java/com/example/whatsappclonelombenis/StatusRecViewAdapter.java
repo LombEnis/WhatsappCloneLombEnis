@@ -2,9 +2,11 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.devlomi.circularstatusview.CircularStatusView;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +30,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdapter.ViewHolder> {
+    private Context context;
+
     private Contact myContact;
 
     public static ArrayList<Contact> contacts;
@@ -35,9 +41,8 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     private boolean recentContactsCreated;
     private boolean seenContactsCreated;
-    private boolean disabledContactsCreated;
 
-    private Context context;
+    private boolean disabledContactsVisible;
 
     public StatusRecViewAdapter(Context context) {
         this.context = context;
@@ -99,29 +104,73 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             return;
         }
 
-        // Instantiate recycler view
+
         RecyclerView contactsRecView = holder.subRecView;
-        // Instantiate recycler view adapter
         ContactsRecViewAdapter contactsRecViewAdapter;
 
         if (!recentContactsCreated && recentContacts != null && recentContacts.size() > 0) {
+            holder.dividerTextView.setText(R.string.aggiornamenti_recenti);
+
             // Recent contacts
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 1);
             contactsRecViewAdapter.setContacts(recentContacts);
 
             recentContactsCreated = true;
         } else if (!seenContactsCreated && seenContacts != null && seenContacts.size() > 0) {
+            holder.dividerTextView.setText(R.string.aggiornamenti_visti);
+
             // Seen contacts
+            RecyclerView seenContactsRecView = holder.subRecView;
+
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 2);
             contactsRecViewAdapter.setContacts(seenContacts);
 
             seenContactsCreated = true;
         } else {
+            holder.dividerTextView.setText(R.string.aggiornamenti_disattivati);
+
             // Disabled contacts
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 3);
             contactsRecViewAdapter.setContacts(disabledContacts);
 
-            disabledContactsCreated = true;
+            // Set visibility GONE for disabled contacts
+            for (int i = 0; i < disabledContacts.size(); i++) {
+                contactsRecView.setVisibility(View.GONE);
+            }
+
+            disabledContactsVisible = false;
+
+            // Set divider arrow visibility and listener
+            holder.dividerArrowImageView.setVisibility(View.VISIBLE);
+            holder.dividerConstraintlayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (disabledContactsVisible) {
+                        // Set visibility GONE for disabled contacts
+                        holder.dividerArrowImageView.setImageResource(R.drawable.ic_arrow_up_vector_24);
+                        holder.dividerArrowImageView.setColorFilter(ContextCompat.getColor(context,
+                                R.color.dark_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                        for (int i = 0; i < disabledContacts.size(); i++) {
+                            contactsRecView.setVisibility(View.GONE);
+                        }
+
+                        disabledContactsVisible = false;
+                    } else {
+                        // Set visibility VISIBLE for disabled contacts
+                        holder.dividerArrowImageView.setImageResource(R.drawable.ic_arrow_down_vector_24);
+                        holder.dividerArrowImageView.setColorFilter(
+                                MaterialColors.getColor(context, R.attr.colorPrimary, Color.BLACK),
+                                android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                        for (int i = 0; i < disabledContacts.size(); i++) {
+                            contactsRecView.setVisibility(View.VISIBLE);
+                        }
+
+                        disabledContactsVisible = true;
+                    }
+                }
+            });
         }
 
         // Set LayoutManager for recyclerview
@@ -181,12 +230,13 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         // Initialize contactsCreated variables
         recentContactsCreated = false;
         seenContactsCreated = false;
-        disabledContactsCreated = false;
 
         notifyDataSetChanged();
     }
 
     // Custom methods
+
+    // Perform ripple effect on a view
     public void performRipple(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             RippleDrawable rippleDrawable = (RippleDrawable) view.getBackground();
@@ -221,19 +271,28 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         private CircularStatusView myCircularStatusView;
         private TextView myNameTextView;
 
+        private ConstraintLayout dividerConstraintlayout;
+        private TextView dividerTextView;
+        private ImageView dividerArrowImageView;
+
         private RecyclerView subRecView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Instantiate my contact variables
+            // Instantiate my contact vies
             myConstraintLayout = itemView.findViewById(R.id.constraint_layout);
             myProfileImageButton = itemView.findViewById(R.id.my_profile_image_button);
             myPlusImageView = itemView.findViewById(R.id.my_plus_imageview);
             myCircularStatusView = itemView.findViewById(R.id.my_profile_image_circular_status_view);
             myNameTextView = itemView.findViewById(R.id.name_text_view);
 
-            // Sub recview
+            // Instantiate divider view
+            dividerConstraintlayout = itemView.findViewById(R.id.status_divider_constraintlayout);
+            dividerTextView = itemView.findViewById(R.id.status_divider_textview);
+            dividerArrowImageView = itemView.findViewById(R.id.status_divider_arrow_imageview);
+
+            // Instantiate sub recview
             subRecView = itemView.findViewById(R.id.status_sub_recview);
         }
     }
@@ -246,148 +305,125 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
         public ContactsRecViewAdapter(Context context, int contactsType) {
             this.context = context;
-            this.contactsType = contactsType;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (position == 0) return 1;
-            else return 2;
         }
 
         @NonNull
         @Override
         public ContactsRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view;
-            if (viewType == 1)
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_divider, parent, false);
-            else
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_item, parent, false);
-
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_item, parent, false);;
             ViewHolder holder = new ViewHolder(view);
             return holder;
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (position == 0) {
-                if (contactsType == 1) {
-                    // Recent contacts
-                    holder.dividerTextView.setText(R.string.aggiornamenti_recenti);
-                } else if (contactsType == 2) {
-                    // Seen contacts
-                    holder.dividerTextView.setText(R.string.aggiornamenti_visti);
-                } else {
-                    // Disabled contacts
-                    holder.dividerTextView.setText(R.string.aggiornamenti_disattivati);
-                }
+            Contact currentContact = contacts.get(position);
+            // Set profile image
+            Glide.with(context)
+                    .load(currentContact
+                            .getStatusStories()
+                            .get(currentContact.getLastStoriesPos())
+                            .getStoryPreviewBitmap())
+                    .circleCrop()
+                    .into(holder.profileImageButton);
+
+            // Set name textview
+            holder.nameTextView.setText(currentContact.getName());
+            // Set date textview
+            Calendar currentContactsDate = currentContact
+                    .getStatusStories()
+                    .get(currentContact.getStatusStories().size() - 1)
+                    .getDate();
+
+            int currentContactsDateDay = currentContactsDate.get(Calendar.DAY_OF_MONTH);
+            int currentContactsDateHour = currentContactsDate.get(Calendar.HOUR_OF_DAY);
+            int currentContactsDateMinute = currentContactsDate.get(Calendar.MINUTE);
+
+            Calendar currentDate = Calendar.getInstance();
+            int currentDateDay = currentDate.get(Calendar.DAY_OF_MONTH);
+            int currentDateHour = currentDate.get(Calendar.HOUR_OF_DAY);
+            int currentDateMinute = currentDate.get(Calendar.MINUTE);
+
+            String currentContactDateString;
+            if (currentContactsDateMinute == currentDateMinute) {
+                // Less than a minute ago
+                currentContactDateString = context.getString(R.string.ora);
             } else {
-                Contact currentContact = contacts.get(position - 1);
-                // Set profile image
-                Glide.with(context)
-                        .load(currentContact
-                                .getStatusStories()
-                                .get(currentContact.getLastStoriesPos())
-                                .getStoryPreviewBitmap())
-                        .circleCrop()
-                        .into(holder.profileImageButton);
-
-                // Set name textview
-                holder.nameTextView.setText(currentContact.getName());
-                // Set date textview
-                Calendar currentContactsDate = currentContact
-                        .getStatusStories()
-                        .get(currentContact.getStatusStories().size() - 1)
-                        .getDate();
-
-                int currentContactsDateDay = currentContactsDate.get(Calendar.DAY_OF_MONTH);
-                int currentContactsDateHour = currentContactsDate.get(Calendar.HOUR_OF_DAY);
-                int currentContactsDateMinute = currentContactsDate.get(Calendar.MINUTE);
-
-                Calendar currentDate = Calendar.getInstance();
-                int currentDateDay = currentDate.get(Calendar.DAY_OF_MONTH);
-                int currentDateHour = currentDate.get(Calendar.HOUR_OF_DAY);
-                int currentDateMinute = currentDate.get(Calendar.MINUTE);
-
-                String currentContactDateString;
-                if (currentContactsDateMinute == currentDateMinute) {
-                    // Less than a minute ago
-                    currentContactDateString = context.getString(R.string.ora);
-                } else {
-                    if (currentContactsDateDay == currentDateDay &&
-                            currentDateHour == currentContactsDateHour) {
-                        // Less than an hour ago
-                        if ((currentDateMinute - currentContactsDateMinute) == 1) {
-                            // 1 minute ago (singular)
-                            currentContactDateString = 1 + " " + context.getString(R.string.minuto_fa);
-                        } else {
-                            // More than 1 minute ago (plural)
-                            currentContactDateString = (currentDateMinute - currentContactsDateMinute) + " " + context.getString(R.string.minuti_fa);
-                        }
+                if (currentContactsDateDay == currentDateDay &&
+                        currentDateHour == currentContactsDateHour) {
+                    // Less than an hour ago
+                    if ((currentDateMinute - currentContactsDateMinute) == 1) {
+                        // 1 minute ago (singular)
+                        currentContactDateString = 1 + " " + context.getString(R.string.minuto_fa);
                     } else {
-                        if (currentContactsDateDay == currentDateDay) {
-                            // More than an hour ago, the day before
-                            currentContactDateString = context.getString(R.string.ieri) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
-                        } else {
-                            // More than an hour ago, this day
-                            currentContactDateString = context.getString(R.string.oggi) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
-                        }
+                        // More than 1 minute ago (plural)
+                        currentContactDateString = (currentDateMinute - currentContactsDateMinute) + " " + context.getString(R.string.minuti_fa);
+                    }
+                } else {
+                    if (currentContactsDateDay == currentDateDay) {
+                        // More than an hour ago, the day before
+                        currentContactDateString = context.getString(R.string.ieri) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
+                    } else {
+                        // More than an hour ago, this day
+                        currentContactDateString = context.getString(R.string.oggi) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
                     }
                 }
-
-                holder.dateTextView.setText(currentContactDateString);
-
-                // Set stories count for circular status view
-                holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
-                // Set different colors for seen stories in circular status view
-                ArrayList<Story> currentStatusStories = currentContact.getStatusStories();
-                for (int i = 0; i < currentStatusStories.size(); i++) {
-                    if (!currentStatusStories.get(i).isSeen()) {
-                        holder.circularStatusView.setPortionColorForIndex(i, context.getResources().getColor(R.color.teal_500));
-                    }
-                }
-
-                // Set click listener
-                holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, StoriesActivity.class);
-                        intent.putExtra("contactsType", contactsType);
-                        intent.putExtra("position", position - 1);
-
-                        context.startActivity(intent);
-                    }
-                });
-
-                // Set click listener on profile image click (background click and ripple)
-                holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Perform click
-                        holder.constraintLayout.performClick();
-
-                        // Perform ripple
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            RippleDrawable rippleDrawable = (RippleDrawable) holder.constraintLayout.getBackground();
-
-                            rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
-
-                            Handler exitRippleHandler = new Handler();
-                            exitRippleHandler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    rippleDrawable.setState(new int[]{});
-                                }
-                            }, 200);
-                        }
-                    }
-                });
             }
+
+            holder.dateTextView.setText(currentContactDateString);
+
+            // Set stories count for circular status view
+            holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
+            // Set different colors for seen stories in circular status view
+            ArrayList<Story> currentStatusStories = currentContact.getStatusStories();
+            for (int i = 0; i < currentStatusStories.size(); i++) {
+                if (!currentStatusStories.get(i).isSeen()) {
+                    holder.circularStatusView.setPortionColorForIndex(i,
+                            MaterialColors.getColor(context, R.attr.colorPrimary, Color.BLACK));
+                }
+            }
+
+            // Set click listener
+            holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, StoriesActivity.class);
+                    intent.putExtra("contactsType", contactsType);
+                    intent.putExtra("position", position);
+
+                    context.startActivity(intent);
+                }
+            });
+
+            // Set click listener on profile image click (background click and ripple)
+            holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Perform click
+                    holder.constraintLayout.performClick();
+
+                    // Perform ripple
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        RippleDrawable rippleDrawable = (RippleDrawable) holder.constraintLayout.getBackground();
+
+                        rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
+
+                        Handler exitRippleHandler = new Handler();
+                        exitRippleHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                rippleDrawable.setState(new int[]{});
+                            }
+                        }, 200);
+                    }
+                }
+            });
+            /*}*/
         }
 
         @Override
         public int getItemCount() {
-            return contacts.size() + 1;
+            return contacts.size();
         }
 
         public void setContacts(ArrayList<Contact> contacts) {
@@ -397,7 +433,9 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
         // ViewHolder class
         public class ViewHolder extends RecyclerView.ViewHolder {
+            private ConstraintLayout dividerConstraintlayout;
             private TextView dividerTextView;
+            private ImageView dividerArrowImageView;
 
             private ConstraintLayout constraintLayout;
             private ImageButton profileImageButton;
@@ -408,7 +446,9 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
 
+                dividerConstraintlayout = itemView.findViewById(R.id.status_divider_constraintlayout);
                 dividerTextView = itemView.findViewById(R.id.status_divider_textview);
+                dividerArrowImageView = itemView.findViewById(R.id.status_divider_arrow_imageview);
 
                 constraintLayout = itemView.findViewById(R.id.constraint_layout);
                 profileImageButton = itemView.findViewById(R.id.profile_image_button);

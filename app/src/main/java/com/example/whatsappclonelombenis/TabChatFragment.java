@@ -113,6 +113,7 @@ public class TabChatFragment extends Fragment {
                                 // Create contacts
                                 Contact contact1 = new Contact("Leonardo DiCaprio1", "3666875674", sampleImageUrlString,
                                         "Questo è il mio stato", firstContactStatusStories);
+                                contact1.setStatusDisabled(true);
                                 contacts.add(contact1);
                                 Contact contact2 = new Contact("Leonardo DiCaprio2", "3666875674", sampleImageUrlString,
                                         "Questo è il mio stato", secondContactStatusStories);
