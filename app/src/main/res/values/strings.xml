@@ -29,10 +29,13 @@
     <string name="minuti_fa">minuti fa</string>
     <string name="ieri">Ieri</string>
     <string name="oggi">Oggi</string>
-    <string name="disabilita">Disabilita</string>
-    <string name="disable_status_dialog_title">Disattivare gli aggiornamenti allo stato di: \</string>
+    <string name="disattiva">Disattiva</string>
+    <string name="attiva">Attiva</string>
+    <string name="disable_status_dialog_title">Disattiva gli aggiornamenti allo stato di: \</string>
     <string name="disable_status_message1">I nuovi aggiornamenti allo stato di \</string>
     <string name="disable_status_message_2">\ non saranno più visibili sotto gli aggiornamenti recenti.</string>
-    <string name="disattiva">Disattiva</string>
     <string name="annulla">Annulla</string>
+    <string name="enable_status_dialog_title">Abilita gli aggiornamenti allo stato di: \</string>
+    <string name="enable_status_message1">I nuovi aggiornamenti allo stato di \</string>
+    <string name="enable_status_message_2">\ saranno visibili sotto gli aggiornamenti recenti.</string>
 </resources>

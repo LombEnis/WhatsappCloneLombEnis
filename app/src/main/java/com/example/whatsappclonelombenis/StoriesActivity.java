@@ -64,10 +64,16 @@ public class StoriesActivity extends AppCompatActivity {
     private ProgressBar currentProgressBar;
     private ObjectAnimator progressBarAnimator;
 
+    private boolean isStoryStopped;
     private long currentStoryTime;
 
+    private boolean optionsAlertDialogOpened;
 
     private int statusBarHeight;
+
+    private boolean onLongClickPressed;
+    private boolean isSwiping;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,10 @@ public class StoriesActivity extends AppCompatActivity {
         // Get contactsType and contacts list
         contactsType = intent.getIntExtra("contactsType", -1);
 
-        if (contactsType == 1) {
+        if (contactsType == 0) {
+            contacts = new ArrayList<>();
+            contacts.add(StatusRecViewAdapter.myContact);
+        } else if (contactsType == 1) {
             contacts = StatusRecViewAdapter.recentContacts;
         } else if (contactsType == 2) {
             contacts = StatusRecViewAdapter.seenContacts;
@@ -167,33 +176,44 @@ public class StoriesActivity extends AppCompatActivity {
         changeContactLayout();
         setCurrentStoryLayout();
         startCurrentStory();
+        // Set alert dialog opened variable to false
+        optionsAlertDialogOpened = false;
 
-        // Set change story listeners
-        rightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextStory();
-            }
-        });
+        // Set long click listeners
+        onLongClickPressed = false;
+        isStoryStopped = false;
 
-        leftButton.setOnClickListener(new View.OnClickListener() {
+        rightButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                previousStory();
+            public boolean onLongClick(View v) {
+                onLongClickPressed = true;
+                return false;
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.status_options_menu, menu);
+        if (contactsType != 0) {
+            getMenuInflater().inflate(R.menu.status_options_menu, menu);
+        }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        /*if (contactsType == 3) {
+            menu.findItem(R.id.disable).setVisible(false);
+        } else {
+            menu.findItem(R.id.enable).setVisible(false);
+        }*/
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
         // Stop story
-        currentStoryTime = stopStory();
+        currentStoryTime += stopStory();
 
         return super.onMenuOpened(featureId, menu);
     }
@@ -201,8 +221,9 @@ public class StoriesActivity extends AppCompatActivity {
     @Override
     public void onPanelClosed(int featureId, @NonNull Menu menu) {
         // Resume story
-        //resumeStory(currentStoryTime);
-
+        if (!optionsAlertDialogOpened) {
+            resumeStory(currentStoryTime);
+        }
         super.onPanelClosed(featureId, menu);
     }
 
@@ -213,6 +234,10 @@ public class StoriesActivity extends AppCompatActivity {
                 leaveActivity();
                 return true;
             case R.id.disable:
+                // Disable contact item selected
+
+                // Set alert dialog opened variable to false
+                optionsAlertDialogOpened = true;
                 // Create and show alert dialog that allow to disable contact status
                 AlertDialog.Builder disableAlertDialog = new AlertDialog.Builder(this);
 
@@ -225,16 +250,51 @@ public class StoriesActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         currentContact.setStatusDisabled(true);
                         resumeStory(currentStoryTime);
+                        // Set alert dialog opened variable to false
+                        optionsAlertDialogOpened = false;
                     }
                 });
                 disableAlertDialog.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         resumeStory(currentStoryTime);
+                        // Set alert dialog opened variable to false
+                        optionsAlertDialogOpened = false;
                     }
                 });
 
                 disableAlertDialog.show();
+            case R.id.enable:
+                // Enable contact item selected
+
+                // Set alert dialog opened variable to false
+                optionsAlertDialogOpened = true;
+                // Create and show alert dialog that allow to disable contact status
+                AlertDialog.Builder enableAlertDialog = new AlertDialog.Builder(this);
+
+                enableAlertDialog.setTitle(getString(R.string.enable_status_dialog_title) + currentContact.getName());
+                enableAlertDialog.setMessage(getString(R.string.enable_status_message1) +
+                        currentContact.getName() +
+                        getString(R.string.enable_status_message_2));
+                enableAlertDialog.setPositiveButton(R.string.attiva, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        currentContact.setStatusDisabled(false);
+                        resumeStory(currentStoryTime);
+                        // Set alert dialog opened variable to false
+                        optionsAlertDialogOpened = false;
+                    }
+                });
+                enableAlertDialog.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        resumeStory(currentStoryTime);
+                        // Set alert dialog opened variable to false
+                        optionsAlertDialogOpened = false;
+                    }
+                });
+
+                enableAlertDialog.show();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -263,18 +323,33 @@ public class StoriesActivity extends AppCompatActivity {
          currentProgressBar.setProgress(100);
          progressLinearLayout.removeAllViews();
 
+         // Update contacts of recycler view
+         ArrayList<Contact> updatedContacts = new ArrayList<>();
+
          // Increase last story pos and set last story as seen
          currentContact.increaseLastStoriesPos();
          currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
          currentContact.setCurrentStoriesPos(0);
 
-         // Update contacts of recycler view
-         ArrayList<Contact> updatedContacts = new ArrayList<>();
-
-         if (contactsType == 1) {
+         if (contactsType == 0) {
+             // Update only my contact for the recycler view
+             TabStatusFragment.recViewAdapter.setMyContact(contacts.get(0));
+         } else if (contactsType == 1) {
              updatedContacts.addAll(contacts);
              updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
              updatedContacts.addAll(StatusRecViewAdapter.disabledContacts);
+
+             // Set progress bar value to 0
+             for (Contact contact:contacts) {
+                 if (contact.isAllStoriesSeen() || contact.isStatusDisabled()) {
+                     for (Story story:contact.getStatusStories()) {
+                         story.getProgressBar().setProgress(0);
+                     }
+                     contact.setLastStoriesPos(0);
+                 }
+             }
+
+             TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
          } else if (contactsType == 2) {
              updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
              updatedContacts.addAll(contacts);
@@ -284,15 +359,32 @@ public class StoriesActivity extends AppCompatActivity {
              for (Contact contact:contacts) {
                  for (Story story:contact.getStatusStories()) {
                      story.getProgressBar().setProgress(0);
+                     if (currentContact.isStatusDisabled()) {
+                         // Increase last story pos and set last story as seen
+                         currentContact.increaseLastStoriesPos();
+                         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
+                         currentContact.setCurrentStoriesPos(0);
+                     }
                  }
              }
-         } else {
+
+             TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
+         } else if (contactsType == 3) {
              updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
              updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
              updatedContacts.addAll(contacts);
+
+             // Set progress bar and last position to 0
+             for (Contact contact:contacts) {
+                 contact.setLastStoriesPos(0);
+                 for (Story story:contact.getStatusStories()) {
+                     story.getProgressBar().setProgress(0);
+                 }
+             }
+
+             TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
          }
 
-         TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
 
          super.onBackPressed();
      }
@@ -300,6 +392,10 @@ public class StoriesActivity extends AppCompatActivity {
      public void nextStory() {
          // Set previous story as seen
          currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
+
+         // Set progress bar 100% and set current story time to 0
+         currentProgressBar.setProgress(100);
+         currentStoryTime = 0;
 
          // Check last story
          if (currentContact.getCurrentStoriesPos() == (currentContact.getStatusStories().size() - 1)) {
@@ -324,9 +420,6 @@ public class StoriesActivity extends AppCompatActivity {
              }
          }
 
-         // Set progress bar 100% and stop animator of the previous story
-         progressBarAnimator.cancel();
-         currentProgressBar.setProgress(100);
          // Set current story
          currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
          // Start current story
@@ -354,6 +447,7 @@ public class StoriesActivity extends AppCompatActivity {
         // Set progress bar 0% and stop animator of the previous story
          progressBarAnimator.cancel();
          currentProgressBar.setProgress(0);
+         currentStoryTime = 0;
          // Set current story
          currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
          // Start current story
@@ -367,7 +461,8 @@ public class StoriesActivity extends AppCompatActivity {
         currentContactPos += 1;
         currentContact = contacts.get(currentContactPos);
 
-        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        if (currentContact.getCurrentStoriesPos() == -1)
+            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
 
         changeContactLayout();
     }
@@ -385,7 +480,10 @@ public class StoriesActivity extends AppCompatActivity {
 
     private void changeContactLayout() {
         // Set action bar title
-        getSupportActionBar().setTitle(currentContact.getName());
+        if (contactsType != 0)
+            getSupportActionBar().setTitle(currentContact.getName());
+        else
+            getSupportActionBar().setTitle("Me");
         // Set actionBar icon
         Glide.with(StoriesActivity.this)
                 .load(currentContact.getProfilePicture())
@@ -499,7 +597,33 @@ public class StoriesActivity extends AppCompatActivity {
 
          @Override
          public boolean onTouch(View view, MotionEvent event) {
-             return gestureDetector.onTouchEvent(event);
+             boolean returnValue = gestureDetector.onTouchEvent(event);
+             // We're only interested in when the button is released.
+             if (event.getAction() == MotionEvent.ACTION_UP) {
+                 if (onLongClickPressed) {
+                     // Exit from long click
+                     resumeStory(currentStoryTime);
+                     isStoryStopped = false;
+                     onLongClickPressed = false;
+                 } else {
+                     // Exit from short click
+                     if (!isSwiping) {
+                         if (view.getId() == R.id.right_button) {
+                             nextStory();
+                         } else {
+                             previousStory();
+                         }
+                     }
+                     isSwiping = false;
+                     isStoryStopped = false;
+                     isSwiping = false;
+                 }
+             } else if (!isStoryStopped) {
+                 // Click
+                 currentStoryTime += stopStory();
+                 isStoryStopped = true;
+             }
+             return returnValue;
          }
 
          private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -557,6 +681,7 @@ public class StoriesActivity extends AppCompatActivity {
          }
 
          public void onSwipeRight() {
+             isSwiping = true;
              if (currentContactPos == 0) {
                  // This is the first contact
                  onBackPressed();
@@ -577,6 +702,7 @@ public class StoriesActivity extends AppCompatActivity {
           }
 
          public void onSwipeLeft() {
+             isSwiping = true;
              if (currentContactPos == (contacts.size() - 1)) {
                  // This is the last contact
                  onBackPressed();

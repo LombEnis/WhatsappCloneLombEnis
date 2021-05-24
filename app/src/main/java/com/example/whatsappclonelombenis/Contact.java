@@ -22,7 +22,7 @@ public class Contact {
         this.profilePicture = profilePicture;
         this.infoText = infoText;
         this.statusStories = statusStories;
-        this.currentStoriesPos = 0;
+        this.currentStoriesPos = -1;
         this.lastStoriesPos = 0;
         allStoriesSeen = false;
         statusDisabled = false;
@@ -105,9 +105,6 @@ public class Contact {
 
     public void setAllStoriesSeen(boolean allStoriesSeen) {
         this.allStoriesSeen = allStoriesSeen;
-        for (Story story:statusStories) {
-            story.getProgressBar().setProgress(0);
-        }
     }
 
     public boolean isStatusDisabled() {
@@ -116,5 +113,6 @@ public class Contact {
 
     public void setStatusDisabled(boolean statusDisabled) {
         this.statusDisabled = statusDisabled;
+        setLastStoriesPos(0);
     }
 }

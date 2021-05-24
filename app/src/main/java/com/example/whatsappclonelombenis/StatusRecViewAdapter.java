@@ -32,7 +32,7 @@ import java.util.Comparator;
 public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdapter.ViewHolder> {
     private Context context;
 
-    private Contact myContact;
+    public static Contact myContact;
 
     public static ArrayList<Contact> contacts;
     public static ArrayList<Contact> recentContacts;
@@ -92,6 +92,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             // Set circular status view
             holder.myCircularStatusView.setPortionsCount(myContact.getStatusStories().size());
             if (myContact.getStatusStories().size() > 0) {
+                // My contact have no stories
                 holder.myPlusImageView.setVisibility(View.GONE);
             }
 
@@ -99,7 +100,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             holder.myConstraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(true);
+                    Intent intent = new Intent(context, StoriesActivity.class);
+                    intent.putExtra("contactsType", 0);
+                    intent.putExtra("position", position);
+
+                    context.startActivity(intent);
                 }
             });
 
@@ -141,11 +146,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             contactsRecViewAdapter.setContacts(disabledContacts);
 
             // Set visibility GONE for disabled contacts
-            for (int i = 0; i < disabledContacts.size(); i++) {
-                contactsRecView.setVisibility(View.GONE);
+            if (!disabledContactsVisible) {
+                for (int i = 0; i < disabledContacts.size(); i++) {
+                    contactsRecView.setVisibility(View.GONE);
+                }
             }
-
-            disabledContactsVisible = false;
 
             // Set divider arrow visibility and listener
             holder.dividerArrowImageView.setVisibility(View.VISIBLE);
@@ -185,7 +190,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         contactsRecView.setLayoutManager(layoutManager);
 
         // Set divider for recyclerview
-        RecViewItemDivider itemDivider = new RecViewItemDivider(context, 1);
+        RecViewItemDivider itemDivider = new RecViewItemDivider(context, 0);
         contactsRecView.addItemDecoration(itemDivider);
 
         // Set adapter for recyclerview

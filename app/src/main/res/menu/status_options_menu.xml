@@ -4,6 +4,11 @@
     <item
         android:id="@+id/disable"
         android:orderInCategory="1"
-        android:title="@string/disabilita"
+        android:title="@string/disattiva"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/enable"
+        android:orderInCategory="1"
+        android:title="@string/attiva"
         app:showAsAction="never" />
 </menu>
