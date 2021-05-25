@@ -54,7 +54,10 @@ public class StoriesActivity extends AppCompatActivity {
     private int currentContactPos;
     private Contact currentContact;
 
+    private int startStoryPos;
     private Story currentStory;
+
+    private int extraPosition;
 
     // Story button
     private Button leftButton;
@@ -94,22 +97,42 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
 
+        // Get position extra
+        extraPosition = intent.getIntExtra("position", -1);
+
         // Get contactsType and contacts list
         contactsType = intent.getIntExtra("contactsType", -1);
 
         if (contactsType == 0) {
             contacts = new ArrayList<>();
             contacts.add(StatusRecViewAdapter.myContact);
+
+            currentContactPos = 0;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = extraPosition;
         } else if (contactsType == 1) {
             contacts = StatusRecViewAdapter.recentContacts;
+
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
         } else if (contactsType == 2) {
             contacts = StatusRecViewAdapter.seenContacts;
+
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
         } else {
             contacts = StatusRecViewAdapter.disabledContacts;
+
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
         }
 
         // Set ActionBar
         setSupportActionBar(actionBar);
+        // Add back button to ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Delete status bar and expand the layout
@@ -159,26 +182,6 @@ public class StoriesActivity extends AppCompatActivity {
             }
         }
 
-        // Set swipe down listener
-        rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this, rightButton));
-        leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this, leftButton));
-
-        // Set current contact
-        currentContactPos = intent.getIntExtra("position", -1);
-        currentContact = contacts.get(currentContactPos);
-
-        // Set current story
-        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
-
-        currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-
-        // Start first story
-        changeContactLayout();
-        setCurrentStoryLayout();
-        startCurrentStory();
-        // Set alert dialog opened variable to false
-        optionsAlertDialogOpened = false;
-
         // Set long click listeners
         onLongClickPressed = false;
         isStoryStopped = false;
@@ -190,6 +193,29 @@ public class StoriesActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        leftButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onLongClickPressed = true;
+                return false;
+            }
+        });
+
+        // Set swipe down listener
+        rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this, rightButton));
+        leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this, leftButton));
+
+        // Set current story
+        currentContact.setCurrentStoriesPos(startStoryPos);
+        currentStory = currentContact.getStatusStories().get(startStoryPos);
+
+        // Start first story
+        changeContactLayout();
+        setCurrentStoryLayout();
+        startCurrentStory();
+        // Set alert dialog opened variable to false
+        optionsAlertDialogOpened = false;
     }
 
     @Override
@@ -332,8 +358,9 @@ public class StoriesActivity extends AppCompatActivity {
          currentContact.setCurrentStoriesPos(0);
 
          if (contactsType == 0) {
-             // Update only my contact for the recycler view
-             TabStatusFragment.recViewAdapter.setMyContact(contacts.get(0));
+             for (Story story:currentContact.getStatusStories()) {
+                 story.getProgressBar().setProgress(0);
+             }
          } else if (contactsType == 1) {
              updatedContacts.addAll(contacts);
              updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
@@ -473,7 +500,8 @@ public class StoriesActivity extends AppCompatActivity {
         currentContactPos -= 1;
         currentContact = contacts.get(currentContactPos);
 
-        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        if (currentContact.getCurrentStoriesPos() == -1)
+            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
 
         changeContactLayout();
     }
@@ -534,12 +562,22 @@ public class StoriesActivity extends AppCompatActivity {
             // Add ProgressBar to the layout
             progressLinearLayout.addView(progressBar);
         }
+
+        // Set ProgressBar 100% for previous stories - my status
+        if (contactsType == 0) {
+            for (int i = 0; i < currentContact.getCurrentStoriesPos(); i++) {
+                currentContact.getStatusStories().get(i).getProgressBar().setProgress(100);
+            }
+        }
     }
 
     private void setCurrentStoryLayout() {
-        // Set actionBar subtitle
-        getSupportActionBar().setSubtitle("Ora");
+        // Set story date in the actionBar subtitle
+        String currentContactDateString = App.getDateString(currentStory.getDate());
 
+        getSupportActionBar().setSubtitle(currentContactDateString);
+
+        // Set layout of the story
         rootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
 
         Glide.with(this)
@@ -588,7 +626,6 @@ public class StoriesActivity extends AppCompatActivity {
 
      // Swipe listener class
      class OnSwipeDownTouchListener implements View.OnTouchListener {
-
          private final GestureDetector gestureDetector;
 
          public OnSwipeDownTouchListener (Context context, View view){
@@ -597,7 +634,7 @@ public class StoriesActivity extends AppCompatActivity {
 
          @Override
          public boolean onTouch(View view, MotionEvent event) {
-             boolean returnValue = gestureDetector.onTouchEvent(event);
+             gestureDetector.onTouchEvent(event);
              // We're only interested in when the button is released.
              if (event.getAction() == MotionEvent.ACTION_UP) {
                  if (onLongClickPressed) {
@@ -623,7 +660,7 @@ public class StoriesActivity extends AppCompatActivity {
                  currentStoryTime += stopStory();
                  isStoryStopped = true;
              }
-             return returnValue;
+             return false;
          }
 
          private final class GestureListener extends GestureDetector.SimpleOnGestureListener {

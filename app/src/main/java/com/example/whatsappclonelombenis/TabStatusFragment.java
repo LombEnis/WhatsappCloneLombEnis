@@ -3,27 +3,18 @@ package com.example.whatsappclonelombenis;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -56,11 +47,11 @@ public class TabStatusFragment extends Fragment {
         // Create my contact + stories
         ArrayList<Story> myContactStatusStories = new ArrayList<Story>();
         Story myContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
+                "Storia 1", "Questo è un caption", sampleBitmap, true);
         Story myContactSecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
+                "Storia 2", "Questo è un caption", sampleBitmap, true);
         Story myContactThirdStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
-                "Storia 3", "Questo è un caption", sampleBitmap);
+                "Storia 3", "Questo è un caption", sampleBitmap, true);
         myContactStatusStories.add(myContactFirstStory);
         myContactStatusStories.add(myContactSecondStory);
         myContactStatusStories.add(myContactThirdStory);
@@ -71,28 +62,28 @@ public class TabStatusFragment extends Fragment {
         // Create stories
         ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();
         Story firstContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
+                "Storia 1", "Questo è un caption", sampleBitmap, false);
         Story firstContactSecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
+                "Storia 2", "Questo è un caption", sampleBitmap, false);
         Story firstContactThirdStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
-                "Storia 3", "Questo è un caption", sampleBitmap);
+                "Storia 3", "Questo è un caption", sampleBitmap, false);
         firstContactStatusStories.add(firstContactFirstStory);
         firstContactStatusStories.add(firstContactSecondStory);
         firstContactStatusStories.add(firstContactThirdStory);
 
         ArrayList<Story> secondContactStatusStories = new ArrayList<Story>();
         Story secondContactfirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
+                "Storia 1", "Questo è un caption", sampleBitmap, false);
         Story secondContactsecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
+                "Storia 2", "Questo è un caption", sampleBitmap, false);
         secondContactStatusStories.add(secondContactfirstStory);
         secondContactStatusStories.add(secondContactsecondStory);
 
         ArrayList<Story> thirdContactStatusStories = new ArrayList<Story>();
         Story thirdContactfirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
+                "Storia 1", "Questo è un caption", sampleBitmap, false);
         Story thirdContactsecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
+                "Storia 2", "Questo è un caption", sampleBitmap, false);
         thirdContactStatusStories.add(thirdContactfirstStory);
         thirdContactStatusStories.add(thirdContactsecondStory);
 

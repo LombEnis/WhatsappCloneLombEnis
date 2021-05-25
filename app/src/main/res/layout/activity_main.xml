@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/AppTheme.Toolbar"
-        app:titleTextColor="?attr/colorOnPrimary" />
+        android:theme="@style/AppTheme.Toolbar" />
 
     <org.apmem.tools.layouts.FlowLayout
         android:id="@+id/filters"

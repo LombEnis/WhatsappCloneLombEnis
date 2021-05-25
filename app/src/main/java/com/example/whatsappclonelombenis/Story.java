@@ -14,17 +14,25 @@ public class Story {
     private Bitmap storyPreviewBitmap;
     private StoriesActivity.StoryProgressBar progressBar = null;
 
+    private boolean isMyStory;
     private boolean seen;
+    private int views;
 
     // Main constructor
-    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
+    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, boolean isMyStory) {
         this.date = date;
         this.backgroundColorResource = backgroundColorResource;
         this.backgroundImageUrlString = backgroundImageString;
         this.mainTextString = mainTextString;
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
-        this.seen = false;
+
+        this.isMyStory = isMyStory;
+        if (isMyStory) {
+            views = 0;
+        } else {
+            this.seen = false;
+        }
     }
 
     // Getter and setter
@@ -90,5 +98,13 @@ public class Story {
 
     public boolean isSeen() {
         return this.seen;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void addView() {
+        this.views++;
     }
 }

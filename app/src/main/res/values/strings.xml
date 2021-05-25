@@ -38,4 +38,6 @@
     <string name="enable_status_dialog_title">Abilita gli aggiornamenti allo stato di: \</string>
     <string name="enable_status_message1">I nuovi aggiornamenti allo stato di \</string>
     <string name="enable_status_message_2">\ saranno visibili sotto gli aggiornamenti recenti.</string>
+    <string name="status_info">Gli aggiornamenti allo stato saranno visibili per 24 ore</string>
+    <string name="my_status_story_views">Visto %1$d volte</string>
 </resources>

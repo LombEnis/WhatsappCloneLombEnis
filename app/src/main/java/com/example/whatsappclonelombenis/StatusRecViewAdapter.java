@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Handler;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         // Inflate different item layout depending on position
         View view;
         if (viewType == 1) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_first_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_recview_my_item, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_sub_recview, parent, false);
         }
@@ -87,13 +86,29 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             Glide.with(context)
                     .load(myContact.getProfilePicture())
                     .circleCrop()
-                    .into(holder.myProfileImageButton);
+                    .into(holder.myPreviewImageView);
 
             // Set circular status view
             holder.myCircularStatusView.setPortionsCount(myContact.getStatusStories().size());
             if (myContact.getStatusStories().size() > 0) {
-                // My contact have no stories
+                // My contact have stories
                 holder.myPlusImageView.setVisibility(View.GONE);
+
+                holder.mySubtitleTextView.setText(App.getDateString(myContact.getStatusStories().
+                        get(myContact.getStatusStories().size() - 1).
+                        getDate()));
+
+                holder.myThreeDotsImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, MyStatusActivity.class);
+
+                        context.startActivity(intent);
+                    }
+                });
+            } else {
+                // My contact doesn't have stories
+                holder.myThreeDotsImageButton.setVisibility(View.GONE);
             }
 
             // Set on click listener
@@ -108,11 +123,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 }
             });
 
-            holder.myProfileImageButton.setOnClickListener(new View.OnClickListener() {
+            holder.myPreviewImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.myConstraintLayout.performClick();
-                    performRipple(holder.myConstraintLayout);
+                    App.performRipple(holder.myConstraintLayout);
                 }
             });
             return;
@@ -246,26 +261,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         notifyDataSetChanged();
     }
 
-    // Custom methods
-
-    // Perform ripple effect on a view
-    public void performRipple(View view) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            RippleDrawable rippleDrawable = (RippleDrawable) view.getBackground();
-
-            rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
-
-            Handler exitRippleHandler = new Handler();
-            exitRippleHandler.postDelayed(new Runnable()
-            {
-                @Override public void run()
-                {
-                    rippleDrawable.setState(new int[]{});
-                }
-            }, 200);
-        }
-    }
-
     // Comparator class to sort contacts by last story date
     class ContactsDateComparator implements Comparator<Contact> {
         @Override
@@ -277,11 +272,12 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     // ViewHolder class
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageButton myProfileImageButton;
+        private ImageView myPreviewImageView;
         private ImageView myPlusImageView;
         private ConstraintLayout myConstraintLayout;
         private CircularStatusView myCircularStatusView;
-        private TextView myNameTextView;
+        private TextView mySubtitleTextView;
+        private ImageButton myThreeDotsImageButton;
 
         private ConstraintLayout dividerConstraintlayout;
         private TextView dividerTextView;
@@ -294,10 +290,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             // Instantiate my contact vies
             myConstraintLayout = itemView.findViewById(R.id.constraint_layout);
-            myProfileImageButton = itemView.findViewById(R.id.my_profile_image_button);
+            myPreviewImageView = itemView.findViewById(R.id.my_preview_imageview);
             myPlusImageView = itemView.findViewById(R.id.my_plus_imageview);
-            myCircularStatusView = itemView.findViewById(R.id.my_profile_image_circular_status_view);
-            myNameTextView = itemView.findViewById(R.id.name_text_view);
+            myCircularStatusView = itemView.findViewById(R.id.my_preview_image_circular_status_view);
+            mySubtitleTextView = itemView.findViewById(R.id.my_status_subtitle_textview);
+            myThreeDotsImageButton = itemView.findViewById(R.id.my_Status_three_dots_imagebutton);
 
             // Instantiate divider view
             dividerConstraintlayout = itemView.findViewById(R.id.status_divider_constraintlayout);
@@ -338,7 +335,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                             .get(currentContact.getLastStoriesPos())
                             .getStoryPreviewBitmap())
                     .circleCrop()
-                    .into(holder.profileImageButton);
+                    .into(holder.previewImageView);
 
             // Set name textview
             holder.nameTextView.setText(currentContact.getName());
@@ -348,43 +345,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     .get(currentContact.getStatusStories().size() - 1)
                     .getDate();
 
-            int currentContactsDateDay = currentContactsDate.get(Calendar.DAY_OF_MONTH);
-            int currentContactsDateHour = currentContactsDate.get(Calendar.HOUR_OF_DAY);
-            int currentContactsDateMinute = currentContactsDate.get(Calendar.MINUTE);
-
-            Calendar currentDate = Calendar.getInstance();
-            int currentDateDay = currentDate.get(Calendar.DAY_OF_MONTH);
-            int currentDateHour = currentDate.get(Calendar.HOUR_OF_DAY);
-            int currentDateMinute = currentDate.get(Calendar.MINUTE);
-
-            String currentContactDateString;
-            if (currentContactsDateMinute == currentDateMinute) {
-                // Less than a minute ago
-                currentContactDateString = context.getString(R.string.ora);
-            } else {
-                if (currentContactsDateDay == currentDateDay &&
-                        currentDateHour == currentContactsDateHour) {
-                    // Less than an hour ago
-                    if ((currentDateMinute - currentContactsDateMinute) == 1) {
-                        // 1 minute ago (singular)
-                        currentContactDateString = 1 + " " + context.getString(R.string.minuto_fa);
-                    } else {
-                        // More than 1 minute ago (plural)
-                        currentContactDateString = (currentDateMinute - currentContactsDateMinute) + " " + context.getString(R.string.minuti_fa);
-                    }
-                } else {
-                    if (currentContactsDateDay == currentDateDay) {
-                        // More than an hour ago, the day before
-                        currentContactDateString = context.getString(R.string.ieri) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
-                    } else {
-                        // More than an hour ago, this day
-                        currentContactDateString = context.getString(R.string.oggi) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
-                    }
-                }
-            }
+            String currentContactDateString = App.getDateString(currentContactsDate);
 
             holder.dateTextView.setText(currentContactDateString);
 
+            // Set circular status view color
             if (contactsType != 3) {
                 // Set stories count for circular status view
                 holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
@@ -413,7 +378,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             });
 
             // Set click listener on profile image click (background click and ripple)
-            holder.profileImageButton.setOnClickListener(new View.OnClickListener() {
+            holder.previewImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Perform click
@@ -455,7 +420,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             private ImageView dividerArrowImageView;
 
             private ConstraintLayout constraintLayout;
-            private ImageButton profileImageButton;
+            private ImageView previewImageView;
             private CircularStatusView circularStatusView;
             private TextView nameTextView;
             private TextView dateTextView;
@@ -468,10 +433,10 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 dividerArrowImageView = itemView.findViewById(R.id.status_divider_arrow_imageview);
 
                 constraintLayout = itemView.findViewById(R.id.constraint_layout);
-                profileImageButton = itemView.findViewById(R.id.profile_image_button);
-                circularStatusView = itemView.findViewById(R.id.profile_image_circular_status_view);
-                nameTextView = itemView.findViewById(R.id.name_text_view);
-                dateTextView = itemView.findViewById(R.id.date_text_view);
+                previewImageView = itemView.findViewById(R.id.my_status_preview_imageview);
+                circularStatusView = itemView.findViewById(R.id.preview_image_circular_status_view);
+                nameTextView = itemView.findViewById(R.id.my_Status_title_text_view);
+                dateTextView = itemView.findViewById(R.id.my_status_subtitle_text_view);
             }
         }
     }
