@@ -40,4 +40,7 @@
     <string name="enable_status_message_2">\ saranno visibili sotto gli aggiornamenti recenti.</string>
     <string name="status_info">Gli aggiornamenti allo stato saranno visibili per 24 ore</string>
     <string name="my_status_story_views">Visto %1$d volte</string>
+    <string name="inoltra">Inoltra</string>
+    <string name="condividi">Condividi...</string>
+    <string name="elimina">Elimina</string>
 </resources>

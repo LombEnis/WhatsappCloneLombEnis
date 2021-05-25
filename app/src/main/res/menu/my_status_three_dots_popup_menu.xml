@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/my_status_forward"
+        android:title="@string/inoltra" />
+
+    <item
+        android:id="@+id/my_status_share"
+        android:title="@string/condividi" />
+
+    <item
+        android:id="@+id/my_status_delete"
+        android:title="@string/elimina" />
+</menu>

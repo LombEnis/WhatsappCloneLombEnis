@@ -2,11 +2,14 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,6 +70,28 @@ public class MyStatusRecViewAdapter extends RecyclerView.Adapter<MyStatusRecView
             public void onClick(View v) {
                 holder.constraintLayout.performClick();
                 App.performRipple(holder.constraintLayout);
+            }
+        });
+
+        // Set three dots popup menu
+        holder.threeDotsImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                androidx.appcompat.widget.PopupMenu popupMenu =
+                        new androidx.appcompat.widget.PopupMenu(context, v,
+                                Gravity.LEFT, 0, R.style.MyStatusPopupMenu);
+
+                // Popup menu item click listener
+                popupMenu.setOnMenuItemClickListener(new androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        System.out.println(true);
+                        return false;
+                    }
+                });
+
+                popupMenu.inflate(R.menu.my_status_three_dots_popup_menu);
+                popupMenu.show();
             }
         });
     }
