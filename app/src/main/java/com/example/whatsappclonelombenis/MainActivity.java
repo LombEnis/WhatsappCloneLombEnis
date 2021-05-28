@@ -5,6 +5,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.view.KeyEvent;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //Chat Contextual Toolbar
         chatContextualToolbar= findViewById(R.id.chatContextualToolbar);
@@ -142,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
                         TabChat.chatRecView.setAdapter(null);
                         TabChat.chatRecView.setAdapter(TabChat.chatRecViewAdapter);
                     }
-
                     newGroupItem.setVisible(true);
                     newBroadcastItem.setVisible(true);
                     whatsAppWebItem.setVisible(true);
@@ -328,12 +330,10 @@ public class MainActivity extends AppCompatActivity {
             String archivedText= getResources().getString(R.string.archived)+" ("+TabChat.archivedViews.size()+")";
             TabChat.archivedView.setText(archivedText);
 
+            ChatRecViewAdapter.selected_views_contacts.get(view).setArchived(true);
             archived_contacts.add(ChatRecViewAdapter.selected_views_contacts.get(view));
 
-            System.out.println(ChatRecViewAdapter.selected_views_contacts);
-            System.out.println(i);
             ChatRecViewAdapter.contacts.remove(i);
-            //ChatRecViewAdapter.selected_views_holders.remove(view);
             i-=1;
         }
         closeChatContextualToolbar();

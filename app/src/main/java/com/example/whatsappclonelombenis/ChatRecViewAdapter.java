@@ -20,6 +20,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     private static Context context;
 
     static ArrayList<Contact> contacts= new ArrayList<>();
+    static ArrayList<Contact> not_archived_contacts= new ArrayList<>();
 
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
@@ -73,7 +74,13 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public void setData(ArrayList<Contact> contacts) {
-        this.contacts=contacts;
+        for (Contact c : contacts) {
+            if (!c.isArchived()) {
+                not_archived_contacts.add(c);
+                System.out.println(not_archived_contacts);
+            }
+        }
+        this.contacts=not_archived_contacts;
         notifyDataSetChanged();
     }
 
@@ -101,6 +108,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             selected_views.add(v);
             selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
             selected_views_holders.put(v, holder);
+            System.out.println(contacts.get(holder.getAdapterPosition()).isArchived());
 
             View check = v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);
@@ -210,7 +218,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
         @Override
         public void onClick(View v) {
-            System.out.println(holder);
             View check=v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);
             v.setOnLongClickListener(null);

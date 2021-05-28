@@ -1,11 +1,14 @@
 package com.example.whatsappclonelombenis;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class TabChat extends Fragment {
@@ -28,10 +33,26 @@ public class TabChat extends Fragment {
 
     static  ChatRecViewAdapter chatRecViewAdapter;
 
+    Context context;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View chat_layout= inflater.inflate(R.layout.tab_chat, container, false);
+
+        context=getContext();
+
+        System.out.println("dsada");
+
+        //TODO: instantiate contacts class members only when the tab is first launched
+        SharedPreferences mPreferences = context.getSharedPreferences("first_time", Context.MODE_PRIVATE);
+        Boolean firstTime = mPreferences.getBoolean("firstTime", true);
+        System.out.println(firstTime);
+        if (firstTime) {
+            getContext().getSharedPreferences("first_time", MODE_PRIVATE).edit().putBoolean("firstTime", false).commit();
+            System.out.println("dsadsa");
+
+        }
 
         //Chat RecyclerView
         ArrayList<Contact> contacts = new ArrayList<>();
