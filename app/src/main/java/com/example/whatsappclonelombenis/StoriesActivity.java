@@ -268,10 +268,8 @@ public class StoriesActivity extends AppCompatActivity {
                 // Create and show alert dialog that allow to disable contact status
                 AlertDialog.Builder disableAlertDialog = new AlertDialog.Builder(this);
 
-                disableAlertDialog.setTitle(getString(R.string.disable_status_dialog_title) + currentContact.getName());
-                disableAlertDialog.setMessage(getString(R.string.disable_status_message1) +
-                        currentContact.getName() +
-                        getString(R.string.disable_status_message_2));
+                disableAlertDialog.setTitle(getString(R.string.disable_status_dialog_title, currentContact.getName()));
+                disableAlertDialog.setMessage(getString(R.string.disable_status_message,currentContact.getName()));
                 disableAlertDialog.setPositiveButton(R.string.disattiva, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -301,10 +299,8 @@ public class StoriesActivity extends AppCompatActivity {
                 // Create and show alert dialog that allow to disable contact status
                 AlertDialog.Builder enableAlertDialog = new AlertDialog.Builder(this);
 
-                enableAlertDialog.setTitle(getString(R.string.enable_status_dialog_title) + currentContact.getName());
-                enableAlertDialog.setMessage(getString(R.string.enable_status_message1) +
-                        currentContact.getName() +
-                        getString(R.string.enable_status_message_2));
+                enableAlertDialog.setTitle(getString(R.string.enable_status_dialog_title, currentContact.getName()));
+                enableAlertDialog.setMessage(getString(R.string.enable_status_message,currentContact.getName()));
                 enableAlertDialog.setPositiveButton(R.string.attiva, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

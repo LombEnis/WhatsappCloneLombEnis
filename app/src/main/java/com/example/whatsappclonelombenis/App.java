@@ -62,11 +62,10 @@ public class App extends Application {
                 // Less than an hour ago
                 if ((currentDateMinute - currentContactsDateMinute) == 1) {
                     // 1 minute ago (singular)
-                    dateString = 1 + " " + App.getContext().getString(R.string.minuto_fa);
+                    dateString = App.getContext().getString(R.string.minuto_fa, 1);
                 } else {
                     // More than 1 minute ago (plural)
-                    dateString = (currentDateMinute - currentContactsDateMinute) + " " +
-                            App.getContext().getString(R.string.minuti_fa);
+                    dateString = App.getContext().getString(R.string.minuti_fa, (currentDateMinute - currentContactsDateMinute));
                 }
             } else {
                 if (currentContactsDateDay == currentDateDay) {
