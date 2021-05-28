@@ -228,11 +228,11 @@ public class StoriesActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        /*if (contactsType == 3) {
+        if (contactsType == 3) {
             menu.findItem(R.id.disable).setVisible(false);
         } else {
             menu.findItem(R.id.enable).setVisible(false);
-        }*/
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -260,6 +260,7 @@ public class StoriesActivity extends AppCompatActivity {
                 leaveActivity();
                 return true;
             case R.id.disable:
+                System.out.println(true);
                 // Disable contact item selected
 
                 // Set alert dialog opened variable to false
@@ -290,7 +291,9 @@ public class StoriesActivity extends AppCompatActivity {
                 });
 
                 disableAlertDialog.show();
+                break;
             case R.id.enable:
+                System.out.println(true);
                 // Enable contact item selected
 
                 // Set alert dialog opened variable to false
@@ -321,9 +324,9 @@ public class StoriesActivity extends AppCompatActivity {
                 });
 
                 enableAlertDialog.show();
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private long stopStory() {

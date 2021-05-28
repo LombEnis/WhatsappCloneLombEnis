@@ -115,11 +115,14 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             holder.myConstraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, StoriesActivity.class);
-                    intent.putExtra("contactsType", 0);
-                    intent.putExtra("position", position);
+                    // Start StatusActivity if my contact have stories
+                    if (myContact.getStatusStories().size() > 0) {
+                        Intent intent = new Intent(context, StoriesActivity.class);
+                        intent.putExtra("contactsType", 0);
+                        intent.putExtra("position", position);
 
-                    context.startActivity(intent);
+                        context.startActivity(intent);
+                    }
                 }
             });
 
