@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -47,6 +48,7 @@ public class StoriesActivity extends AppCompatActivity {
     private ImageView backgroundImageView;
     private TextView mainTextView;
     private Button replyButton;
+    private Button viewsButton;
 
     // Contacts
     private ArrayList<Contact> contacts;
@@ -93,42 +95,13 @@ public class StoriesActivity extends AppCompatActivity {
         backgroundImageView = findViewById(R.id.background_imageview);
         mainTextView = findViewById(R.id.main_textview);
         replyButton = findViewById(R.id.reply_button);
+        viewsButton = findViewById(R.id.views_button);
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
 
-        // Get position extra
-        extraPosition = intent.getIntExtra("position", -1);
-
-        // Get contactsType and contacts list
+        // Get contactsType
         contactsType = intent.getIntExtra("contactsType", -1);
-
-        if (contactsType == 0) {
-            contacts = new ArrayList<>();
-            contacts.add(StatusRecViewAdapter.myContact);
-
-            currentContactPos = 0;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = extraPosition;
-        } else if (contactsType == 1) {
-            contacts = StatusRecViewAdapter.recentContacts;
-
-            currentContactPos = extraPosition;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
-        } else if (contactsType == 2) {
-            contacts = StatusRecViewAdapter.seenContacts;
-
-            currentContactPos = extraPosition;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
-        } else {
-            contacts = StatusRecViewAdapter.disabledContacts;
-
-            currentContactPos = extraPosition;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
-        }
 
         // Set ActionBar
         setSupportActionBar(actionBar);
@@ -169,16 +142,23 @@ public class StoriesActivity extends AppCompatActivity {
         actionBarLayoutParams.setMargins(0, statusBarHeight + 5, 0, 0);
         actionBar.setLayoutParams(actionBarLayoutParams);
 
-        // Set bottom margin for the reply button
+        // Set bottom margin for the bottom button
         if (Build.VERSION.SDK_INT >= 19) {
             int navigationBarResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
             if (navigationBarResourceId > 0) {
                 int navigationBarHeight = getResources().getDimensionPixelSize(navigationBarResourceId);
 
-                RelativeLayout.LayoutParams replyButtonLayoutParams = (RelativeLayout.LayoutParams) replyButton.getLayoutParams();
-                replyButtonLayoutParams.bottomMargin = navigationBarHeight + 20;
+                Button button;
+                if (contactsType == 0) {
+                    button = viewsButton;
+                } else {
+                    button = replyButton;
+                }
 
-                replyButton.setLayoutParams(replyButtonLayoutParams);
+                RelativeLayout.LayoutParams buttonLayoutParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
+                buttonLayoutParams.bottomMargin = navigationBarHeight + 20;
+
+                button.setLayoutParams(buttonLayoutParams);
             }
         }
 
@@ -206,9 +186,61 @@ public class StoriesActivity extends AppCompatActivity {
         rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this, rightButton));
         leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this, leftButton));
 
-        // Set current story
-        currentContact.setCurrentStoriesPos(startStoryPos);
-        currentStory = currentContact.getStatusStories().get(startStoryPos);
+
+        // Get position extra
+        extraPosition = intent.getIntExtra("position", -1);
+
+        // Get contacts list
+
+        if (contactsType == 0) {
+            contacts = new ArrayList<>();
+            contacts.add(StatusRecViewAdapter.myContact);
+
+            currentContactPos = 0;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = extraPosition;
+
+            // Set current story
+            currentContact.setCurrentStoriesPos(startStoryPos);
+            currentStory = currentContact.getStatusStories().get(startStoryPos);
+
+            // Set views button value
+            viewsButton.setText(Integer.toString(currentStory.getViews()));
+
+            // Set views button visibile
+            replyButton.setVisibility(View.GONE);
+            viewsButton.setVisibility(View.VISIBLE);
+        } else if (contactsType == 1) {
+            contacts = StatusRecViewAdapter.recentContacts;
+
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
+
+            // Set current story
+            currentContact.setCurrentStoriesPos(startStoryPos);
+            currentStory = currentContact.getStatusStories().get(startStoryPos);
+        } else if (contactsType == 2) {
+            contacts = StatusRecViewAdapter.seenContacts;
+
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
+
+            // Set current story
+            currentContact.setCurrentStoriesPos(startStoryPos);
+            currentStory = currentContact.getStatusStories().get(startStoryPos);
+        } else {
+            contacts = StatusRecViewAdapter.disabledContacts;
+
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
+
+            // Set current story
+            currentContact.setCurrentStoriesPos(startStoryPos);
+            currentStory = currentContact.getStatusStories().get(startStoryPos);
+        }
 
         // Start first story
         changeContactLayout();
@@ -230,7 +262,7 @@ public class StoriesActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (contactsType == 3) {
             menu.findItem(R.id.disable).setVisible(false);
-        } else {
+        } else if (contactsType == 1 || contactsType == 2) {
             menu.findItem(R.id.enable).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);

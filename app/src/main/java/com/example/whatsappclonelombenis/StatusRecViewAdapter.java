@@ -33,7 +33,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
     public static Contact myContact;
 
-    public static ArrayList<Contact> contacts;
     public static ArrayList<Contact> recentContacts;
     public static ArrayList<Contact> seenContacts;
     public static ArrayList<Contact> disabledContacts;
@@ -134,38 +133,45 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             return;
         }
 
-
         RecyclerView contactsRecView = holder.subRecView;
         ContactsRecViewAdapter contactsRecViewAdapter;
 
-        if (!recentContactsCreated && recentContacts != null && recentContacts.size() > 0) {
-            holder.dividerTextView.setText(R.string.aggiornamenti_recenti);
+        if (!recentContactsCreated && recentContacts.size() > 0) {
+            // Reset values for divider
+            holder.dividerConstraintlayout.setOnClickListener(null);
+            holder.dividerArrowImageView.setVisibility(View.GONE);
+            contactsRecView.setVisibility(View.VISIBLE);
 
             // Recent contacts
+            holder.dividerTextView.setText(R.string.aggiornamenti_recenti);
+
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 1);
             contactsRecViewAdapter.setContacts(recentContacts);
 
             recentContactsCreated = true;
-        } else if (!seenContactsCreated && seenContacts != null && seenContacts.size() > 0) {
-            holder.dividerTextView.setText(R.string.aggiornamenti_visti);
+        } else if (!seenContactsCreated && seenContacts.size() > 0) {
+            // Reset values for divider (otherwise it could maintain the functionality of disabled contacts divider)
+            holder.dividerConstraintlayout.setOnClickListener(null);
+            holder.dividerArrowImageView.setVisibility(View.GONE);
+            contactsRecView.setVisibility(View.VISIBLE);
 
             // Seen contacts
+            holder.dividerTextView.setText(R.string.aggiornamenti_visti);
+
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 2);
             contactsRecViewAdapter.setContacts(seenContacts);
 
             seenContactsCreated = true;
         } else {
+            // Disabled contacts
             holder.dividerTextView.setText(R.string.aggiornamenti_disattivati);
 
-            // Disabled contacts
             contactsRecViewAdapter = new ContactsRecViewAdapter(context, 3);
             contactsRecViewAdapter.setContacts(disabledContacts);
 
             // Set visibility GONE for disabled contacts
             if (!TabStatusFragment.isDisabledContactsVisible) {
-                for (int i = 0; i < disabledContacts.size(); i++) {
-                    contactsRecView.setVisibility(View.GONE);
-                }
+                contactsRecView.setVisibility(View.GONE);
             }
 
             // Set divider arrow visibility and listener
@@ -231,7 +237,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     }
 
     public void setContacts(ArrayList<Contact> contacts) {
-        StatusRecViewAdapter.contacts = contacts;
 
         // Initialize the array lists of contacts
         recentContacts = new ArrayList<>();
@@ -411,7 +416,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     }
                 }
             });
-            /*}*/
         }
 
         @Override
@@ -426,10 +430,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
         // ViewHolder class
         public class ViewHolder extends RecyclerView.ViewHolder {
-            private ConstraintLayout dividerConstraintlayout;
-            private TextView dividerTextView;
-            private ImageView dividerArrowImageView;
-
             private ConstraintLayout constraintLayout;
             private ImageView previewImageView;
             private CircularStatusView circularStatusView;
@@ -438,10 +438,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-
-                dividerConstraintlayout = itemView.findViewById(R.id.status_divider_constraintlayout);
-                dividerTextView = itemView.findViewById(R.id.status_divider_textview);
-                dividerArrowImageView = itemView.findViewById(R.id.status_divider_arrow_imageview);
 
                 constraintLayout = itemView.findViewById(R.id.constraint_layout);
                 previewImageView = itemView.findViewById(R.id.my_status_preview_imageview);

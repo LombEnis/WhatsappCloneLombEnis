@@ -85,7 +85,6 @@ public class MyStatusRecViewAdapter extends RecyclerView.Adapter<MyStatusRecView
                 popupMenu.setOnMenuItemClickListener(new androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        System.out.println(true);
                         return false;
                     }
                 });

@@ -12,7 +12,7 @@
         android:id="@+id/progress_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"></LinearLayout>
+        android:orientation="horizontal" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/action_bar"
@@ -79,5 +79,20 @@
         android:drawableTop="@drawable/ic_arrow_up_vector_24"
         android:text="@string/rispondi"
         android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/views_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/grey_ripple_rectangle_transparent"
+        android:drawableLeft="@drawable/ic_eye_vector_30"
+        android:drawableTint="@color/white"
+        android:minWidth="0dp"
+        android:text="0"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>
