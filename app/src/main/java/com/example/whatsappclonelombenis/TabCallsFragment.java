@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class TabCalls extends Fragment {
+public class TabCallsFragment extends Fragment {
     //RecyclerView
     static RecyclerView callsRecView;
 

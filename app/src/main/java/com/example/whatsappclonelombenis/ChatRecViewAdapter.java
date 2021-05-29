@@ -74,13 +74,12 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public void setData(ArrayList<Contact> contacts) {
+        this.contacts.clear();
         for (Contact c : contacts) {
             if (!c.isArchived()) {
-                not_archived_contacts.add(c);
-                System.out.println(not_archived_contacts);
+                this.contacts.add(c);
             }
         }
-        this.contacts=not_archived_contacts;
         notifyDataSetChanged();
     }
 
@@ -108,7 +107,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             selected_views.add(v);
             selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
             selected_views_holders.put(v, holder);
-            System.out.println(contacts.get(holder.getAdapterPosition()).isArchived());
 
             View check = v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);

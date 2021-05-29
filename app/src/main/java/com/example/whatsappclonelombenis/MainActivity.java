@@ -5,10 +5,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.CallLog;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
@@ -21,8 +18,6 @@ import android.widget.Button;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -142,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 if (tab.getPosition()==1) {
                     if (ChatRecViewAdapter.views.size()!=0) {
                         ChatRecViewAdapter.views.clear();
-                        TabChat.chatRecView.setAdapter(null);
-                        TabChat.chatRecView.setAdapter(TabChat.chatRecViewAdapter);
+                        TabChatFragment.chatRecView.setAdapter(null);
+                        TabChatFragment.chatRecView.setAdapter(TabChatFragment.chatRecViewAdapter);
                     }
                     newGroupItem.setVisible(true);
                     newBroadcastItem.setVisible(true);
@@ -170,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if (CallsRecViewAdapter.views.size()!=0) {
                         CallsRecViewAdapter.views.clear();
-                        TabCalls.callsRecView.setAdapter(null);
-                        TabCalls.callsRecView.setAdapter(TabCalls.callsAdapter);
+                        TabCallsFragment.callsRecView.setAdapter(null);
+                        TabCallsFragment.callsRecView.setAdapter(TabCallsFragment.callsAdapter);
                     }
                 }
 
@@ -196,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
 
         //I reinstantiate the adapter instead of passing the onLongClickListener because I can't get the view's holder
         ChatRecViewAdapter.views.clear();
-        TabChat.chatRecView.setAdapter(null);
-        TabChat.chatRecView.setAdapter(new ChatRecViewAdapter(this));
+        TabChatFragment.chatRecView.setAdapter(null);
+        TabChatFragment.chatRecView.setAdapter(new ChatRecViewAdapter(this));
 
         ChatRecViewAdapter.selected_views.clear();
         ChatRecViewAdapter.selected_views_contacts.clear();
@@ -325,13 +320,14 @@ public class MainActivity extends AppCompatActivity {
     public void onArchiveButtonClick(MenuItem item) {
         int i=ChatRecViewAdapter.selected_views_contacts.size()-1;
         for (View view : ChatRecViewAdapter.selected_views) {
-            TabChat.archivedViews.add(view);
-            TabChat.archivedView.setVisibility(View.VISIBLE);
-            String archivedText= getResources().getString(R.string.archived)+" ("+TabChat.archivedViews.size()+")";
-            TabChat.archivedView.setText(archivedText);
+            //TabChatFragment.archivedViews.add(view);
 
             ChatRecViewAdapter.selected_views_contacts.get(view).setArchived(true);
             archived_contacts.add(ChatRecViewAdapter.selected_views_contacts.get(view));
+
+            TabChatFragment.archivedView.setVisibility(View.VISIBLE);
+            String archivedText= getResources().getString(R.string.archived)+" ("+ archived_contacts.size()+")";
+            TabChatFragment.archivedView.setText(archivedText);
 
             ChatRecViewAdapter.contacts.remove(i);
             i-=1;
