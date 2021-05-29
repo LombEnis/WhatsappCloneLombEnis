@@ -47,14 +47,14 @@
 
     <ImageButton
         android:id="@+id/my_Status_three_dots_imagebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/grey_ripple_round_transparent"
         android:tint="?attr/colorPrimary"
-        android:layout_marginRight="17dp"
+        android:layout_marginRight="10dp"
         android:src="@drawable/ic_three_dots_vert_vector_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
