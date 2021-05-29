@@ -352,6 +352,8 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             // Set circular status view color
             if (contactsType != 3) {
+                // Not disabled contacts
+
                 // Set stories count for circular status view
                 holder.circularStatusView.setPortionsCount(currentContact.getStatusStories().size());
                 // Set different colors for seen stories in circular status view
@@ -363,7 +365,15 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                     }
                 }
             } else {
+                // Disabled contacts
+
+                // Set visibility GONE for circularStatusView
                 holder.circularStatusView.setVisibility(View.GONE);
+
+                // Set opaque color
+                holder.previewImageView.setAlpha(0.5f);
+                holder.nameTextView.setAlpha(0.5f);
+                holder.dateTextView.setAlpha(0.5f);
             }
 
             // Set click listener
