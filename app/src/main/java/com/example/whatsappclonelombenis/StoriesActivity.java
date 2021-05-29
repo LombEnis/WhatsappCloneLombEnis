@@ -169,6 +169,11 @@ public class StoriesActivity extends AppCompatActivity {
         rightButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                progressLinearLayout.setVisibility(View.GONE);
+                actionBar.setVisibility(View.GONE);
+                replyButton.setVisibility(View.GONE);
+                viewsButton.setVisibility(View.GONE);
+
                 onLongClickPressed = true;
                 return false;
             }
@@ -177,7 +182,13 @@ public class StoriesActivity extends AppCompatActivity {
         leftButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                progressLinearLayout.setVisibility(View.GONE);
+                actionBar.setVisibility(View.GONE);
+                replyButton.setVisibility(View.GONE);
+                viewsButton.setVisibility(View.GONE);
+
                 onLongClickPressed = true;
+
                 return false;
             }
         });
@@ -656,6 +667,12 @@ public class StoriesActivity extends AppCompatActivity {
                 if (onLongClickPressed) {
                     // Exit from long click
                     resumeStory(currentStoryTime);
+
+                    progressLinearLayout.setVisibility(View.VISIBLE);
+                    actionBar.setVisibility(View.VISIBLE);
+                    replyButton.setVisibility(View.VISIBLE);
+                    viewsButton.setVisibility(View.VISIBLE);
+
                     isStoryStopped = false;
                     onLongClickPressed = false;
                 } else {
