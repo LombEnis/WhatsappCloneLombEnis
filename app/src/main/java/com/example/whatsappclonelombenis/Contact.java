@@ -13,7 +13,7 @@ public class Contact {
     private int currentStoriesPos;
     private int lastStoriesPos;
     private boolean allStoriesSeen;
-    private boolean statusDisabled;
+    private boolean isStatusDisabled;
 
     // Main constructor
     public Contact(String name, String telNumber, String profilePicture, String infoText, ArrayList<Story> statusStories) {
@@ -25,7 +25,7 @@ public class Contact {
         this.currentStoriesPos = -1;
         this.lastStoriesPos = 0;
         allStoriesSeen = false;
-        statusDisabled = false;
+        isStatusDisabled = false;
     }
 
     // Getter and Setter
@@ -108,11 +108,11 @@ public class Contact {
     }
 
     public boolean isStatusDisabled() {
-        return statusDisabled;
+        return isStatusDisabled;
     }
 
     public void setStatusDisabled(boolean statusDisabled) {
-        this.statusDisabled = statusDisabled;
+        this.isStatusDisabled = statusDisabled;
         setLastStoriesPos(0);
     }
 }

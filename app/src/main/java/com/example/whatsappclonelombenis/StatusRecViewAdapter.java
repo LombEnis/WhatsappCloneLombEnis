@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.RippleDrawable;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -355,7 +357,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
 
             holder.dateTextView.setText(currentContactDateString);
 
-            // Set circular status view color
+            // Set differences between different types of contacts
             if (contactsType != 3) {
                 // Not disabled contacts
 
@@ -369,6 +371,31 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                                 MaterialColors.getColor(context, R.attr.colorPrimary, Color.BLACK));
                     }
                 }
+
+                if (contactsType != 0) {
+                    holder.constraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            // Create and show alert dialog that allow to disable contact status
+                            AlertDialog.Builder disableAlertDialog = new AlertDialog.Builder(context);
+
+                            disableAlertDialog.setTitle(context.getString(R.string.disable_status_dialog_title, currentContact.getName()));
+                            disableAlertDialog.setMessage(context.getString(R.string.disable_status_message, currentContact.getName()));
+                            disableAlertDialog.setPositiveButton(R.string.disattiva, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Disable current contact status and update recyclerview
+                                    currentContact.setStatusDisabled(true);
+                                    TabStatusFragment.recViewAdapter.setContacts(App.contacts);
+                                }
+                            });
+
+                            disableAlertDialog.show();
+
+                            return false;
+                        }
+                    });
+                }
             } else {
                 // Disabled contacts
 
@@ -379,9 +406,32 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 holder.previewImageView.setAlpha(0.5f);
                 holder.nameTextView.setAlpha(0.5f);
                 holder.dateTextView.setAlpha(0.5f);
+
+                holder.constraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        // Create and show alert dialog that allow to disable contact status
+                        AlertDialog.Builder enableAlertDialog = new AlertDialog.Builder(context);
+
+                        enableAlertDialog.setTitle(context.getString(R.string.enable_status_dialog_title, currentContact.getName()));
+                        enableAlertDialog.setMessage(context.getString(R.string.enable_status_message, currentContact.getName()));
+                        enableAlertDialog.setPositiveButton(R.string.attiva, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Enable current contact status and update recyclerview
+                                currentContact.setStatusDisabled(false);
+                                TabStatusFragment.recViewAdapter.setContacts(App.contacts);
+                            }
+                        });
+
+                        enableAlertDialog.show();
+
+                        return false;
+                    }
+                });
             }
 
-            // Set click listener
+            // Set click listener on background
             holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

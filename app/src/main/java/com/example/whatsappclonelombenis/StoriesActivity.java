@@ -389,9 +389,6 @@ public class StoriesActivity extends AppCompatActivity {
         currentProgressBar.setProgress(100);
         progressLinearLayout.removeAllViews();
 
-        // Update contacts of recycler view
-        ArrayList<Contact> updatedContacts = new ArrayList<>();
-
         // Increase last story pos and set last story as seen
         currentContact.increaseLastStoriesPos();
         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
