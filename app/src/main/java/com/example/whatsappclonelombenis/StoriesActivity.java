@@ -260,7 +260,6 @@ public class StoriesActivity extends AppCompatActivity {
                 leaveActivity();
                 return true;
             case R.id.disable:
-                System.out.println(true);
                 // Disable contact item selected
 
                 // Set alert dialog opened variable to false
@@ -269,7 +268,7 @@ public class StoriesActivity extends AppCompatActivity {
                 AlertDialog.Builder disableAlertDialog = new AlertDialog.Builder(this);
 
                 disableAlertDialog.setTitle(getString(R.string.disable_status_dialog_title, currentContact.getName()));
-                disableAlertDialog.setMessage(getString(R.string.disable_status_message,currentContact.getName()));
+                disableAlertDialog.setMessage(getString(R.string.disable_status_message, currentContact.getName()));
                 disableAlertDialog.setPositiveButton(R.string.disattiva, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -291,7 +290,6 @@ public class StoriesActivity extends AppCompatActivity {
                 disableAlertDialog.show();
                 break;
             case R.id.enable:
-                System.out.println(true);
                 // Enable contact item selected
 
                 // Set alert dialog opened variable to false
@@ -300,7 +298,7 @@ public class StoriesActivity extends AppCompatActivity {
                 AlertDialog.Builder enableAlertDialog = new AlertDialog.Builder(this);
 
                 enableAlertDialog.setTitle(getString(R.string.enable_status_dialog_title, currentContact.getName()));
-                enableAlertDialog.setMessage(getString(R.string.enable_status_message,currentContact.getName()));
+                enableAlertDialog.setMessage(getString(R.string.enable_status_message, currentContact.getName()));
                 enableAlertDialog.setPositiveButton(R.string.attiva, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -338,148 +336,131 @@ public class StoriesActivity extends AppCompatActivity {
         progressBarAnimator.start();
     }
 
-     @Override
-     public void onBackPressed() {
-         leaveActivity();
-     }
+    @Override
+    public void onBackPressed() {
+        leaveActivity();
+    }
 
-     public void leaveActivity() {
-         progressBarAnimator.cancel();
-         currentProgressBar.setProgress(100);
-         progressLinearLayout.removeAllViews();
+    public void leaveActivity() {
+        progressBarAnimator.cancel();
+        currentProgressBar.setProgress(100);
+        progressLinearLayout.removeAllViews();
 
-         // Update contacts of recycler view
-         ArrayList<Contact> updatedContacts = new ArrayList<>();
+        // Update contacts of recycler view
+        ArrayList<Contact> updatedContacts = new ArrayList<>();
 
-         // Increase last story pos and set last story as seen
-         currentContact.increaseLastStoriesPos();
-         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
-         currentContact.setCurrentStoriesPos(0);
+        // Increase last story pos and set last story as seen
+        currentContact.increaseLastStoriesPos();
+        currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
+        currentContact.setCurrentStoriesPos(0);
 
-         if (contactsType == 0) {
-             for (Story story:currentContact.getStatusStories()) {
-                 story.getProgressBar().setProgress(0);
-             }
-         } else if (contactsType == 1) {
-             updatedContacts.addAll(contacts);
-             updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
-             updatedContacts.addAll(StatusRecViewAdapter.disabledContacts);
+        if (contactsType == 0) {
+            for (Story story : currentContact.getStatusStories()) {
+                story.getProgressBar().setProgress(0);
+            }
+        } else if (contactsType == 1) {
+            // Set progress bar value to 0
+            for (Contact contact : contacts) {
+                if (contact.isAllStoriesSeen() || contact.isStatusDisabled()) {
+                    for (Story story : contact.getStatusStories()) {
+                        story.getProgressBar().setProgress(0);
+                    }
+                    contact.setLastStoriesPos(0);
+                }
+            }
+        } else if (contactsType == 2) {
+            // Set progress bar value to 0
+            for (Contact contact : contacts) {
+                for (Story story : contact.getStatusStories()) {
+                    story.getProgressBar().setProgress(0);
+                    if (currentContact.isStatusDisabled()) {
+                        // Increase last story pos and set last story as seen
+                        currentContact.increaseLastStoriesPos();
+                        currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
+                        currentContact.setCurrentStoriesPos(0);
+                    }
+                }
+            }
+        } else if (contactsType == 3) {
+            // Set progress bar and last position to 0
+            for (Contact contact : contacts) {
+                contact.setLastStoriesPos(0);
+                for (Story story : contact.getStatusStories()) {
+                    story.getProgressBar().setProgress(0);
+                }
+            }
+        }
 
-             // Set progress bar value to 0
-             for (Contact contact:contacts) {
-                 if (contact.isAllStoriesSeen() || contact.isStatusDisabled()) {
-                     for (Story story:contact.getStatusStories()) {
-                         story.getProgressBar().setProgress(0);
-                     }
-                     contact.setLastStoriesPos(0);
-                 }
-             }
+        TabStatusFragment.recViewAdapter.setContacts(App.contacts);
 
-             TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
-         } else if (contactsType == 2) {
-             updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
-             updatedContacts.addAll(contacts);
-             updatedContacts.addAll(StatusRecViewAdapter.disabledContacts);
+        super.onBackPressed();
+    }
 
-             // Set progress bar value to 0
-             for (Contact contact:contacts) {
-                 for (Story story:contact.getStatusStories()) {
-                     story.getProgressBar().setProgress(0);
-                     if (currentContact.isStatusDisabled()) {
-                         // Increase last story pos and set last story as seen
-                         currentContact.increaseLastStoriesPos();
-                         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
-                         currentContact.setCurrentStoriesPos(0);
-                     }
-                 }
-             }
+    public void nextStory() {
+        // Set previous story as seen
+        currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
 
-             TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
-         } else if (contactsType == 3) {
-             updatedContacts.addAll(StatusRecViewAdapter.recentContacts);
-             updatedContacts.addAll(StatusRecViewAdapter.seenContacts);
-             updatedContacts.addAll(contacts);
+        // Set progress bar 100% and set current story time to 0
+        currentProgressBar.setProgress(100);
+        currentStoryTime = 0;
 
-             // Set progress bar and last position to 0
-             for (Contact contact:contacts) {
-                 contact.setLastStoriesPos(0);
-                 for (Story story:contact.getStatusStories()) {
-                     story.getProgressBar().setProgress(0);
-                 }
-             }
+        // Check last story
+        if (currentContact.getCurrentStoriesPos() == (currentContact.getStatusStories().size() - 1)) {
+            // This is the last story
+            if (currentContactPos == (contacts.size() - 1)) {
+                // This is the last contact
+                onBackPressed();
+                return;
+            } else {
+                // This is not the last contact
+                currentContact.increaseCurrentStoriesPos();
+                if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
+                    currentContact.increaseLastStoriesPos();
+                }
+                increaseContact();
+            }
+        } else {
+            // This is not the last story
+            currentContact.increaseCurrentStoriesPos();
+            if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
+                currentContact.increaseLastStoriesPos();
+            }
+        }
 
-             TabStatusFragment.recViewAdapter.setContacts(updatedContacts);
-         }
+        // Set current story
+        currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+        // Start current story
+        setCurrentStoryLayout();
+        startCurrentStory();
+    }
 
-
-         super.onBackPressed();
-     }
-
-     public void nextStory() {
-         // Set previous story as seen
-         currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
-
-         // Set progress bar 100% and set current story time to 0
-         currentProgressBar.setProgress(100);
-         currentStoryTime = 0;
-
-         // Check last story
-         if (currentContact.getCurrentStoriesPos() == (currentContact.getStatusStories().size() - 1)) {
-             // This is the last story
-             if (currentContactPos == (contacts.size() - 1)) {
-                 // This is the last contact
-                 onBackPressed();
-                 return;
-             } else {
-                 // This is not the last contact
-                 currentContact.increaseCurrentStoriesPos();
-                 if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
-                     currentContact.increaseLastStoriesPos();
-                 }
-                 increaseContact();
-             }
-         } else {
-             // This is not the last story
-             currentContact.increaseCurrentStoriesPos();
-             if (currentContact.getCurrentStoriesPos() > currentContact.getLastStoriesPos()) {
-                 currentContact.increaseLastStoriesPos();
-             }
-         }
-
-         // Set current story
-         currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-         // Start current story
-         setCurrentStoryLayout();
-         startCurrentStory();
-     }
-
-     public void previousStory() {
-         // Set current contact
-         if (currentContact.getCurrentStoriesPos() == 0) {
-             // This is the first story
-             if (currentContactPos == 0) {
-                 // This is the first contact
-                 onBackPressed();
-                 return;
-             } else {
-                 // This is not the first contact
-                 decreaseContact();
-             }
-         } else {
-             // This is not the first story
-             currentContact.decreaseCurrentStoriesPos();
-         }
+    public void previousStory() {
+        // Set current contact
+        if (currentContact.getCurrentStoriesPos() == 0) {
+            // This is the first story
+            if (currentContactPos == 0) {
+                // This is the first contact
+                onBackPressed();
+                return;
+            } else {
+                // This is not the first contact
+                decreaseContact();
+            }
+        } else {
+            // This is not the first story
+            currentContact.decreaseCurrentStoriesPos();
+        }
 
         // Set progress bar 0% and stop animator of the previous story
-         progressBarAnimator.cancel();
-         currentProgressBar.setProgress(0);
-         currentStoryTime = 0;
-         // Set current story
-         currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-         // Start current story
-         setCurrentStoryLayout();
-         startCurrentStory();
-     }
+        progressBarAnimator.cancel();
+        currentProgressBar.setProgress(0);
+        currentStoryTime = 0;
+        // Set current story
+        currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+        // Start current story
+        setCurrentStoryLayout();
+        startCurrentStory();
+    }
 
     private void increaseContact() {
         progressLinearLayout.removeAllViews();
@@ -523,7 +504,8 @@ public class StoriesActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {}
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
                 });
 
         // Add progress bars for the current contact to the layout
@@ -595,7 +577,8 @@ public class StoriesActivity extends AppCompatActivity {
         progressBarAnimator.setInterpolator(new LinearInterpolator());
         progressBarAnimator.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -605,161 +588,162 @@ public class StoriesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
         progressBarAnimator.start();
     }
 
     // Progress Bar class
     class StoryProgressBar extends ProgressBar {
-         private Context context;
+        private Context context;
 
-         public StoryProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
-             super(context, attrs, defStyleAttr);
-             this.context = context;
-         }
-     }
+        public StoryProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            this.context = context;
+        }
+    }
 
-     // Swipe listener class
-     class OnSwipeDownTouchListener implements View.OnTouchListener {
-         private final GestureDetector gestureDetector;
+    // Swipe listener class
+    class OnSwipeDownTouchListener implements View.OnTouchListener {
+        private final GestureDetector gestureDetector;
 
-         public OnSwipeDownTouchListener (Context context, View view){
-             gestureDetector = new GestureDetector(context, new GestureListener(view));
-         }
+        public OnSwipeDownTouchListener(Context context, View view) {
+            gestureDetector = new GestureDetector(context, new GestureListener(view));
+        }
 
-         @Override
-         public boolean onTouch(View view, MotionEvent event) {
-             gestureDetector.onTouchEvent(event);
-             // We're only interested in when the button is released.
-             if (event.getAction() == MotionEvent.ACTION_UP) {
-                 if (onLongClickPressed) {
-                     // Exit from long click
-                     resumeStory(currentStoryTime);
-                     isStoryStopped = false;
-                     onLongClickPressed = false;
-                 } else {
-                     // Exit from short click
-                     if (!isSwiping) {
-                         if (view.getId() == R.id.right_button) {
-                             nextStory();
-                         } else {
-                             previousStory();
-                         }
-                     }
-                     isSwiping = false;
-                     isStoryStopped = false;
-                     isSwiping = false;
-                 }
-             } else if (!isStoryStopped) {
-                 // Click
-                 currentStoryTime += stopStory();
-                 isStoryStopped = true;
-             }
-             return false;
-         }
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            gestureDetector.onTouchEvent(event);
+            // We're only interested in when the button is released.
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (onLongClickPressed) {
+                    // Exit from long click
+                    resumeStory(currentStoryTime);
+                    isStoryStopped = false;
+                    onLongClickPressed = false;
+                } else {
+                    // Exit from short click
+                    if (!isSwiping) {
+                        if (view.getId() == R.id.right_button) {
+                            nextStory();
+                        } else {
+                            previousStory();
+                        }
+                    }
+                    isSwiping = false;
+                    isStoryStopped = false;
+                    isSwiping = false;
+                }
+            } else if (!isStoryStopped) {
+                // Click
+                currentStoryTime += stopStory();
+                isStoryStopped = true;
+            }
+            return false;
+        }
 
-         private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-             private static final int SWIPE_THRESHOLD = 100;
-             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-             private View view;
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+            private View view;
 
-             public GestureListener(View view) {
-                 this.view = view;
-             }
+            public GestureListener(View view) {
+                this.view = view;
+            }
 
-             @Override
-             public boolean onSingleTapUp(MotionEvent e) {
-                 onClick(view);
-                 return super.onSingleTapUp(e);
-             }
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                onClick(view);
+                return super.onSingleTapUp(e);
+            }
 
-             @Override
-             public boolean onDown(MotionEvent e) {
-                 return true;
-             }
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
 
-             @Override
-             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                 boolean result = false;
-                 try {
-                     float diffY = e2.getY() - e1.getY();
-                     float diffX = e2.getX() - e1.getX();
-                     if (Math.abs(diffX) > Math.abs(diffY)) {
-                         if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                             if (diffX > 0) {
-                                 onSwipeRight();
-                             } else {
-                                 onSwipeLeft();
-                             }
-                             result = true;
-                         }
-                     }
-                     else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                         if (diffY > 0) {
-                             onSwipeBottom();
-                         }
-                         result = true;
-                     }
-                 } catch (Exception exception) {
-                     exception.printStackTrace();
-                 }
-                 return result;
-             }
-         }
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                boolean result = false;
+                try {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) {
+                                onSwipeRight();
+                            } else {
+                                onSwipeLeft();
+                            }
+                            result = true;
+                        }
+                    } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            onSwipeBottom();
+                        }
+                        result = true;
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return result;
+            }
+        }
 
-         private void onClick(View view) {
-             view.performClick();
-         }
+        private void onClick(View view) {
+            view.performClick();
+        }
 
-         public void onSwipeRight() {
-             isSwiping = true;
-             if (currentContactPos == 0) {
-                 // This is the first contact
-                 onBackPressed();
-                 return;
-             } else {
-                 // This is not the first contact
-                 decreaseContact();
+        public void onSwipeRight() {
+            isSwiping = true;
+            if (currentContactPos == 0) {
+                // This is the first contact
+                onBackPressed();
+                return;
+            } else {
+                // This is not the first contact
+                decreaseContact();
 
-                 // Set progress bar 0% and stop animator of the previous story
-                 progressBarAnimator.cancel();
-                 currentProgressBar.setProgress(0);
-                 // Set current story
-                 currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-                 // Start current story
-                 setCurrentStoryLayout();
-                 startCurrentStory();
-             }
-          }
+                // Set progress bar 0% and stop animator of the previous story
+                progressBarAnimator.cancel();
+                currentProgressBar.setProgress(0);
+                // Set current story
+                currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+                // Start current story
+                setCurrentStoryLayout();
+                startCurrentStory();
+            }
+        }
 
-         public void onSwipeLeft() {
-             isSwiping = true;
-             if (currentContactPos == (contacts.size() - 1)) {
-                 // This is the last contact
-                 onBackPressed();
-                 return;
-             } else {
-                 // This is not the last contact
-                 increaseContact();
+        public void onSwipeLeft() {
+            isSwiping = true;
+            if (currentContactPos == (contacts.size() - 1)) {
+                // This is the last contact
+                onBackPressed();
+                return;
+            } else {
+                // This is not the last contact
+                increaseContact();
 
-                 // Set progress bar 100% and stop animator of the previous story
-                 progressBarAnimator.cancel();
-                 currentProgressBar.setProgress(0);
-                 // Set current story
-                 currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-                 // Start current story
-                 setCurrentStoryLayout();
-                 startCurrentStory();
-             }
-         }
+                // Set progress bar 100% and stop animator of the previous story
+                progressBarAnimator.cancel();
+                currentProgressBar.setProgress(0);
+                // Set current story
+                currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+                // Start current story
+                setCurrentStoryLayout();
+                startCurrentStory();
+            }
+        }
 
-         public void onSwipeBottom() {
-             leaveActivity();
-         }
-     }
- }
+        public void onSwipeBottom() {
+            leaveActivity();
+        }
+    }
+}

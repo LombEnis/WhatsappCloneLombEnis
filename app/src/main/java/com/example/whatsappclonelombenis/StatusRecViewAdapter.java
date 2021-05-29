@@ -41,8 +41,6 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     private boolean recentContactsCreated;
     private boolean seenContactsCreated;
 
-    private boolean disabledContactsVisible;
-
     public StatusRecViewAdapter(Context context) {
         this.context = context;
 
@@ -164,7 +162,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             contactsRecViewAdapter.setContacts(disabledContacts);
 
             // Set visibility GONE for disabled contacts
-            if (!disabledContactsVisible) {
+            if (!TabStatusFragment.isDisabledContactsVisible) {
                 for (int i = 0; i < disabledContacts.size(); i++) {
                     contactsRecView.setVisibility(View.GONE);
                 }
@@ -175,7 +173,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             holder.dividerConstraintlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (disabledContactsVisible) {
+                    if (TabStatusFragment.isDisabledContactsVisible) {
                         // Set visibility GONE for disabled contacts
                         holder.dividerArrowImageView.setImageResource(R.drawable.ic_arrow_up_vector_24);
                         holder.dividerArrowImageView.setColorFilter(ContextCompat.getColor(context,
@@ -185,7 +183,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                             contactsRecView.setVisibility(View.GONE);
                         }
 
-                        disabledContactsVisible = false;
+                        TabStatusFragment.isDisabledContactsVisible = false;
                     } else {
                         // Set visibility VISIBLE for disabled contacts
                         holder.dividerArrowImageView.setImageResource(R.drawable.ic_arrow_down_vector_24);
@@ -197,7 +195,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                             contactsRecView.setVisibility(View.VISIBLE);
                         }
 
-                        disabledContactsVisible = true;
+                        TabStatusFragment.isDisabledContactsVisible = true;
                     }
                 }
             });
