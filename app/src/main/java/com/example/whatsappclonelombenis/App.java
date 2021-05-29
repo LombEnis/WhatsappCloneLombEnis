@@ -46,34 +46,41 @@ public class App extends Application {
         int currentContactsDateDay = date.get(Calendar.DAY_OF_MONTH);
         int currentContactsDateHour = date.get(Calendar.HOUR_OF_DAY);
         int currentContactsDateMinute = date.get(Calendar.MINUTE);
+        int currentContactsDateTimeSeconds = (int) (date.getTimeInMillis() / 1000);
 
         Calendar currentDate = Calendar.getInstance();
         int currentDateDay = currentDate.get(Calendar.DAY_OF_MONTH);
         int currentDateHour = currentDate.get(Calendar.HOUR_OF_DAY);
         int currentDateMinute = currentDate.get(Calendar.MINUTE);
+        int currentDateTimeSeconds = (int) (currentDate.getTimeInMillis() / 1000);
+
+        int secondsDiff = currentDateTimeSeconds - currentContactsDateTimeSeconds;
+        int minutesDiff = secondsDiff / 60;
+
+        System.out.println("Secondi: " + secondsDiff);
+        System.out.println("Minuti: " + minutesDiff);
 
         String dateString;
-        if (currentContactsDateMinute == currentDateMinute) {
+        if (secondsDiff < 60) {
             // Less than a minute ago
             dateString = App.getContext().getString(R.string.ora);
         } else {
             if (currentContactsDateDay == currentDateDay &&
-                    currentDateHour == currentContactsDateHour) {
+                    minutesDiff < 60) {
                 // Less than an hour ago
-                if ((currentDateMinute - currentContactsDateMinute) == 1) {
-                    // 1 minute ago (singular)
-                    dateString = App.getContext().getString(R.string.minuto_fa, 1);
-                } else {
-                    // More than 1 minute ago (plural)
-                    dateString = App.getContext().getString(R.string.minuti_fa, (currentDateMinute - currentContactsDateMinute));
-                }
+                dateString = getContext()
+                        .getResources()
+                        .getQuantityString(R.plurals.numberOfMinutesAgo,
+                                minutesDiff, minutesDiff);
             } else {
                 if (currentContactsDateDay == currentDateDay) {
-                    // More than an hour ago, the day before
-                    dateString = App.getContext().getString(R.string.ieri) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
-                } else {
                     // More than an hour ago, this day
-                    dateString = App.getContext().getString(R.string.oggi) + ", " + currentContactsDateHour + ":" + currentContactsDateMinute;
+                    dateString = App.getContext().getString(R.string.oggi) + ", " +
+                            currentContactsDateHour + ":" + currentContactsDateMinute;
+                } else {
+                    // More than an hour ago, the day before
+                    dateString = App.getContext().getString(R.string.ieri) + ", " +
+                            currentContactsDateHour + ":" + currentContactsDateMinute;
                 }
             }
         }

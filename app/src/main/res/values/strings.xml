@@ -25,8 +25,6 @@
     <string name="stato_contatti">Stato (Contatti)</string>
     <string name="rispondi">Rispondi</string>
     <string name="ora">Ora</string>
-    <string name="minuto_fa">%1$d minuto fa</string>
-    <string name="minuti_fa">%1$d minuti fa</string>
     <string name="ieri">Ieri</string>
     <string name="oggi">Oggi</string>
     <string name="disattiva">Disattiva</string>

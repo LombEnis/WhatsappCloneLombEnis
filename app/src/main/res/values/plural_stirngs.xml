@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="numberOfMinutesAgo">
+        <item quantity="one">%1$d minuto fa</item>
+        <item quantity="other">%1$d minuti fa</item>
+    </plurals>
+</resources>
