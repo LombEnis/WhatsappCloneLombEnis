@@ -385,6 +385,8 @@ public class StoriesActivity extends AppCompatActivity {
     }
 
     public void leaveActivity() {
+        super.onBackPressed();
+
         progressBarAnimator.cancel();
         currentProgressBar.setProgress(100);
         progressLinearLayout.removeAllViews();
@@ -432,8 +434,6 @@ public class StoriesActivity extends AppCompatActivity {
         }
 
         TabStatusFragment.recViewAdapter.setContacts(App.contacts);
-
-        super.onBackPressed();
     }
 
     public void nextStory() {
@@ -684,13 +684,13 @@ public class StoriesActivity extends AppCompatActivity {
                     }
                     isSwiping = false;
                     isStoryStopped = false;
-                    isSwiping = false;
                 }
             } else if (!isStoryStopped) {
                 // Click
                 currentStoryTime += stopStory();
                 isStoryStopped = true;
             }
+
             return false;
         }
 
@@ -790,6 +790,7 @@ public class StoriesActivity extends AppCompatActivity {
         }
 
         public void onSwipeBottom() {
+            isSwiping = true;
             leaveActivity();
         }
     }
