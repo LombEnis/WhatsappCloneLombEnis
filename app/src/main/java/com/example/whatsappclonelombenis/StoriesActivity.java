@@ -204,6 +204,7 @@ public class StoriesActivity extends AppCompatActivity {
         // Get contacts list
 
         if (contactsType == 0) {
+            // My contact
             contacts = new ArrayList<>();
             contacts.add(StatusRecViewAdapter.myContact);
 
@@ -222,6 +223,7 @@ public class StoriesActivity extends AppCompatActivity {
             replyButton.setVisibility(View.GONE);
             viewsButton.setVisibility(View.VISIBLE);
         } else if (contactsType == 1) {
+            // Recent contacts
             contacts = StatusRecViewAdapter.recentContacts;
 
             currentContactPos = extraPosition;
@@ -232,6 +234,7 @@ public class StoriesActivity extends AppCompatActivity {
             currentContact.setCurrentStoriesPos(startStoryPos);
             currentStory = currentContact.getStatusStories().get(startStoryPos);
         } else if (contactsType == 2) {
+            // Seen contacts
             contacts = StatusRecViewAdapter.seenContacts;
 
             currentContactPos = extraPosition;
@@ -242,6 +245,7 @@ public class StoriesActivity extends AppCompatActivity {
             currentContact.setCurrentStoriesPos(startStoryPos);
             currentStory = currentContact.getStatusStories().get(startStoryPos);
         } else {
+            // Disabled contacts
             contacts = StatusRecViewAdapter.disabledContacts;
 
             currentContactPos = extraPosition;
@@ -397,10 +401,13 @@ public class StoriesActivity extends AppCompatActivity {
         currentContact.setCurrentStoriesPos(0);
 
         if (contactsType == 0) {
+            // My contact
             for (Story story : currentContact.getStatusStories()) {
                 story.getProgressBar().setProgress(0);
             }
         } else if (contactsType == 1) {
+            // Recent contacts
+
             // Set progress bar value to 0
             for (Contact contact : contacts) {
                 if (contact.isAllStoriesSeen() || contact.isStatusDisabled()) {
@@ -411,19 +418,17 @@ public class StoriesActivity extends AppCompatActivity {
                 }
             }
         } else if (contactsType == 2) {
+            // Seen contacts
+
             // Set progress bar value to 0
             for (Contact contact : contacts) {
                 for (Story story : contact.getStatusStories()) {
                     story.getProgressBar().setProgress(0);
-                    if (currentContact.isStatusDisabled()) {
-                        // Increase last story pos and set last story as seen
-                        currentContact.increaseLastStoriesPos();
-                        currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
-                        currentContact.setCurrentStoriesPos(0);
-                    }
                 }
             }
         } else if (contactsType == 3) {
+            // Disabled contacts
+
             // Set progress bar and last position to 0
             for (Contact contact : contacts) {
                 contact.setLastStoriesPos(0);

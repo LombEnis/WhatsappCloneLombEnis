@@ -11,6 +11,7 @@ import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -132,6 +133,7 @@ public class App extends Application {
         int minutesDiff = secondsDiff / 60;
 
         String dateString;
+
         if (secondsDiff < 60) {
             // Less than a minute ago
             dateString = App.getContext().getString(R.string.ora);
@@ -144,14 +146,18 @@ public class App extends Application {
                         .getQuantityString(R.plurals.numberOfMinutesAgo,
                                 minutesDiff, minutesDiff);
             } else {
+                // More than an hour ago
+
+                // Get time in format HH:mm
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                String dateStringFormatted = dateFormat.format(date.getTime());
+
                 if (currentContactsDateDay == currentDateDay) {
                     // More than an hour ago, this day
-                    dateString = App.getContext().getString(R.string.oggi) + ", " +
-                            currentContactsDateHour + ":" + currentContactsDateMinute;
+                    dateString = App.getContext().getString(R.string.oggi) + ", " + dateStringFormatted;
                 } else {
                     // More than an hour ago, the day before
-                    dateString = App.getContext().getString(R.string.ieri) + ", " +
-                            currentContactsDateHour + ":" + currentContactsDateMinute;
+                    dateString = App.getContext().getString(R.string.ieri) + ", " + dateStringFormatted;
                 }
             }
         }
