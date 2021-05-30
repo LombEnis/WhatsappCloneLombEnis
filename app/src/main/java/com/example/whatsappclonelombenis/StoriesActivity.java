@@ -659,8 +659,9 @@ public class StoriesActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             gestureDetector.onTouchEvent(event);
-            // We're only interested in when the button is released.
+
             if (event.getAction() == MotionEvent.ACTION_UP) {
+                // When te touch is released
                 if (onLongClickPressed) {
                     // Exit from long click
                     resumeStory(currentStoryTime);

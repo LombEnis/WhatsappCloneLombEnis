@@ -96,6 +96,7 @@ public class Contact {
             lastStoriesPos++;
         } else {
             setAllStoriesSeen(true);
+            setCurrentStoriesPos(0);
         }
     }
 
