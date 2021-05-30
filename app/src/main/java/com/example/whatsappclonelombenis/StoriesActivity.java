@@ -316,18 +316,18 @@ public class StoriesActivity extends AppCompatActivity {
 
                 disableAlertDialog.setTitle(getString(R.string.disable_status_dialog_title, currentContact.getName()));
                 disableAlertDialog.setMessage(getString(R.string.disable_status_message, currentContact.getName()));
+
                 disableAlertDialog.setPositiveButton(R.string.disattiva, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         currentContact.setStatusDisabled(true);
-                        resumeStory(currentStoryTime);
-                        // Set alert dialog opened variable to false
-                        optionsAlertDialogOpened = false;
                     }
                 });
-                disableAlertDialog.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+                disableAlertDialog.setNegativeButton(R.string.annulla, null);
+
+                disableAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onDismiss(DialogInterface dialog) {
                         resumeStory(currentStoryTime);
                         // Set alert dialog opened variable to false
                         optionsAlertDialogOpened = false;
@@ -346,18 +346,18 @@ public class StoriesActivity extends AppCompatActivity {
 
                 enableAlertDialog.setTitle(getString(R.string.enable_status_dialog_title, currentContact.getName()));
                 enableAlertDialog.setMessage(getString(R.string.enable_status_message, currentContact.getName()));
+
                 enableAlertDialog.setPositiveButton(R.string.attiva, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         currentContact.setStatusDisabled(false);
-                        resumeStory(currentStoryTime);
-                        // Set alert dialog opened variable to false
-                        optionsAlertDialogOpened = false;
                     }
                 });
-                enableAlertDialog.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+                enableAlertDialog.setNegativeButton(R.string.annulla, null);
+
+                enableAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onDismiss(DialogInterface dialog) {
                         resumeStory(currentStoryTime);
                         // Set alert dialog opened variable to false
                         optionsAlertDialogOpened = false;

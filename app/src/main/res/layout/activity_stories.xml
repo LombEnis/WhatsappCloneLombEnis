@@ -75,7 +75,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="17dp"
-        android:background="@drawable/grey_ripple_rectangle_transparent"
+        android:background="@drawable/status_button_ripple_round_background"
         android:drawableTop="@drawable/ic_arrow_up_vector_24"
         android:text="@string/rispondi"
         android:textColor="@color/white" />
@@ -87,7 +87,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="17dp"
-        android:background="@drawable/grey_ripple_rectangle_transparent"
+        android:background="@drawable/status_button_ripple_round_background"
         android:drawableLeft="@drawable/ic_eye_vector_30"
         android:drawableTint="@color/white"
         android:minWidth="0dp"
