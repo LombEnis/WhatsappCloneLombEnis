@@ -42,6 +42,8 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
     private boolean recentContactsCreated;
     private boolean seenContactsCreated;
 
+    private RecViewItemDivider itemDivider;
+
     public StatusRecViewAdapter(Context context) {
         this.context = context;
 
@@ -53,6 +55,8 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 super.onChanged();
             }
         });
+
+        itemDivider = new RecViewItemDivider(context, 0);
     }
 
     @Override
@@ -214,7 +218,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
         contactsRecView.setLayoutManager(layoutManager);
 
         // Set divider for recyclerview
-        RecViewItemDivider itemDivider = new RecViewItemDivider(context, 0);
+        contactsRecView.removeItemDecoration(itemDivider);
         contactsRecView.addItemDecoration(itemDivider);
 
         // Set adapter for recyclerview
