@@ -25,9 +25,13 @@ public class MyStatusViewsActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_status_views);
 
-        // Set listener for touch events outside the activity
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+        // Exit from the activity on touch outside
+        setFinishOnTouchOutside(true);
+
+        // Blur behind activity
+        WindowManager.LayoutParams windowManager = getWindow().getAttributes();
+        windowManager.dimAmount = 0.50f;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         // Instantiate layout view
         Toolbar actionBar = findViewById(R.id.activity_status_views_action_bar);
@@ -50,15 +54,5 @@ public class MyStatusViewsActivity extends AppCompatActivity {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         getWindowManager().updateViewLayout(view, lp);
-    }
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (MotionEvent.ACTION_OUTSIDE == event.getAction()) {
-            // Touch event outside the activity
-            onBackPressed();
-        }
-        return super.onTouchEvent(event);
     }
 }
