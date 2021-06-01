@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +56,7 @@ public class MyStatusRecViewAdapter extends RecyclerView.Adapter<MyStatusRecView
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, StoriesActivity.class);
+                Intent intent = new Intent(context, StatusActivity.class);
                 intent.putExtra("contactsType", 0);
                 intent.putExtra("position", position);
 

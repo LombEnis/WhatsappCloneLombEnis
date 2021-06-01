@@ -12,7 +12,7 @@ public class Story {
     private String captionTextString;
 
     private Bitmap storyPreviewBitmap;
-    private StoriesActivity.StoryProgressBar progressBar = null;
+    private StatusActivity.StoryProgressBar progressBar = null;
 
     private boolean isMyStory;
     private boolean seen;
@@ -84,11 +84,11 @@ public class Story {
         this.storyPreviewBitmap = storyPreviewBitmap;
     }
 
-    public StoriesActivity.StoryProgressBar getProgressBar() {
+    public StatusActivity.StoryProgressBar getProgressBar() {
         return progressBar;
     }
 
-    public void setProgressBar(StoriesActivity.StoryProgressBar progressBar) {
+    public void setProgressBar(StatusActivity.StoryProgressBar progressBar) {
         this.progressBar = progressBar;
     }
 

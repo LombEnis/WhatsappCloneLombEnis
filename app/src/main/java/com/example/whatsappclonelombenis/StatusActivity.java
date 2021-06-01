@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -40,7 +39,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 
-public class StoriesActivity extends AppCompatActivity {
+public class StatusActivity extends AppCompatActivity {
     // Layout view
     private RelativeLayout rootRelativeLayout;
     private LinearLayout progressLinearLayout;
@@ -88,7 +87,7 @@ public class StoriesActivity extends AppCompatActivity {
         // Get intent
         Intent intent = getIntent();
 
-        // Instantiate variables
+        // Instantiate layout view
         rootRelativeLayout = findViewById(R.id.root_layout);
         progressLinearLayout = findViewById(R.id.progress_linearlayout);
         actionBar = findViewById(R.id.action_bar);
@@ -222,6 +221,16 @@ public class StoriesActivity extends AppCompatActivity {
             // Set views button visibile
             replyButton.setVisibility(View.GONE);
             viewsButton.setVisibility(View.VISIBLE);
+
+            viewsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    stopStory();
+
+                    Intent viewsIntent = new Intent(StatusActivity.this, StatusViewsActivity.class);
+                    startActivity(viewsIntent);
+                }
+            });
         } else if (contactsType == 1) {
             // Recent contacts
             contacts = StatusRecViewAdapter.recentContacts;
@@ -538,7 +547,7 @@ public class StoriesActivity extends AppCompatActivity {
         else
             getSupportActionBar().setTitle("Me");
         // Set actionBar icon
-        Glide.with(StoriesActivity.this)
+        Glide.with(StatusActivity.this)
                 .load(currentContact.getProfilePicture())
                 .circleCrop()
                 .apply(new RequestOptions().override(100, 100))

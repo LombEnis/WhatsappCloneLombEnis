@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/butterscotch"
-    tools:context=".StoriesActivity">
+    tools:context=".StatusActivity">
 
     <ImageView
         android:id="@+id/sample_background_imageview"

@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create StatusViewsActivity - test purposes
+        Intent viewsIntent = new Intent(this, StatusViewsActivity.class);
+        startActivity(viewsIntent);
+
 
         // Instantiate ActionBar variables
         actionBar = findViewById(R.id.action_bar);
