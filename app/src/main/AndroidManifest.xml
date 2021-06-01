@@ -13,9 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappCloneLombEnis">
         <activity
-            android:name=".MyStatusViewsActivity"
-            android:theme="@style/DialogActivity" />
-        <activity
             android:name=".MyStatusActivity"
             android:parentActivityName=".MainActivity" />
         <activity

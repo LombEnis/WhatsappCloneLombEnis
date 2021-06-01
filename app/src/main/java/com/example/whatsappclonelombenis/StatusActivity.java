@@ -5,12 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +51,7 @@ public class StatusActivity extends AppCompatActivity {
     private TextView mainTextView;
     private Button replyButton;
     private Button viewsButton;
+    private ConstraintLayout viewsDialogRootLayout;
 
     // Contacts
     private ArrayList<Contact> contacts;
@@ -82,7 +86,7 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stories);
+        setContentView(R.layout.activity_status);
 
         // Get intent
         Intent intent = getIntent();
@@ -95,6 +99,7 @@ public class StatusActivity extends AppCompatActivity {
         mainTextView = findViewById(R.id.main_textview);
         replyButton = findViewById(R.id.reply_button);
         viewsButton = findViewById(R.id.views_button);
+        viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
@@ -222,13 +227,12 @@ public class StatusActivity extends AppCompatActivity {
             replyButton.setVisibility(View.GONE);
             viewsButton.setVisibility(View.VISIBLE);
 
+            // Open views dialog on views button click
             viewsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    stopStory();
-
-                    Intent viewsIntent = new Intent(StatusActivity.this, MyStatusViewsActivity.class);
-                    startActivity(viewsIntent);
+                    // Views button click
+                    openViewsDialog();
                 }
             });
         } else if (contactsType == 1) {
@@ -516,6 +520,7 @@ public class StatusActivity extends AppCompatActivity {
         startCurrentStory();
     }
 
+    // Change contact methods
     private void increaseContact() {
         progressLinearLayout.removeAllViews();
 
@@ -606,6 +611,7 @@ public class StatusActivity extends AppCompatActivity {
         }
     }
 
+    // Current story methods
     private void setCurrentStoryLayout() {
         // Set story date in the actionBar subtitle
         String currentContactDateString = App.getDateString(currentStory.getDate());
@@ -650,6 +656,38 @@ public class StatusActivity extends AppCompatActivity {
             }
         });
         progressBarAnimator.start();
+    }
+
+    // Views dialog methods
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Rect viewRect = new Rect();
+        viewsDialogRootLayout.getGlobalVisibleRect(viewRect);
+        if (!viewRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+            // Touch outside of views dialog
+            closeViewsDialog();
+        }
+
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void openViewsDialog() {
+        // Stop story
+        stopStory();
+
+        // Open views dialog
+        viewsDialogRootLayout.setVisibility(View.VISIBLE);
+
+        // Darken background
+        backgroundImageView.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+    }
+
+    private void closeViewsDialog() {
+        // Close views dialog
+        viewsDialogRootLayout.setVisibility(View.GONE);
+
+        // Remove dark filters from background
+        backgroundImageView.setColorFilter(null);
     }
 
     // Progress Bar class
