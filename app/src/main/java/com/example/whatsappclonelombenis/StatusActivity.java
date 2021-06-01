@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -48,6 +49,7 @@ public class StatusActivity extends AppCompatActivity {
     private TextView mainTextView;
     private Button replyButton;
     private Button viewsButton;
+    private ConstraintLayout viewsDialogRootLayout;
 
     // Contacts
     private ArrayList<Contact> contacts;
@@ -82,7 +84,7 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stories);
+        setContentView(R.layout.activity_status);
 
         // Get intent
         Intent intent = getIntent();
@@ -95,6 +97,7 @@ public class StatusActivity extends AppCompatActivity {
         mainTextView = findViewById(R.id.main_textview);
         replyButton = findViewById(R.id.reply_button);
         viewsButton = findViewById(R.id.views_button);
+        viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
@@ -227,8 +230,7 @@ public class StatusActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     stopStory();
 
-                    Intent viewsIntent = new Intent(StatusActivity.this, MyStatusViewsActivity.class);
-                    startActivity(viewsIntent);
+                    viewsDialogRootLayout.setVisibility(View.VISIBLE);
                 }
             });
         } else if (contactsType == 1) {

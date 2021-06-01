@@ -49,7 +49,7 @@
     <!-- DialogActivity theme -->
     <style name="DialogActivity" parent="Theme.WhatsappCloneLombEnis">
         <!-- Set background with rounded corners and margins-->
-        <item name="android:windowBackground">@drawable/dialog_activity_background</item>
+        <item name="android:windowBackground">@drawable/dialog_background</item>
     </style>
 
 </resources>

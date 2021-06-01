@@ -36,11 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create StatusViewsActivity - test purposes
-        Intent viewsIntent = new Intent(this, MyStatusViewsActivity.class);
-        startActivity(viewsIntent);
-
-
         // Instantiate ActionBar variables
         actionBar = findViewById(R.id.action_bar);
         filters = findViewById(R.id.filters);
