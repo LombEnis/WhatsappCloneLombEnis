@@ -104,7 +104,7 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 holder.myThreeDotsImageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, MyStatusActivity.class);
+                        Intent intent = new Intent(context, MyStatusListActivity.class);
 
                         context.startActivity(intent);
                     }

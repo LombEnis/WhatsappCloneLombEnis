@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-public class MyStatusActivity extends AppCompatActivity {
+public class MyStatusListActivity extends AppCompatActivity {
     private Toolbar actionBar;
 
     // Recycler View
@@ -21,7 +21,7 @@ public class MyStatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_status);
+        setContentView(R.layout.activity_my_status_list);
 
         actionBar = findViewById(R.id.actionbar);
         setSupportActionBar(actionBar);

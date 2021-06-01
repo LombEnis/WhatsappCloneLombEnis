@@ -72,6 +72,7 @@ public class StatusActivity extends AppCompatActivity {
     private ProgressBar currentProgressBar;
     private ObjectAnimator progressBarAnimator;
 
+    // Story variables
     private boolean isStoryStopped;
     private long currentStoryTime;
 
@@ -79,17 +80,57 @@ public class StatusActivity extends AppCompatActivity {
 
     private int statusBarHeight;
 
-    private boolean onLongClickPressed;
+    // Touch variables
+    private boolean isOnLongClickPressed;
     private boolean isSwiping;
+
+    // Views dialog variables
+    private boolean isViewsDialogOpened;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_status);
 
         // Get intent
         Intent intent = getIntent();
+
+        // Get contactsType
+        contactsType = intent.getIntExtra("contactsType", -1);
+        // Get position extra
+        extraPosition = intent.getIntExtra("position", -1);
+
+        // Set contacts list and layout
+        if (contactsType == 0) {
+            // My contact
+            // Set contacts list
+            contacts = new ArrayList<>();
+            contacts.add(StatusRecViewAdapter.myContact);
+
+            // Set layout
+            setContentView(R.layout.activity_my_status);
+        } else if (contactsType == 1) {
+            // Recent contacts
+            // Set contacts list
+            contacts = StatusRecViewAdapter.recentContacts;
+
+            // Set layout
+            setContentView(R.layout.activity_status);
+        } else if (contactsType == 2) {
+            // Seen contacts
+            // Set contacts list
+            contacts = StatusRecViewAdapter.seenContacts;
+
+            // Set layout
+            setContentView(R.layout.activity_status);
+        } else {
+            // Disabled contacts
+            // Set contacts list
+            contacts = StatusRecViewAdapter.disabledContacts;
+
+            // Set layout
+            setContentView(R.layout.activity_status);
+        }
 
         // Instantiate layout view
         rootRelativeLayout = findViewById(R.id.root_layout);
@@ -97,15 +138,111 @@ public class StatusActivity extends AppCompatActivity {
         actionBar = findViewById(R.id.action_bar);
         backgroundImageView = findViewById(R.id.background_imageview);
         mainTextView = findViewById(R.id.main_textview);
-        replyButton = findViewById(R.id.reply_button);
-        viewsButton = findViewById(R.id.views_button);
-        viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
 
-        // Get contactsType
-        contactsType = intent.getIntExtra("contactsType", -1);
+        // Instantiate onLongClick variables
+        isOnLongClickPressed = false;
+        isStoryStopped = false;
+
+        // Set current story and layout variables
+        if (contactsType == 0) {
+            // Set current contact and story
+            currentContactPos = 0;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = extraPosition;
+
+            currentContact.setCurrentStoriesPos(startStoryPos);
+            currentStory = currentContact.getStatusStories().get(startStoryPos);
+
+            // Get views button, views dialog and set views value
+            viewsButton = findViewById(R.id.views_button);
+            viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
+
+            viewsButton.setText(Integer.toString(currentStory.getViews()));
+
+            // Open views dialog on views button click
+            viewsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Views button click
+                    openViewsDialog();
+                }
+            });
+
+            // Set long click listeners
+            rightButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    progressLinearLayout.setVisibility(View.GONE);
+                    actionBar.setVisibility(View.GONE);
+                    viewsButton.setVisibility(View.GONE);
+
+                    isOnLongClickPressed = true;
+                    return false;
+                }
+            });
+
+            leftButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    progressLinearLayout.setVisibility(View.GONE);
+                    actionBar.setVisibility(View.GONE);
+                    viewsButton.setVisibility(View.GONE);
+
+                    isOnLongClickPressed = true;
+
+                    return false;
+                }
+            });
+
+            // Set touch listeners
+            rightButton.setOnTouchListener(new OnMyStatusTouchListener(this, rightButton));
+            leftButton.setOnTouchListener(new OnMyStatusTouchListener(this, leftButton));
+        } else {
+            // Set current contact and story
+            currentContactPos = extraPosition;
+            currentContact = contacts.get(currentContactPos);
+            startStoryPos = currentContact.getLastStoriesPos();
+
+            // Set current story
+            currentContact.setCurrentStoriesPos(startStoryPos);
+            currentStory = currentContact.getStatusStories().get(startStoryPos);
+
+            // Get reply button
+            replyButton = findViewById(R.id.reply_button);
+
+            // Set long click listeners
+            rightButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    progressLinearLayout.setVisibility(View.GONE);
+                    actionBar.setVisibility(View.GONE);
+                    replyButton.setVisibility(View.GONE);
+
+                    isOnLongClickPressed = true;
+                    return false;
+                }
+            });
+
+            leftButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    progressLinearLayout.setVisibility(View.GONE);
+                    actionBar.setVisibility(View.GONE);
+                    replyButton.setVisibility(View.GONE);
+
+                    isOnLongClickPressed = true;
+
+                    return false;
+                }
+            });
+
+            // Set touch listeners
+            rightButton.setOnTouchListener(new OnStatusTouchListener(this, rightButton));
+            leftButton.setOnTouchListener(new OnStatusTouchListener(this, leftButton));
+        }
 
         // Set ActionBar
         setSupportActionBar(actionBar);
@@ -164,110 +301,6 @@ public class StatusActivity extends AppCompatActivity {
 
                 button.setLayoutParams(buttonLayoutParams);
             }
-        }
-
-        // Set long click listeners
-        onLongClickPressed = false;
-        isStoryStopped = false;
-
-        rightButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                progressLinearLayout.setVisibility(View.GONE);
-                actionBar.setVisibility(View.GONE);
-                replyButton.setVisibility(View.GONE);
-                viewsButton.setVisibility(View.GONE);
-
-                onLongClickPressed = true;
-                return false;
-            }
-        });
-
-        leftButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                progressLinearLayout.setVisibility(View.GONE);
-                actionBar.setVisibility(View.GONE);
-                replyButton.setVisibility(View.GONE);
-                viewsButton.setVisibility(View.GONE);
-
-                onLongClickPressed = true;
-
-                return false;
-            }
-        });
-
-        // Set swipe down listener
-        rightButton.setOnTouchListener(new OnSwipeDownTouchListener(this, rightButton));
-        leftButton.setOnTouchListener(new OnSwipeDownTouchListener(this, leftButton));
-
-
-        // Get position extra
-        extraPosition = intent.getIntExtra("position", -1);
-
-        // Get contacts list
-
-        if (contactsType == 0) {
-            // My contact
-            contacts = new ArrayList<>();
-            contacts.add(StatusRecViewAdapter.myContact);
-
-            currentContactPos = 0;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = extraPosition;
-
-            // Set current story
-            currentContact.setCurrentStoriesPos(startStoryPos);
-            currentStory = currentContact.getStatusStories().get(startStoryPos);
-
-            // Set views button value
-            viewsButton.setText(Integer.toString(currentStory.getViews()));
-
-            // Set views button visibile
-            replyButton.setVisibility(View.GONE);
-            viewsButton.setVisibility(View.VISIBLE);
-
-            // Open views dialog on views button click
-            viewsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Views button click
-                    openViewsDialog();
-                }
-            });
-        } else if (contactsType == 1) {
-            // Recent contacts
-            contacts = StatusRecViewAdapter.recentContacts;
-
-            currentContactPos = extraPosition;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
-
-            // Set current story
-            currentContact.setCurrentStoriesPos(startStoryPos);
-            currentStory = currentContact.getStatusStories().get(startStoryPos);
-        } else if (contactsType == 2) {
-            // Seen contacts
-            contacts = StatusRecViewAdapter.seenContacts;
-
-            currentContactPos = extraPosition;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
-
-            // Set current story
-            currentContact.setCurrentStoriesPos(startStoryPos);
-            currentStory = currentContact.getStatusStories().get(startStoryPos);
-        } else {
-            // Disabled contacts
-            contacts = StatusRecViewAdapter.disabledContacts;
-
-            currentContactPos = extraPosition;
-            currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
-
-            // Set current story
-            currentContact.setCurrentStoriesPos(startStoryPos);
-            currentStory = currentContact.getStatusStories().get(startStoryPos);
         }
 
         // Start first story
@@ -661,11 +694,13 @@ public class StatusActivity extends AppCompatActivity {
     // Views dialog methods
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Rect viewRect = new Rect();
-        viewsDialogRootLayout.getGlobalVisibleRect(viewRect);
-        if (!viewRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
-            // Touch outside of views dialog
-            closeViewsDialog();
+        if (contactsType == 0 && isViewsDialogOpened) {
+            Rect viewRect = new Rect();
+            viewsDialogRootLayout.getGlobalVisibleRect(viewRect);
+            if (!viewRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                // Touch outside of views dialog
+                closeViewsDialog();
+            }
         }
 
         return super.dispatchTouchEvent(ev);
@@ -701,10 +736,10 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     // Swipe listener class
-    class OnSwipeDownTouchListener implements View.OnTouchListener {
+    class OnMyStatusTouchListener implements View.OnTouchListener {
         private final GestureDetector gestureDetector;
 
-        public OnSwipeDownTouchListener(Context context, View view) {
+        public OnMyStatusTouchListener(Context context, View view) {
             gestureDetector = new GestureDetector(context, new GestureListener(view));
         }
 
@@ -713,18 +748,17 @@ public class StatusActivity extends AppCompatActivity {
             gestureDetector.onTouchEvent(event);
 
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                // When te touch is released
-                if (onLongClickPressed) {
+                // When the touch is released
+                if (isOnLongClickPressed) {
                     // Exit from long click
                     resumeStory(currentStoryTime);
 
                     progressLinearLayout.setVisibility(View.VISIBLE);
                     actionBar.setVisibility(View.VISIBLE);
-                    replyButton.setVisibility(View.VISIBLE);
                     viewsButton.setVisibility(View.VISIBLE);
 
                     isStoryStopped = false;
-                    onLongClickPressed = false;
+                    isOnLongClickPressed = false;
                 } else {
                     // Exit from short click
                     if (!isSwiping) {
@@ -745,105 +779,150 @@ public class StatusActivity extends AppCompatActivity {
 
             return false;
         }
+    }
 
-        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+    class OnStatusTouchListener implements View.OnTouchListener {
+        private final GestureDetector gestureDetector;
 
-            private static final int SWIPE_THRESHOLD = 100;
-            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-            private View view;
+        public OnStatusTouchListener(Context context, View view) {
+            gestureDetector = new GestureDetector(context, new GestureListener(view));
+        }
 
-            public GestureListener(View view) {
-                this.view = view;
-            }
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            gestureDetector.onTouchEvent(event);
 
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                onClick(view);
-                return super.onSingleTapUp(e);
-            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                // When the touch is released
+                if (isOnLongClickPressed) {
+                    // Exit from long click
+                    resumeStory(currentStoryTime);
 
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return true;
-            }
+                    progressLinearLayout.setVisibility(View.VISIBLE);
+                    actionBar.setVisibility(View.VISIBLE);
+                    replyButton.setVisibility(View.VISIBLE);
 
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                boolean result = false;
-                try {
-                    float diffY = e2.getY() - e1.getY();
-                    float diffX = e2.getX() - e1.getX();
-                    if (Math.abs(diffX) > Math.abs(diffY)) {
-                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                            if (diffX > 0) {
-                                onSwipeRight();
-                            } else {
-                                onSwipeLeft();
-                            }
-                            result = true;
+                    isStoryStopped = false;
+                    isOnLongClickPressed = false;
+                } else {
+                    // Exit from short click
+                    if (!isSwiping) {
+                        if (view.getId() == R.id.right_button) {
+                            nextStory();
+                        } else {
+                            previousStory();
                         }
-                    } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffY > 0) {
-                            onSwipeBottom();
+                    }
+                    isSwiping = false;
+                    isStoryStopped = false;
+                }
+            } else if (!isStoryStopped) {
+                // Click
+                currentStoryTime += stopStory();
+                isStoryStopped = true;
+            }
+
+            return false;
+        }
+    }
+
+    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+        private View view;
+
+        public GestureListener(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            onClick(view);
+            return super.onSingleTapUp(e);
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
                         }
                         result = true;
                     }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        onSwipeBottom();
+                    }
+                    result = true;
                 }
-                return result;
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
+            return result;
         }
+    }
 
-        private void onClick(View view) {
-            view.performClick();
+    private void onClick(View view) {
+        view.performClick();
+    }
+
+    private void onSwipeRight() {
+        isSwiping = true;
+        if (currentContactPos == 0) {
+            // This is the first contact
+            onBackPressed();
+            return;
+        } else {
+            // This is not the first contact
+            decreaseContact();
+
+            // Set progress bar 0% and stop animator of the previous story
+            progressBarAnimator.cancel();
+            currentProgressBar.setProgress(0);
+            // Set current story
+            currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+            // Start current story
+            setCurrentStoryLayout();
+            startCurrentStory();
         }
+    }
 
-        public void onSwipeRight() {
-            isSwiping = true;
-            if (currentContactPos == 0) {
-                // This is the first contact
-                onBackPressed();
-                return;
-            } else {
-                // This is not the first contact
-                decreaseContact();
+    private void onSwipeLeft() {
+        isSwiping = true;
+        if (currentContactPos == (contacts.size() - 1)) {
+            // This is the last contact
+            onBackPressed();
+            return;
+        } else {
+            // This is not the last contact
+            increaseContact();
 
-                // Set progress bar 0% and stop animator of the previous story
-                progressBarAnimator.cancel();
-                currentProgressBar.setProgress(0);
-                // Set current story
-                currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-                // Start current story
-                setCurrentStoryLayout();
-                startCurrentStory();
-            }
+            // Set progress bar 100% and stop animator of the previous story
+            progressBarAnimator.cancel();
+            currentProgressBar.setProgress(0);
+            // Set current story
+            currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
+            // Start current story
+            setCurrentStoryLayout();
+            startCurrentStory();
         }
+    }
 
-        public void onSwipeLeft() {
-            isSwiping = true;
-            if (currentContactPos == (contacts.size() - 1)) {
-                // This is the last contact
-                onBackPressed();
-                return;
-            } else {
-                // This is not the last contact
-                increaseContact();
-
-                // Set progress bar 100% and stop animator of the previous story
-                progressBarAnimator.cancel();
-                currentProgressBar.setProgress(0);
-                // Set current story
-                currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
-                // Start current story
-                setCurrentStoryLayout();
-                startCurrentStory();
-            }
-        }
-
-        public void onSwipeBottom() {
-            isSwiping = true;
-            leaveActivity();
-        }
+    private void onSwipeBottom() {
+        isSwiping = true;
+        leaveActivity();
     }
 }
