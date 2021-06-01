@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ArchivedChatsActivity extends AppCompatActivity {
     //Toolbar
@@ -19,7 +20,7 @@ public class ArchivedChatsActivity extends AppCompatActivity {
     static RecyclerView archivedChatsRecView;
     static ArchivedChatsRecViewAdapter archivedChatsRecViewAdapter;
 
-    static ArrayList<Contact> contacts;
+    static ArrayList<Contact> archived_contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,11 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //RecyclerView
-        contacts = new ArrayList<>();
-        for (Contact c : MainActivity.archived_contacts) {
-            contacts.add(c);
-        }
+        archived_contacts = new ArrayList<>();
+        archived_contacts.addAll(MainActivity.archived_contacts);
 
         archivedChatsRecViewAdapter= new ArchivedChatsRecViewAdapter(this);
-        archivedChatsRecViewAdapter.setData(contacts);
+        archivedChatsRecViewAdapter.setData(archived_contacts);
 
         archivedChatsRecView=findViewById(R.id.archivedChatsRecView);
         archivedChatsRecView.setAdapter(archivedChatsRecViewAdapter);

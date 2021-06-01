@@ -52,7 +52,7 @@ public class TabChatFragment extends Fragment {
             archivedView.setText(archivedText);
         }
 
-        //When database is created
+        //When database is created need to do smth about it
         /*for (Contact c : contacts) {
             if (c.isArchived()) {
                 archivedChats.add(c);

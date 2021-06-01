@@ -13,7 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.ViewHolder>{
@@ -48,7 +53,14 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull ChatRecViewAdapter.ViewHolder holder, int position) {
         holder.txtNameContact.setText(contacts.get(position).getName());
-        holder.txtTime.setText("time");
+
+        //Setting time of last message
+        final Date date= contacts.get(position).getDate().getTime();
+        holder.txtTime.setText(new SimpleDateFormat("dd").format(date)+"/"
+        + new SimpleDateFormat("MM").format(date)+"/"
+        + new SimpleDateFormat("yyyy").format(date));
+
+
         holder.txtMessageContact.setText(contacts.get(position).getMessage());
         Glide.with(context)
                 .load(contacts.get(position).getProfilePicture())
@@ -80,6 +92,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 this.contacts.add(c);
             }
         }
+        Collections.sort(this.contacts, new ContactsDateComparator());
         notifyDataSetChanged();
     }
 
@@ -230,6 +243,13 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 view.setOnClickListener(new RemoveSelectedListener(views_holders.get(view)));
                 view.setOnLongClickListener(new LongRemoveSelectedListener(views_holders.get(view)));
             }
+        }
+    }
+
+    public class ContactsDateComparator implements Comparator<Contact> {
+        @Override
+        public int compare(Contact o1, Contact o2) {
+            return o1.getDate().compareTo(o2.getDate());
         }
     }
 }

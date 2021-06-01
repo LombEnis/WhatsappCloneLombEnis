@@ -1,6 +1,7 @@
 package com.example.whatsappclonelombenis;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Contact {
     private String profilePicture;
@@ -9,8 +10,8 @@ public class Contact {
     private String infoText;
     private ArrayList<String> status;
     private String message;
+    private Calendar date;
     private boolean isArchived;
-
 
     public Contact(String profilePicture, String name, int telNumber, String infoText, ArrayList<String> status) {
         this.profilePicture = profilePicture;
@@ -26,10 +27,11 @@ public class Contact {
         this.message=message;
     }
 
-    public Contact(String profilePicture, String name, String message, boolean isArchived) {
+    public Contact(String profilePicture, String name, String message, Calendar date, boolean isArchived) {
         this.profilePicture=profilePicture;
         this.name=name;
         this.message=message;
+        this.date=date;
         this.isArchived=isArchived;
     }
 
@@ -44,6 +46,14 @@ public class Contact {
         this.status = status;
     }
 
+
+    public Calendar getDate() {
+        return date;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
 
     public void setMessage(String message) {
         this.message = message;
