@@ -227,7 +227,7 @@ public class StatusActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     stopStory();
 
-                    Intent viewsIntent = new Intent(StatusActivity.this, StatusViewsActivity.class);
+                    Intent viewsIntent = new Intent(StatusActivity.this, MyStatusViewsActivity.class);
                     startActivity(viewsIntent);
                 }
             });

@@ -6,10 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import android.view.Menu;
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create StatusViewsActivity - test purposes
-        Intent viewsIntent = new Intent(this, StatusViewsActivity.class);
+        Intent viewsIntent = new Intent(this, MyStatusViewsActivity.class);
         startActivity(viewsIntent);
 
 
