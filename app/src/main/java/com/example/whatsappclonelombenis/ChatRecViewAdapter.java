@@ -81,7 +81,7 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                     + new SimpleDateFormat("yyyy").format(date));
         }
 
-        //The rest 
+        //The rest
         holder.txtMessageContact.setText(contacts.get(position).getMessage());
         Glide.with(context)
                 .load(contacts.get(position).getProfilePicture())

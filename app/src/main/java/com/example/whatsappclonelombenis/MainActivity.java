@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
             String archivedText= getResources().getString(R.string.archived)+" ("+ archived_contacts.size()+")";
             TabChatFragment.archivedView.setText(archivedText);
 
-            ChatRecViewAdapter.contacts.remove(i);
+            ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_contacts.get(view));
             i-=1;
         }
         closeChatContextualToolbar();
