@@ -55,12 +55,33 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         holder.txtNameContact.setText(contacts.get(position).getName());
 
         //Setting time of last message
-        final Date date= contacts.get(position).getDate().getTime();
-        holder.txtTime.setText(new SimpleDateFormat("dd").format(date)+"/"
-        + new SimpleDateFormat("MM").format(date)+"/"
-        + new SimpleDateFormat("yyyy").format(date));
+        Date date= contacts.get(position).getDate().getTime();
+        Calendar contactCalendar= contacts.get(position).getDate();
 
+        Calendar previousCalendar= Calendar.getInstance();
+        previousCalendar.add(Calendar.DATE, -1);
 
+        if (contactCalendar.get(Calendar.DAY_OF_MONTH)==Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+            Calendar timeCalendar= Calendar.getInstance();
+            timeCalendar.set(Calendar.HOUR_OF_DAY, contactCalendar.get(Calendar.HOUR_OF_DAY));
+            timeCalendar.set(Calendar.MINUTE, contactCalendar.get(Calendar.MINUTE));
+
+            Date timeDate= timeCalendar.getTime();
+
+            holder.txtTime.setText(new SimpleDateFormat("HH").format(timeDate)+":"+new SimpleDateFormat("mm").format(timeDate));
+        }
+        else if (contactCalendar.get(Calendar.DAY_OF_MONTH)==previousCalendar.get(Calendar.DAY_OF_MONTH)
+        && contactCalendar.get(Calendar.MONTH)==previousCalendar.get(Calendar.MONTH)
+        && contactCalendar.get(Calendar.YEAR)==previousCalendar.get(Calendar.YEAR)) {
+            holder.txtTime.setText(context.getResources().getString(R.string.yesterday));
+        }
+        else {
+            holder.txtTime.setText(new SimpleDateFormat("dd").format(date)+"/"
+                    + new SimpleDateFormat("MM").format(date)+"/"
+                    + new SimpleDateFormat("yyyy").format(date));
+        }
+
+        //The rest 
         holder.txtMessageContact.setText(contacts.get(position).getMessage());
         Glide.with(context)
                 .load(contacts.get(position).getProfilePicture())
