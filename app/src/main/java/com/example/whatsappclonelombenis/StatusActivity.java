@@ -8,7 +8,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.Animator;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -692,21 +694,49 @@ public class StatusActivity extends AppCompatActivity {
     private void openViewsDialog() {
         // Stop story
         stopStory();
-        // Open views dialog
-        viewsDialogRootLayout.setVisibility(View.VISIBLE);
-        // Darken background
-        backgroundImageView.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+        // Open views dialog with animation
+        ObjectAnimator viewsPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  0f, -viewsDialogRootLayout.getHeight());
+        viewsPosAnimation.setDuration(500);
+        viewsPosAnimation.start();
+
+        // Darken background with animation
+        ValueAnimator viewsColorAnimation = new ValueAnimator();
+        viewsColorAnimation.setIntValues(Color.rgb(255, 255, 255), Color.rgb(123, 123, 123));
+        viewsColorAnimation.setEvaluator(new ArgbEvaluator());
+        viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                backgroundImageView.setColorFilter((Integer)valueAnimator.getAnimatedValue(), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        });
+
+        viewsColorAnimation.setDuration(500);
+        viewsColorAnimation.start();
+
 
         isViewsDialogOpened = true;
     }
 
     private void closeViewsDialog() {
-        // Close views dialog
-        viewsDialogRootLayout.setVisibility(View.GONE);
-        // Remove dark filters from background
-        backgroundImageView.setColorFilter(null);
-        // Resume story
-        resumeStory();
+        // Close views dialog with animation
+        ObjectAnimator animation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  -viewsDialogRootLayout.getHeight(), 0f);
+        animation.setDuration(500);
+        animation.start();
+
+        // Darken background with animation
+        ValueAnimator viewsColorAnimation = new ValueAnimator();
+        viewsColorAnimation.setIntValues(Color.rgb(123, 123, 123), Color.rgb(255, 255, 255));
+        viewsColorAnimation.setEvaluator(new ArgbEvaluator());
+        viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                backgroundImageView.setColorFilter((Integer)valueAnimator.getAnimatedValue(), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        });
+
+        viewsColorAnimation.setDuration(500);
+        viewsColorAnimation.start();
 
         isViewsDialogOpened = false;
     }
@@ -814,9 +844,9 @@ public class StatusActivity extends AppCompatActivity {
                         }
                     } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
-                            onSwipeBottom();
+                            onSwipeDown();
                         } else {
-                            onSwipeTop();
+                            onSwipeUp();
                         }
                         result = true;
                     }
@@ -873,17 +903,18 @@ public class StatusActivity extends AppCompatActivity {
             }
         }
 
-        private void onSwipeTop() {
+        private void onSwipeUp() {
             isSwiping = true;
             if (!isViewsDialogOpened) {
                 openViewsDialog();
             }
         }
 
-        private void onSwipeBottom() {
+        private void onSwipeDown() {
             isSwiping = true;
             if (isViewsDialogOpened) {
                 closeViewsDialog();
+                resumeStory();
             } else {
                 leaveActivity();
             }
@@ -972,9 +1003,9 @@ public class StatusActivity extends AppCompatActivity {
                         }
                     } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
-                            onSwipeBottom();
+                            onSwipeDown();
                         } else {
-                            onSwipeTop();
+                            onSwipeUp();
                         }
                         result = true;
                     }
@@ -1031,11 +1062,11 @@ public class StatusActivity extends AppCompatActivity {
             }
         }
 
-        private void onSwipeTop() {
+        private void onSwipeUp() {
             // Open reply dialog
         }
 
-        private void onSwipeBottom() {
+        private void onSwipeDown() {
             isSwiping = true;
             leaveActivity();
         }
