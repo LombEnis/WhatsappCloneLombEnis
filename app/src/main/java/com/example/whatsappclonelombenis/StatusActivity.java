@@ -183,13 +183,12 @@ public class StatusActivity extends AppCompatActivity {
             rightButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (!isViewsDialogScrolling) {
+                    if (!isViewsDialogOpened && !isViewsDialogScrolling) {
                         progressLinearLayout.setVisibility(View.GONE);
                         actionBar.setVisibility(View.GONE);
                         viewsButton.setVisibility(View.GONE);
-
-                        isOnLongClickPressed = true;
                     }
+                    isOnLongClickPressed = true;
 
                     return false;
                 }
@@ -198,13 +197,12 @@ public class StatusActivity extends AppCompatActivity {
             leftButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (!isViewsDialogScrolling) {
+                    if (!isViewsDialogOpened && !isViewsDialogScrolling) {
                         progressLinearLayout.setVisibility(View.GONE);
                         actionBar.setVisibility(View.GONE);
                         viewsButton.setVisibility(View.GONE);
-
-                        isOnLongClickPressed = true;
                     }
+                    isOnLongClickPressed = true;
 
                     return false;
                 }
@@ -710,7 +708,9 @@ public class StatusActivity extends AppCompatActivity {
 
         // Darken background with animation
         ValueAnimator viewsColorAnimation = new ValueAnimator();
-        viewsColorAnimation.setIntValues(Color.rgb(255, 255, 255), Color.rgb(123, 123, 123));
+        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
+        int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
+        viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(123, 123, 123));
         viewsColorAnimation.setEvaluator(new ArgbEvaluator());
         viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -734,7 +734,9 @@ public class StatusActivity extends AppCompatActivity {
 
         // Darken background with animation
         ValueAnimator viewsColorAnimation = new ValueAnimator();
-        viewsColorAnimation.setIntValues(Color.rgb(123, 123, 123), Color.rgb(255, 255, 255));
+        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
+        int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
+        viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(255, 255, 255));
         viewsColorAnimation.setEvaluator(new ArgbEvaluator());
         viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -767,6 +769,12 @@ public class StatusActivity extends AppCompatActivity {
         private float startViewY;
         private float startY;
 
+        // ViewsDialog variables
+        float viewsDialogDiffY;
+        float viewsDialogY;
+        float viewsDialogDefaultY;
+        private float viewsDialogYFromBottom;
+
         public OnMyStatusTouchListener(Context context, View view) {
             gestureDetector = new GestureDetector(context, new GestureListener(view));
         }
@@ -787,11 +795,12 @@ public class StatusActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_MOVE:
                     isViewsDialogScrolling = true;
                     // Get scroll Y length and viewsDialog new position
-                    float viewsDialogDiffY = startY - event.getRawY();
-                    float viewsDialogY = startViewY - viewsDialogDiffY;
+                    viewsDialogDiffY = startY - event.getRawY();
+                    viewsDialogY = startViewY - viewsDialogDiffY;
                     // Get viewsDialog default position when is open
-                    float viewsDialogDefaultY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
+                    viewsDialogDefaultY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
 
+                    // Change position for viewsDialog
                     if (viewsDialogY > viewsDialogDefaultY && viewsDialogY < App.fullScreenHeight) {
                         // ViewsDialog is being opened
                         // Set viewsDialog to the current position
@@ -799,6 +808,11 @@ public class StatusActivity extends AppCompatActivity {
                                 .y(viewsDialogY)
                                 .setDuration(0)
                                 .start();
+                        // Darken background
+                        viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
+                        float viewsDialogOpenPercentage = viewsDialogYFromBottom / viewsDialogRootLayout.getHeight();
+                        int colorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
+                        backgroundImageView.setColorFilter(Color.rgb(colorFilterValues, colorFilterValues, colorFilterValues), android.graphics.PorterDuff.Mode.MULTIPLY);
                     } else if (viewsDialogY < viewsDialogDefaultY) {
                         // ViewsDialog is fully open
                         // Set viewsDialog to the max position
@@ -806,6 +820,7 @@ public class StatusActivity extends AppCompatActivity {
                                 .y(viewsDialogDefaultY)
                                 .setDuration(0)
                                 .start();
+                        isViewsDialogOpened = true;
                     } else if (viewsDialogY > App.fullScreenHeight) {
                         // ViewsDialog is fully closed
                         // Set viewsDialog to the min position
@@ -813,7 +828,9 @@ public class StatusActivity extends AppCompatActivity {
                                 .y(App.fullScreenHeight)
                                 .setDuration(0)
                                 .start();
+                        isViewsDialogOpened = false;
                     }
+
                     break;
             }
 
@@ -821,17 +838,21 @@ public class StatusActivity extends AppCompatActivity {
                 // When the touch is released
                 if (isViewsDialogScrolling) {
                     // ViewsDialog was scrolling
-                    float viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
-                    if (viewsDialogYFromBottom >= (viewsDialogRootLayout.getHeight() / 2)) {
-                        // ViewsDialog was more than half open - full open
-                        openViewsDialog(-viewsDialogYFromBottom);
-                    } else {
-                        // ViewsDialog was less than half open - full close
-                        closeViewsDialog(-viewsDialogYFromBottom);
+                    isViewsDialogScrolling = false;
+                    if (viewsDialogY > viewsDialogDefaultY && viewsDialogY < App.fullScreenHeight) {
+                        // The ViewsDialog is neither open nor closed
+                        viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
+                        if (viewsDialogYFromBottom >= (viewsDialogRootLayout.getHeight() / 2)) {
+                            // ViewsDialog was more than half open - full open
+                            openViewsDialog(-viewsDialogYFromBottom);
+                        } else {
+                            // ViewsDialog was less than half open - full close
+                            closeViewsDialog(-viewsDialogYFromBottom);
+                        }
                     }
                 } else {
                     // ViewsDialog is not scrolling
-                    if (isOnLongClickPressed) {
+                    if (isOnLongClickPressed && !isViewsDialogOpened) {
                         // Exit from long click
                         resumeStory();
 
@@ -840,6 +861,9 @@ public class StatusActivity extends AppCompatActivity {
                         viewsButton.setVisibility(View.VISIBLE);
 
                         isStoryStopped = false;
+                        isOnLongClickPressed = false;
+                    } else if (isOnLongClickPressed) {
+                        // Exit from long click when ViewsDialog is open
                         isOnLongClickPressed = false;
                     } else {
                         // Exit from short click
