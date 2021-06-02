@@ -2,6 +2,7 @@ package com.example.whatsappclonelombenis;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.RippleDrawable;
@@ -18,14 +19,31 @@ import java.util.Calendar;
 public class App extends Application {
     public static Context context;
 
+    // Contacts
     public static Contact myContact;
     public static ArrayList<Contact> contacts;
+
+    // Device variables
+    public static int screenHeight;
+    public static int statusBarHeight;
+    public static int navigationBarHeight;
+    public static int fullScreenHeight;
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
 
+        // Create device variables
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int navigationBarResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        navigationBarHeight = getResources().getDimensionPixelSize(navigationBarResourceId);
+
+        int statusBarResourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        statusBarHeight = getResources().getDimensionPixelSize(statusBarResourceId);
+
+        fullScreenHeight = screenHeight + navigationBarHeight + statusBarHeight + 36;
 
         // Create contacts
         String sampleImageUrlString = "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale";

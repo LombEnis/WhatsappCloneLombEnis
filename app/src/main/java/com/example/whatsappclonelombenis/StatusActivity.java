@@ -14,12 +14,15 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,6 +90,7 @@ public class StatusActivity extends AppCompatActivity {
 
     // Views dialog variables
     private boolean isViewsDialogOpened;
+    private boolean isViewsDialogScrolling;
 
 
     @Override
@@ -161,6 +165,7 @@ public class StatusActivity extends AppCompatActivity {
             viewsButton = findViewById(R.id.views_button);
             viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
             isViewsDialogOpened = false;
+            isViewsDialogScrolling = false;
 
             viewsButton.setText(Integer.toString(currentStory.getViews()));
 
@@ -169,7 +174,8 @@ public class StatusActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // Views button click
-                    openViewsDialog();
+                    stopStory();
+                    openViewsDialog(0f);
                 }
             });
 
@@ -177,11 +183,14 @@ public class StatusActivity extends AppCompatActivity {
             rightButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    progressLinearLayout.setVisibility(View.GONE);
-                    actionBar.setVisibility(View.GONE);
-                    viewsButton.setVisibility(View.GONE);
+                    if (!isViewsDialogScrolling) {
+                        progressLinearLayout.setVisibility(View.GONE);
+                        actionBar.setVisibility(View.GONE);
+                        viewsButton.setVisibility(View.GONE);
 
-                    isOnLongClickPressed = true;
+                        isOnLongClickPressed = true;
+                    }
+
                     return false;
                 }
             });
@@ -189,11 +198,13 @@ public class StatusActivity extends AppCompatActivity {
             leftButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    progressLinearLayout.setVisibility(View.GONE);
-                    actionBar.setVisibility(View.GONE);
-                    viewsButton.setVisibility(View.GONE);
+                    if (!isViewsDialogScrolling) {
+                        progressLinearLayout.setVisibility(View.GONE);
+                        actionBar.setVisibility(View.GONE);
+                        viewsButton.setVisibility(View.GONE);
 
-                    isOnLongClickPressed = true;
+                        isOnLongClickPressed = true;
+                    }
 
                     return false;
                 }
@@ -691,12 +702,9 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     // Views dialog methods
-    private void openViewsDialog() {
-        // Stop story
-        stopStory();
-
+    private void openViewsDialog(float startViewsDialogPos) {
         // Open views dialog with animation
-        ObjectAnimator viewsPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  0f, -viewsDialogRootLayout.getHeight());
+        ObjectAnimator viewsPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
         viewsPosAnimation.setDuration(500);
         viewsPosAnimation.start();
 
@@ -714,13 +722,13 @@ public class StatusActivity extends AppCompatActivity {
         viewsColorAnimation.setDuration(500);
         viewsColorAnimation.start();
 
-
+        isViewsDialogScrolling = false;
         isViewsDialogOpened = true;
     }
 
-    private void closeViewsDialog() {
+    private void closeViewsDialog(float startViewsDialogPos) {
         // Close views dialog with animation
-        ObjectAnimator animation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  -viewsDialogRootLayout.getHeight(), 0f);
+        ObjectAnimator animation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, 0f);
         animation.setDuration(500);
         animation.start();
 
@@ -738,6 +746,7 @@ public class StatusActivity extends AppCompatActivity {
         viewsColorAnimation.setDuration(500);
         viewsColorAnimation.start();
 
+        isViewsDialogScrolling = false;
         isViewsDialogOpened = false;
     }
 
@@ -755,6 +764,9 @@ public class StatusActivity extends AppCompatActivity {
     class OnMyStatusTouchListener implements View.OnTouchListener {
         private final GestureDetector gestureDetector;
 
+        private float startViewY;
+        private float startY;
+
         public OnMyStatusTouchListener(Context context, View view) {
             gestureDetector = new GestureDetector(context, new GestureListener(view));
         }
@@ -763,39 +775,94 @@ public class StatusActivity extends AppCompatActivity {
         public boolean onTouch(View view, MotionEvent event) {
             gestureDetector.onTouchEvent(event);
 
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Get start Y position of viewsDialog and finger
+                    startViewY = viewsDialogRootLayout.getY();
+                    startY = event.getRawY();
+                    // Stop story when the finger is touching the screen
+                    stopStory();
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    isViewsDialogScrolling = true;
+                    // Get scroll Y length and viewsDialog new position
+                    float viewsDialogDiffY = startY - event.getRawY();
+                    float viewsDialogY = startViewY - viewsDialogDiffY;
+                    // Get viewsDialog default position when is open
+                    float viewsDialogDefaultY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
+
+                    if (viewsDialogY > viewsDialogDefaultY && viewsDialogY < App.fullScreenHeight) {
+                        // ViewsDialog is being opened
+                        // Set viewsDialog to the current position
+                        viewsDialogRootLayout.animate()
+                                .y(viewsDialogY)
+                                .setDuration(0)
+                                .start();
+                    } else if (viewsDialogY < viewsDialogDefaultY) {
+                        // ViewsDialog is fully open
+                        // Set viewsDialog to the max position
+                        viewsDialogRootLayout.animate()
+                                .y(viewsDialogDefaultY)
+                                .setDuration(0)
+                                .start();
+                    } else if (viewsDialogY > App.fullScreenHeight) {
+                        // ViewsDialog is fully closed
+                        // Set viewsDialog to the min position
+                        viewsDialogRootLayout.animate()
+                                .y(App.fullScreenHeight)
+                                .setDuration(0)
+                                .start();
+                    }
+                    break;
+            }
+
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 // When the touch is released
-                if (isOnLongClickPressed) {
-                    // Exit from long click
-                    resumeStory();
-
-                    progressLinearLayout.setVisibility(View.VISIBLE);
-                    actionBar.setVisibility(View.VISIBLE);
-                    viewsButton.setVisibility(View.VISIBLE);
-
-                    isStoryStopped = false;
-                    isOnLongClickPressed = false;
+                if (isViewsDialogScrolling) {
+                    // ViewsDialog was scrolling
+                    float viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
+                    if (viewsDialogYFromBottom >= (viewsDialogRootLayout.getHeight() / 2)) {
+                        // ViewsDialog was more than half open - full open
+                        openViewsDialog(-viewsDialogYFromBottom);
+                    } else {
+                        // ViewsDialog was less than half open - full close
+                        closeViewsDialog(-viewsDialogYFromBottom);
+                    }
                 } else {
-                    // Exit from short click
-                    if (!isSwiping) {
-                        if (isViewsDialogOpened) {
-                            // Views dialog is opened
-                            Rect viewRect = new Rect();
-                            viewsDialogRootLayout.getGlobalVisibleRect(viewRect);
-                            if (!viewRect.contains((int) event.getRawX(), (int) event.getRawY())) {
-                                // Touch outside of views dialog
-                                closeViewsDialog();
+                    // ViewsDialog is not scrolling
+                    if (isOnLongClickPressed) {
+                        // Exit from long click
+                        resumeStory();
+
+                        progressLinearLayout.setVisibility(View.VISIBLE);
+                        actionBar.setVisibility(View.VISIBLE);
+                        viewsButton.setVisibility(View.VISIBLE);
+
+                        isStoryStopped = false;
+                        isOnLongClickPressed = false;
+                    } else {
+                        // Exit from short click
+                        if (!isSwiping) {
+                            if (isViewsDialogOpened) {
+                                // Views dialog is opened
+                                Rect viewRect = new Rect();
+                                viewsDialogRootLayout.getGlobalVisibleRect(viewRect);
+                                if (!viewRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                                    // Touch outside of viewsDialog
+                                    closeViewsDialog(-viewsDialogRootLayout.getHeight());
+                                }
+                            }
+
+                            if (view.getId() == R.id.right_button) {
+                                nextStory();
+                            } else {
+                                previousStory();
                             }
                         }
-
-                        if (view.getId() == R.id.right_button) {
-                            nextStory();
-                        } else {
-                            previousStory();
-                        }
+                        isSwiping = false;
+                        isStoryStopped = false;
                     }
-                    isSwiping = false;
-                    isStoryStopped = false;
                 }
             } else if (!isStoryStopped) {
                 // Click
@@ -845,8 +912,6 @@ public class StatusActivity extends AppCompatActivity {
                     } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
                             onSwipeDown();
-                        } else {
-                            onSwipeUp();
                         }
                         result = true;
                     }
@@ -903,17 +968,10 @@ public class StatusActivity extends AppCompatActivity {
             }
         }
 
-        private void onSwipeUp() {
-            isSwiping = true;
-            if (!isViewsDialogOpened) {
-                openViewsDialog();
-            }
-        }
-
         private void onSwipeDown() {
             isSwiping = true;
             if (isViewsDialogOpened) {
-                closeViewsDialog();
+                closeViewsDialog(-viewsDialogRootLayout.getHeight());
                 resumeStory();
             } else {
                 leaveActivity();
@@ -1004,8 +1062,6 @@ public class StatusActivity extends AppCompatActivity {
                     } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
                             onSwipeDown();
-                        } else {
-                            onSwipeUp();
                         }
                         result = true;
                     }
@@ -1060,10 +1116,6 @@ public class StatusActivity extends AppCompatActivity {
                 setCurrentStoryLayout();
                 startCurrentStory();
             }
-        }
-
-        private void onSwipeUp() {
-            // Open reply dialog
         }
 
         private void onSwipeDown() {
