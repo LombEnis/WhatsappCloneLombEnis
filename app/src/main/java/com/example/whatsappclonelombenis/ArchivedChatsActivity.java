@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ArchivedChatsActivity extends AppCompatActivity {
     //Toolbar
-    public Toolbar toolbar;
+    static Toolbar toolbar;
+    static Toolbar contextualToolbar;
 
     //RecyclerView
     static RecyclerView archivedChatsRecView;
@@ -26,6 +28,25 @@ public class ArchivedChatsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archived_chats);
+
+        //Contextual toolbar
+        contextualToolbar=findViewById(R.id.archivedChatsContextualToolbar);
+        contextualToolbar.inflateMenu(R.menu.archived_chats_contextual_action_bar);
+        contextualToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbar.setVisibility(View.VISIBLE);
+                contextualToolbar.setVisibility(View.GONE);
+
+                ArchivedChatsRecViewAdapter.views.clear();
+                archivedChatsRecView.setAdapter(null);
+                archivedChatsRecView.setAdapter(new ArchivedChatsRecViewAdapter(v.getContext()));
+
+                ArchivedChatsRecViewAdapter.selected_views.clear();
+                ArchivedChatsRecViewAdapter.selected_views_contacts.clear();
+            }
+        });
 
         toolbar=findViewById(R.id.archivedChatsToolbar);
         setSupportActionBar(toolbar);
@@ -43,7 +64,6 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         archivedChatsRecView=findViewById(R.id.archivedChatsRecView);
         archivedChatsRecView.setAdapter(archivedChatsRecViewAdapter);
         archivedChatsRecView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override

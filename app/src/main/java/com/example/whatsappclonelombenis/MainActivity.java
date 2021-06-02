@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //Chat Contextual Toolbar
         chatContextualToolbar= findViewById(R.id.chatContextualToolbar);
         chatContextualToolbar.inflateMenu(R.menu.chat_contextual_action_bar);

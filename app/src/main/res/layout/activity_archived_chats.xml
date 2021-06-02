@@ -15,10 +15,20 @@
         app:title="@string/archived_chats"
         android:id="@+id/archivedChatsToolbar"/>
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/archivedChatsToolbar"
+        android:background="@color/contextual_background_color"
+        android:theme="@style/AppTheme.Toolbar"
+        app:titleTextColor="?attr/colorOnPrimary"
+        android:id="@+id/archivedChatsContextualToolbar"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/archivedChatsToolbar"
+        android:layout_below="@id/archivedChatsContextualToolbar"
         android:id="@+id/archivedChatsRecView" />
 
 </RelativeLayout>

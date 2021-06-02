@@ -25,7 +25,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     private static Context context;
 
     static ArrayList<Contact> contacts= new ArrayList<>();
-    static ArrayList<Contact> not_archived_contacts= new ArrayList<>();
 
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
@@ -87,8 +86,9 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 .load(contacts.get(position).getProfilePicture())
                 .circleCrop()
                 .into(holder.profileImg);
-        View view= views.get(holder.getAdapterPosition());
 
+        //Saving view and corresponding holder
+        View view= views.get(holder.getAdapterPosition());
         views_holders.put(view, holder);
 
         //Click listeners

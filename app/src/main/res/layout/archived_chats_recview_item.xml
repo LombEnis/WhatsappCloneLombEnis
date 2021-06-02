@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:background="@drawable/grey_ripple_rectangle_transparent">
 
     <ImageView
         android:id="@+id/archivedChatsProfileImg"
@@ -25,7 +26,7 @@
         app:layout_constraintStart_toStartOf="@+id/archivedChatsProfileImg"
         app:layout_constraintTop_toTopOf="@+id/archivedChatsProfileImg"
         app:srcCompat="@drawable/ic_check"
-        android:id="@+id/archivedChatsSelectedCheck"
+        android:id="@+id/archivedChatSelectedCheck"
         android:visibility="gone"/>
 
     <TextView
