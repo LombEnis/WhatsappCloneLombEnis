@@ -2,24 +2,27 @@ package com.example.whatsappclonelombenis;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Story {
+    // Date
     private Calendar date;
+    // Layout
     private int backgroundColorResource;
     private String backgroundImageUrlString;
     private String mainTextString;
     private String captionTextString;
+    // Views
+    private ArrayList<Contact> viewsContacts;
 
     private Bitmap storyPreviewBitmap;
     private StatusActivity.StoryProgressBar progressBar = null;
 
-    private boolean isMyStory;
-    private boolean seen;
-    private int views;
+    private boolean isSeen;
 
-    // Main constructor
-    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, boolean isMyStory) {
+    // Story constructor
+    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
         this.date = date;
         this.backgroundColorResource = backgroundColorResource;
         this.backgroundImageUrlString = backgroundImageString;
@@ -27,12 +30,18 @@ public class Story {
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
 
-        this.isMyStory = isMyStory;
-        if (isMyStory) {
-            views = 0;
-        } else {
-            this.seen = false;
-        }
+        this.isSeen = false;
+    }
+
+    // My story constructor
+    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, ArrayList<Contact> viewsContacts) {
+        this.date = date;
+        this.backgroundColorResource = backgroundColorResource;
+        this.backgroundImageUrlString = backgroundImageString;
+        this.mainTextString = mainTextString;
+        this.captionTextString = captionTextString;
+        this.storyPreviewBitmap = storyPreviewBitmap;
+        this.viewsContacts = viewsContacts;
     }
 
     // Getter and setter
@@ -93,18 +102,26 @@ public class Story {
     }
 
     public void setSeen(boolean seen) {
-        this.seen = seen;
+        this.isSeen = seen;
     }
 
     public boolean isSeen() {
-        return this.seen;
+        return this.isSeen;
     }
 
-    public int getViews() {
-        return views;
+    public String getBackgroundImageUrlString() {
+        return backgroundImageUrlString;
     }
 
-    public void addView() {
-        this.views++;
+    public void setBackgroundImageUrlString(String backgroundImageUrlString) {
+        this.backgroundImageUrlString = backgroundImageUrlString;
+    }
+
+    public ArrayList<Contact> getViewsContacts() {
+        return viewsContacts;
+    }
+
+    public void addViewsContact(Contact viewsContact) {
+        this.viewsContacts.add(viewsContact);
     }
 }

@@ -47,7 +47,7 @@ public class MyStatusRecViewAdapter extends RecyclerView.Adapter<MyStatusRecView
 
         // Set title text
         holder.titleTextView.setText(context.getString(R.string.my_status_story_views,
-                currentStory.getViews()));
+                currentStory.getViewsContacts().size()));
 
         // Set subtitle text
         holder.subtitleTextView.setText(App.getDateString(currentStory.getDate()));

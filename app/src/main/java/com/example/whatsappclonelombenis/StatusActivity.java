@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
@@ -91,7 +92,10 @@ public class StatusActivity extends AppCompatActivity {
     // Views dialog variables
     private boolean isViewsDialogOpened;
     private boolean isViewsDialogScrolling;
-
+    float viewsDialogOpenPercentage;
+    private float viewsDialogOpenY;
+    private float viewsButtonClosedY;
+    private float viewsButtonOpenY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +171,23 @@ public class StatusActivity extends AppCompatActivity {
             isViewsDialogOpened = false;
             isViewsDialogScrolling = false;
 
-            viewsButton.setText(Integer.toString(currentStory.getViews()));
+            rootRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            // Layout creation completed
+                            rootRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                            // Get ViewsDialog default position when is open
+                            viewsDialogOpenY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
+                            // Get ViewsButton default position when ViewsDialog is open
+                            viewsButtonClosedY = viewsButton.getY();
+                            viewsButtonOpenY = viewsDialogOpenY - (App.fullScreenHeight - viewsButtonClosedY);
+                        }
+                    });
+
+            // Set views button text
+            viewsButton.setText(Integer.toString(currentStory.getViewsContacts().size()));
 
             // Open views dialog on views button click
             viewsButton.setOnClickListener(new View.OnClickListener() {
@@ -708,10 +728,20 @@ public class StatusActivity extends AppCompatActivity {
     private void openViewsDialog(float startViewsDialogPos) {
         float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
 
-        // Open views dialog with animation
-        ObjectAnimator viewsPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
-        viewsPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
-        viewsPosAnimation.start();
+        // Open ViewsDialog with animation
+        ObjectAnimator viewsDialogPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
+        viewsDialogPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
+        viewsDialogPosAnimation.start();
+
+        // Open ViewsButton with animation
+        ObjectAnimator viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, -viewsDialogRootLayout.getHeight());
+        viewsButtonPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
+        viewsButtonPosAnimation.start();
+
+        // Disappear ViewsButton with animation
+        ObjectAnimator viewsButtonAlphaAnimation = ObjectAnimator.ofFloat(viewsButton, "alpha", 1 - viewsDialogOpenPercentage, 0);
+        viewsButtonAlphaAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
+        viewsButtonAlphaAnimation.start();
 
         // Darken background with animation
         ValueAnimator viewsColorAnimation = new ValueAnimator();
@@ -725,7 +755,7 @@ public class StatusActivity extends AppCompatActivity {
             }
         });
 
-        viewsColorAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
+        viewsColorAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
         viewsColorAnimation.start();
 
         isViewsDialogScrolling = false;
@@ -733,14 +763,24 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     private void closeViewsDialog(float startViewsDialogPos) {
-        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
+        viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
 
         // Close views dialog with animation
         ObjectAnimator animation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, 0f);
         animation.setDuration((int) (500 * viewsDialogOpenPercentage));
         animation.start();
 
-        // Darken background with animation
+        // Close ViewsButton with animation
+        ObjectAnimator viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, 0f);
+        viewsButtonPosAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
+        viewsButtonPosAnimation.start();
+
+        // Appear ViewsButton with animation
+        ObjectAnimator viewsButtonAlphaAnimation = ObjectAnimator.ofFloat(viewsButton, "alpha", 1 - viewsDialogOpenPercentage, 1);
+        viewsButtonAlphaAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
+        viewsButtonAlphaAnimation.start();
+
+        // Delete darken background with animation
         ValueAnimator viewsColorAnimation = new ValueAnimator();
         int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
         viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(255, 255, 255));
@@ -773,14 +813,17 @@ public class StatusActivity extends AppCompatActivity {
     class OnMyStatusTouchListener implements View.OnTouchListener {
         private final GestureDetector gestureDetector;
 
-        private float startViewY;
         private float startY;
+        float moveDiffY;
 
-        // ViewsDialog variables
-        float viewsDialogDiffY;
+        // ViewsDialog move variables
+        private float startViewsDialogY;
         float viewsDialogY;
-        float viewsDialogDefaultY;
         private float viewsDialogYFromBottom;
+
+        // ViewsButton move variables
+        private float startViewsButtonY;
+        private float viewsButtonY;
 
         public OnMyStatusTouchListener(Context context, View view) {
             gestureDetector = new GestureDetector(context, new GestureListener(view));
@@ -792,9 +835,10 @@ public class StatusActivity extends AppCompatActivity {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Get start Y position of viewsDialog and finger
-                    startViewY = viewsDialogRootLayout.getY();
+                    // Get start Y position of finger and viewsDialog
                     startY = event.getRawY();
+                    startViewsDialogY = viewsDialogRootLayout.getY();
+                    startViewsButtonY = viewsButton.getY();
                     // Stop story when the finger is touching the screen
                     stopStory();
                     break;
@@ -802,41 +846,45 @@ public class StatusActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_MOVE:
                     isViewsDialogScrolling = true;
                     // Get scroll Y length and viewsDialog new position
-                    viewsDialogDiffY = startY - event.getRawY();
-                    viewsDialogY = startViewY - viewsDialogDiffY;
-                    // Get viewsDialog default position when is open
-                    viewsDialogDefaultY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
+                    moveDiffY = startY - event.getRawY();
+                    viewsDialogY = startViewsDialogY - moveDiffY;
+                    viewsButtonY = startViewsButtonY - moveDiffY;
 
                     // Change position for viewsDialog
-                    if (viewsDialogY > viewsDialogDefaultY && viewsDialogY < App.fullScreenHeight) {
+                    if (viewsDialogY > viewsDialogOpenY && viewsDialogY < App.fullScreenHeight) {
                         // ViewsDialog is being opened
-                        // Set viewsDialog to the current position
-                        viewsDialogRootLayout.animate()
-                                .y(viewsDialogY)
-                                .setDuration(0)
-                                .start();
+                        viewsDialogOpenPercentage = (App.fullScreenHeight - viewsDialogY) /
+                                (App.fullScreenHeight - viewsDialogOpenY);
+                        // Set ViewsDialog to the current position
+                        viewsDialogRootLayout.setY(viewsDialogY);
+                        // Set ViewsButton to the current position
+                        viewsButton.setY(viewsButtonY);
+                        // Set alpha for ViewsButton for the current position
+                        viewsButton.setAlpha(1 - viewsDialogOpenPercentage);
                         // Darken background
                         viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
                         float viewsDialogOpenPercentage = viewsDialogYFromBottom / viewsDialogRootLayout.getHeight();
                         int colorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
                         backgroundImageView.setColorFilter(Color.rgb(colorFilterValues, colorFilterValues, colorFilterValues), android.graphics.PorterDuff.Mode.MULTIPLY);
-                    } else if (viewsDialogY < viewsDialogDefaultY) {
+                    } else if (viewsDialogY < viewsDialogOpenY) {
                         // ViewsDialog is fully open
                         // Set viewsDialog to the max position
-                        viewsDialogRootLayout.animate()
-                                .y(viewsDialogDefaultY)
-                                .setDuration(0)
-                                .start();
+                        viewsDialogRootLayout.setY(viewsDialogOpenY);
+                        // Set viewsButton to the max position
+                        viewsButton.setY(viewsButtonOpenY);
+                        // Set alpha for ViewsButton to the max value
+                        viewsButton.setAlpha(0);
                         // Set isViewsDialogOpen to true and isOnLongClickPressed to false
                         isViewsDialogOpened = true;
                         isOnLongClickPressed = false;
                     } else if (viewsDialogY > App.fullScreenHeight) {
                         // ViewsDialog is fully closed
                         // Set viewsDialog to the min position
-                        viewsDialogRootLayout.animate()
-                                .y(App.fullScreenHeight)
-                                .setDuration(0)
-                                .start();
+                        viewsDialogRootLayout.setY(App.fullScreenHeight);
+                        // Set viewsButton to the min position
+                        viewsButton.setY(viewsButtonClosedY);
+                        // Set alpha for ViewsButton to the min value
+                        viewsButton.setAlpha(1);
                         // Set isViewsDialogOpen to false and resume story
                         isViewsDialogOpened = false;
                         resumeStory();
@@ -850,7 +898,7 @@ public class StatusActivity extends AppCompatActivity {
                 if (isViewsDialogScrolling) {
                     // ViewsDialog was scrolling
                     isViewsDialogScrolling = false;
-                    if (viewsDialogY > viewsDialogDefaultY && viewsDialogY < App.fullScreenHeight) {
+                    if (viewsDialogY > viewsDialogOpenY && viewsDialogY < App.fullScreenHeight) {
                         // The ViewsDialog is neither open nor closed
                         viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
                         if (viewsDialogYFromBottom >= (viewsDialogRootLayout.getHeight() / 2)) {
