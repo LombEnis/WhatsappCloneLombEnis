@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
         //I reinstantiate the adapter instead of passing the onLongClickListener because I can't get the view's holder
         ChatRecViewAdapter.views.clear();
+        ChatRecViewAdapter.views_holders.clear();
         TabChatFragment.chatRecView.setAdapter(null);
         TabChatFragment.chatRecView.setAdapter(new ChatRecViewAdapter(this));
 
@@ -317,10 +318,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onArchiveButtonClick(MenuItem item) {
-        int i=ChatRecViewAdapter.selected_views_contacts.size()-1;
         for (View view : ChatRecViewAdapter.selected_views) {
-            //TabChatFragment.archivedViews.add(view);
-
             ChatRecViewAdapter.selected_views_contacts.get(view).setArchived(true);
             archived_contacts.add(ChatRecViewAdapter.selected_views_contacts.get(view));
 
@@ -329,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
             TabChatFragment.archivedView.setText(archivedText);
 
             ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_contacts.get(view));
-            i-=1;
+            //ArchivedChatsRecViewAdapter.views_holders.put(view, ChatRecViewAdapter.views_holders.get(view));
         }
         closeChatContextualToolbar();
     }

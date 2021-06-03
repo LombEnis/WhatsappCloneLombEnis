@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,7 +32,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
     static HashMap<View, Contact> selected_views_contacts= new HashMap<View, Contact>();
     static HashMap<View, ViewHolder> selected_views_holders= new HashMap<View, ViewHolder>();
-    static HashMap<View, ViewHolder> views_holders= new HashMap<View, ViewHolder>();
 
     static ContextualToolbarListener contextualToolbarListener;
     static RemoveSelectedListener removeSelectedListener;
@@ -87,18 +87,13 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 .circleCrop()
                 .into(holder.profileImg);
 
-        //Saving view and corresponding holder
-        View view= views.get(holder.getAdapterPosition());
-        views_holders.put(view, holder);
-
         //Click listeners
-        contextualToolbarListener= new ContextualToolbarListener(holder);
-        removeSelectedListener= new RemoveSelectedListener(holder);
-        selectListener= new SelectListener(holder);
-        longRemoveSelectedListener= new LongRemoveSelectedListener(holder);
+        contextualToolbarListener= new ContextualToolbarListener(position);
+        removeSelectedListener= new RemoveSelectedListener(position);
+        selectListener= new SelectListener(position);
+        longRemoveSelectedListener= new LongRemoveSelectedListener(position);
 
-        view.setOnLongClickListener(contextualToolbarListener);
-
+        holder.chatLayout.setOnLongClickListener(contextualToolbarListener);
     }
 
     @Override
@@ -120,27 +115,29 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtNameContact, txtMessageContact, txtTime;
         private ImageView profileImg;
+        private ConstraintLayout chatLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNameContact= itemView.findViewById(R.id.chatContactName);
             txtMessageContact= itemView.findViewById(R.id.chatMessage);
             txtTime= itemView.findViewById(R.id.chatTime);
             profileImg= itemView.findViewById(R.id.chatProfileImg);
+            chatLayout= itemView.findViewById(R.id.chatLayout);
         }
     }
 
     public static class ContextualToolbarListener implements View.OnLongClickListener {
-        ViewHolder holder;
+        int position;
 
-        public ContextualToolbarListener(ViewHolder holder) {
-            this.holder = holder;
+        public ContextualToolbarListener(int position) {
+            this.position = position;
         }
 
         @Override
         public boolean onLongClick(View v) {
             selected_views.add(v);
-            selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
-            selected_views_holders.put(v, holder);
+            selected_views_contacts.put(v, contacts.get(position));
+            //selected_views_holders.put(v, holder);
 
             View check = v.findViewById(R.id.chatSelectedCheck);
             check.setVisibility(View.VISIBLE);
@@ -154,11 +151,11 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
             for (View view:views) {
                 if (selected_views.contains(view)) {
-                    view.setOnClickListener(new RemoveSelectedListener(views_holders.get(view)));
-                    view.setOnLongClickListener(new LongRemoveSelectedListener(views_holders.get(view)));
+                    view.setOnClickListener(new RemoveSelectedListener(position));
+                    view.setOnLongClickListener(new LongRemoveSelectedListener(position));
                 }
                 else {
-                    view.setOnClickListener(new SelectListener(views_holders.get(view)));
+                    view.setOnClickListener(new SelectListener(position));
                 }
             }
             return true;
@@ -166,10 +163,10 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class RemoveSelectedListener implements View.OnClickListener {
-        ViewHolder holder;
+        int position;
 
-        public RemoveSelectedListener(ViewHolder holder) {
-            this.holder = holder;
+        public RemoveSelectedListener(int position) {
+            this.position = position;
         }
 
         @Override
@@ -190,12 +187,12 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             }
 
             if (selected_views.size()!=0) {
-                v.setOnClickListener(new SelectListener(views_holders.get(v)));
-                v.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(v)));
+                v.setOnClickListener(new SelectListener(position));
+                v.setOnLongClickListener(new ContextualToolbarListener(position));
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
-                    view.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(view)));
+                    view.setOnLongClickListener(new ContextualToolbarListener(position));
                 }
             }
 
@@ -203,10 +200,10 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class LongRemoveSelectedListener implements View.OnLongClickListener {
-        ViewHolder holder;
+        int position;
 
-        public LongRemoveSelectedListener(ViewHolder holder) {
-            this.holder = holder;
+        public LongRemoveSelectedListener(int position) {
+            this.position = position;
         }
 
         @Override
@@ -229,11 +226,11 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             }
 
             if (selected_views.size()!=0) {
-                v.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(v)));
+                v.setOnLongClickListener(new ContextualToolbarListener(position));
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
-                    view.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(view)));
+                    view.setOnLongClickListener(new ContextualToolbarListener(position));
                 }
             }
 
@@ -242,10 +239,10 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class SelectListener implements View.OnClickListener {
-        ViewHolder holder;
+        int position;
 
-        public SelectListener(ViewHolder holder) {
-            this.holder = holder;
+        public SelectListener(int position) {
+            this.position = position;
         }
 
         @Override
@@ -255,14 +252,14 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             v.setOnLongClickListener(null);
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
-                selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
-                selected_views_holders.put(v, holder);
+                selected_views_contacts.put(v, contacts.get(position));
+                //selected_views_holders.put(v, holder);
             }
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             for(View view: selected_views) {
-                view.setOnClickListener(new RemoveSelectedListener(views_holders.get(view)));
-                view.setOnLongClickListener(new LongRemoveSelectedListener(views_holders.get(view)));
+                view.setOnClickListener(new RemoveSelectedListener(position));
+                view.setOnLongClickListener(new LongRemoveSelectedListener(position));
             }
         }
     }

@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -36,15 +38,7 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toolbar.setVisibility(View.VISIBLE);
-                contextualToolbar.setVisibility(View.GONE);
-
-                ArchivedChatsRecViewAdapter.views.clear();
-                archivedChatsRecView.setAdapter(null);
-                archivedChatsRecView.setAdapter(new ArchivedChatsRecViewAdapter(v.getContext()));
-
-                ArchivedChatsRecViewAdapter.selected_views.clear();
-                ArchivedChatsRecViewAdapter.selected_views_contacts.clear();
+                closeArchivedChatsContextualToolbar();
             }
         });
 
@@ -83,5 +77,31 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         searchItem.setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void onUnarchiveButtonClick(MenuItem item) {
+        ArrayList<Contact> updatedChatContacts= new ArrayList<>();
+        updatedChatContacts.addAll(ChatRecViewAdapter.contacts);
+        for (View view : ArchivedChatsRecViewAdapter.selected_views) {
+            ArchivedChatsRecViewAdapter.selected_views_contacts.get(view).setArchived(false);
+            updatedChatContacts.add(ArchivedChatsRecViewAdapter.selected_views_contacts.get(view));
+            MainActivity.archived_contacts.remove(ArchivedChatsRecViewAdapter.selected_views_contacts.get(view));
+            ArchivedChatsRecViewAdapter.contacts.remove(ArchivedChatsRecViewAdapter.selected_views_contacts.get(view));
+        }
+        TabChatFragment.chatRecViewAdapter.setData(updatedChatContacts);
+        TabChatFragment.chatRecView.setAdapter(TabChatFragment.chatRecViewAdapter);
+        closeArchivedChatsContextualToolbar();
+    }
+
+    public void closeArchivedChatsContextualToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        contextualToolbar.setVisibility(View.GONE);
+
+        ArchivedChatsRecViewAdapter.views.clear();
+        archivedChatsRecView.setAdapter(null);
+        archivedChatsRecView.setAdapter(new ArchivedChatsRecViewAdapter(this));
+
+        ArchivedChatsRecViewAdapter.selected_views.clear();
+        ArchivedChatsRecViewAdapter.selected_views_contacts.clear();
     }
 }

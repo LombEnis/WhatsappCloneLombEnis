@@ -16,7 +16,8 @@
     <item
         android:title="@string/extract_from_archive"
         android:icon="@drawable/ic_unarchive"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:onClick="onUnarchiveButtonClick"/>
 
     <item
         android:title="@string/create_direct_connection"

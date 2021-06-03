@@ -28,8 +28,6 @@ public class TabChatFragment extends Fragment {
     private FloatingActionButton chatFloatingButton;
     static TextView archivedView;
 
-    static ArrayList<View> archivedViews= new ArrayList<>();
-
     static  ChatRecViewAdapter chatRecViewAdapter;
 
     @Nullable
@@ -51,13 +49,6 @@ public class TabChatFragment extends Fragment {
             String archivedText= getResources().getString(R.string.archived)+" ("+ MainActivity.archived_contacts.size()+")";
             archivedView.setText(archivedText);
         }
-
-        //When database is created need to do smth about it
-        /*for (Contact c : contacts) {
-            if (c.isArchived()) {
-                archivedChats.add(c);
-            }
-        }*/
 
         archivedView.setOnClickListener(new View.OnClickListener() {
             @Override
