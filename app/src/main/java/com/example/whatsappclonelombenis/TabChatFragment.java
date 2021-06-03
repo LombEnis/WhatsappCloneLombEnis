@@ -30,6 +30,8 @@ public class TabChatFragment extends Fragment {
 
     static  ChatRecViewAdapter chatRecViewAdapter;
 
+    static LinearLayoutManager mLinearLayoutManager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,8 +42,9 @@ public class TabChatFragment extends Fragment {
 
         chatRecView=chat_layout.findViewById(R.id.chatRecyclerView);
         chatRecView.setAdapter(chatRecViewAdapter);
-        chatRecView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        mLinearLayoutManager=new LinearLayoutManager(this.getContext());
+        chatRecView.setLayoutManager(mLinearLayoutManager);
         //Archived chats
         archivedView = chat_layout.findViewById(R.id.archivedChats);
         if (MainActivity.archived_contacts.size()!=0) {

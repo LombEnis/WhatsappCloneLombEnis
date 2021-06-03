@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
         //I reinstantiate the adapter instead of passing the onLongClickListener because I can't get the view's holder
         ChatRecViewAdapter.views.clear();
-        ChatRecViewAdapter.views_holders.clear();
+
         TabChatFragment.chatRecView.setAdapter(null);
         TabChatFragment.chatRecView.setAdapter(new ChatRecViewAdapter(this));
 
@@ -328,6 +328,7 @@ public class MainActivity extends AppCompatActivity {
 
             ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_contacts.get(view));
             //ArchivedChatsRecViewAdapter.views_holders.put(view, ChatRecViewAdapter.views_holders.get(view));
+            //TODO: adjust contacts being the same in selected views contacts
         }
         closeChatContextualToolbar();
     }

@@ -88,10 +88,10 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
                 .into(holder.profileImg);
 
         //Click listeners
-        contextualToolbarListener= new ContextualToolbarListener(position);
-        removeSelectedListener= new RemoveSelectedListener(position);
-        selectListener= new SelectListener(position);
-        longRemoveSelectedListener= new LongRemoveSelectedListener(position);
+        contextualToolbarListener= new ContextualToolbarListener();
+        removeSelectedListener= new RemoveSelectedListener();
+        selectListener= new SelectListener();
+        longRemoveSelectedListener= new LongRemoveSelectedListener();
 
         holder.chatLayout.setOnLongClickListener(contextualToolbarListener);
     }
@@ -127,16 +127,10 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class ContextualToolbarListener implements View.OnLongClickListener {
-        int position;
-
-        public ContextualToolbarListener(int position) {
-            this.position = position;
-        }
-
         @Override
         public boolean onLongClick(View v) {
             selected_views.add(v);
-            selected_views_contacts.put(v, contacts.get(position));
+            selected_views_contacts.put(v, contacts.get(TabChatFragment.mLinearLayoutManager.getPosition(v)));
             //selected_views_holders.put(v, holder);
 
             View check = v.findViewById(R.id.chatSelectedCheck);
@@ -151,11 +145,11 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
             for (View view:views) {
                 if (selected_views.contains(view)) {
-                    view.setOnClickListener(new RemoveSelectedListener(position));
-                    view.setOnLongClickListener(new LongRemoveSelectedListener(position));
+                    view.setOnClickListener(new RemoveSelectedListener());
+                    view.setOnLongClickListener(new LongRemoveSelectedListener());
                 }
                 else {
-                    view.setOnClickListener(new SelectListener(position));
+                    view.setOnClickListener(new SelectListener());
                 }
             }
             return true;
@@ -163,12 +157,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class RemoveSelectedListener implements View.OnClickListener {
-        int position;
-
-        public RemoveSelectedListener(int position) {
-            this.position = position;
-        }
-
         @Override
         public void onClick(View v) {
             View check=v.findViewById(R.id.chatSelectedCheck);
@@ -187,12 +175,12 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             }
 
             if (selected_views.size()!=0) {
-                v.setOnClickListener(new SelectListener(position));
-                v.setOnLongClickListener(new ContextualToolbarListener(position));
+                v.setOnClickListener(new SelectListener());
+                v.setOnLongClickListener(new ContextualToolbarListener());
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
-                    view.setOnLongClickListener(new ContextualToolbarListener(position));
+                    view.setOnLongClickListener(new ContextualToolbarListener());
                 }
             }
 
@@ -200,12 +188,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class LongRemoveSelectedListener implements View.OnLongClickListener {
-        int position;
-
-        public LongRemoveSelectedListener(int position) {
-            this.position = position;
-        }
-
         @Override
         public boolean onLongClick(View v) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
@@ -226,11 +208,11 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             }
 
             if (selected_views.size()!=0) {
-                v.setOnLongClickListener(new ContextualToolbarListener(position));
+                v.setOnLongClickListener(new ContextualToolbarListener());
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
-                    view.setOnLongClickListener(new ContextualToolbarListener(position));
+                    view.setOnLongClickListener(new ContextualToolbarListener());
                 }
             }
 
@@ -239,12 +221,6 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     }
 
     public static class SelectListener implements View.OnClickListener {
-        int position;
-
-        public SelectListener(int position) {
-            this.position = position;
-        }
-
         @Override
         public void onClick(View v) {
             View check=v.findViewById(R.id.chatSelectedCheck);
@@ -252,14 +228,13 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
             v.setOnLongClickListener(null);
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
-                selected_views_contacts.put(v, contacts.get(position));
-                //selected_views_holders.put(v, holder);
+                selected_views_contacts.put(v, contacts.get(TabChatFragment.mLinearLayoutManager.getPosition(v)));
             }
             MainActivity.chatContextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             for(View view: selected_views) {
-                view.setOnClickListener(new RemoveSelectedListener(position));
-                view.setOnLongClickListener(new LongRemoveSelectedListener(position));
+                view.setOnClickListener(new RemoveSelectedListener());
+                view.setOnLongClickListener(new LongRemoveSelectedListener());
             }
         }
     }
