@@ -56,8 +56,10 @@ public class StatusActivity extends AppCompatActivity {
     private ImageView backgroundImageView;
     private TextView mainTextView;
     private Button replyButton;
+    // ViewsDialog
     private Button viewsButton;
     private ConstraintLayout viewsDialogRootLayout;
+    private Toolbar viewsDialogActionBar;
 
     // Contacts
     private ArrayList<Contact> contacts;
@@ -93,9 +95,15 @@ public class StatusActivity extends AppCompatActivity {
     private boolean isViewsDialogOpened;
     private boolean isViewsDialogScrolling;
     float viewsDialogOpenPercentage;
+    // Views button viariables
     private float viewsDialogOpenY;
     private float viewsButtonClosedY;
     private float viewsButtonOpenY;
+    // Views dialog animations
+    ObjectAnimator viewsDialogPosAnimation;
+    ObjectAnimator viewsButtonPosAnimation;
+    ObjectAnimator viewsButtonAlphaAnimation;
+    ValueAnimator viewsColorAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +173,11 @@ public class StatusActivity extends AppCompatActivity {
             currentContact.setCurrentStoriesPos(startStoryPos);
             currentStory = currentContact.getStatusStories().get(startStoryPos);
 
-            // Get views button, views dialog and set views value
+            // Get ViewsDialog variables
             viewsButton = findViewById(R.id.views_button);
             viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
+            viewsDialogActionBar = findViewById(R.id.dialog_views_action_bar);
+
             isViewsDialogOpened = false;
             isViewsDialogScrolling = false;
 
@@ -189,7 +199,7 @@ public class StatusActivity extends AppCompatActivity {
             // Set views button text
             viewsButton.setText(Integer.toString(currentStory.getViewsContacts().size()));
 
-            // Open views dialog on views button click
+            // Set ViewsButton onClickListener
             viewsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -199,7 +209,7 @@ public class StatusActivity extends AppCompatActivity {
                 }
             });
 
-            // Set long click listeners
+            // Set right and left buttons longClickListeners
             rightButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -232,7 +242,7 @@ public class StatusActivity extends AppCompatActivity {
                 }
             });
 
-            // Set touch listeners
+            // Set right and left buttons touchListeners
             rightButton.setOnTouchListener(new OnMyStatusTouchListener(this, rightButton));
             leftButton.setOnTouchListener(new OnMyStatusTouchListener(this, leftButton));
         } else {
@@ -729,24 +739,26 @@ public class StatusActivity extends AppCompatActivity {
         float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
 
         // Open ViewsDialog with animation
-        ObjectAnimator viewsDialogPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
+        viewsDialogPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
         viewsDialogPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
         viewsDialogPosAnimation.start();
 
         // Open ViewsButton with animation
-        ObjectAnimator viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, -viewsDialogRootLayout.getHeight());
+        viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, -viewsDialogRootLayout.getHeight());
         viewsButtonPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
         viewsButtonPosAnimation.start();
 
         // Disappear ViewsButton with animation
-        ObjectAnimator viewsButtonAlphaAnimation = ObjectAnimator.ofFloat(viewsButton, "alpha", 1 - viewsDialogOpenPercentage, 0);
+        viewsButtonAlphaAnimation = ObjectAnimator.ofFloat(viewsButton, "alpha", 1 - viewsDialogOpenPercentage, 0);
         viewsButtonAlphaAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
         viewsButtonAlphaAnimation.start();
 
         // Darken background with animation
-        ValueAnimator viewsColorAnimation = new ValueAnimator();
+        viewsColorAnimation = new ValueAnimator();
+
         int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
         viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(123, 123, 123));
+
         viewsColorAnimation.setEvaluator(new ArgbEvaluator());
         viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -766,24 +778,26 @@ public class StatusActivity extends AppCompatActivity {
         viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
 
         // Close views dialog with animation
-        ObjectAnimator animation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, 0f);
-        animation.setDuration((int) (500 * viewsDialogOpenPercentage));
-        animation.start();
+        viewsDialogPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, 0f);
+        viewsDialogPosAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
+        viewsDialogPosAnimation.start();
 
         // Close ViewsButton with animation
-        ObjectAnimator viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, 0f);
+        viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, 0f);
         viewsButtonPosAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
         viewsButtonPosAnimation.start();
 
         // Appear ViewsButton with animation
-        ObjectAnimator viewsButtonAlphaAnimation = ObjectAnimator.ofFloat(viewsButton, "alpha", 1 - viewsDialogOpenPercentage, 1);
+        viewsButtonAlphaAnimation = ObjectAnimator.ofFloat(viewsButton, "alpha", 1 - viewsDialogOpenPercentage, 1);
         viewsButtonAlphaAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
         viewsButtonAlphaAnimation.start();
 
         // Delete darken background with animation
-        ValueAnimator viewsColorAnimation = new ValueAnimator();
+        viewsColorAnimation = new ValueAnimator();
+
         int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
         viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(255, 255, 255));
+
         viewsColorAnimation.setEvaluator(new ArgbEvaluator());
         viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -795,7 +809,7 @@ public class StatusActivity extends AppCompatActivity {
         viewsColorAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
         viewsColorAnimation.start();
 
-        //isViewsDialogScrolling = false;
+        isViewsDialogScrolling = false;
         isViewsDialogOpened = false;
     }
 
@@ -835,6 +849,18 @@ public class StatusActivity extends AppCompatActivity {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    // Stop ViewsDialog animations
+                    if (viewsDialogPosAnimation != null &&
+                            viewsButtonPosAnimation != null &&
+                            viewsButtonAlphaAnimation != null &&
+                            viewsColorAnimation != null) {
+                        viewsDialogPosAnimation.cancel();
+                        viewsButtonPosAnimation.cancel();
+                        viewsButtonAlphaAnimation.cancel();
+                        viewsColorAnimation.cancel();
+
+                        isViewsDialogScrolling = true;
+                    }
                     // Get start Y position of finger and viewsDialog
                     startY = event.getRawY();
                     startViewsDialogY = viewsDialogRootLayout.getY();
