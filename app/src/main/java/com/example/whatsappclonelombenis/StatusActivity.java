@@ -183,12 +183,14 @@ public class StatusActivity extends AppCompatActivity {
             rightButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (!isViewsDialogOpened && !isViewsDialogScrolling) {
-                        progressLinearLayout.setVisibility(View.GONE);
-                        actionBar.setVisibility(View.GONE);
-                        viewsButton.setVisibility(View.GONE);
+                    if (!isViewsDialogScrolling) {
+                        if (!isViewsDialogOpened) {
+                            progressLinearLayout.setVisibility(View.GONE);
+                            actionBar.setVisibility(View.GONE);
+                            viewsButton.setVisibility(View.GONE);
+                        }
+                        isOnLongClickPressed = true;
                     }
-                    isOnLongClickPressed = true;
 
                     return false;
                 }
@@ -197,12 +199,14 @@ public class StatusActivity extends AppCompatActivity {
             leftButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (!isViewsDialogOpened && !isViewsDialogScrolling) {
-                        progressLinearLayout.setVisibility(View.GONE);
-                        actionBar.setVisibility(View.GONE);
-                        viewsButton.setVisibility(View.GONE);
+                    if (!isViewsDialogScrolling) {
+                        if (!isViewsDialogOpened) {
+                            progressLinearLayout.setVisibility(View.GONE);
+                            actionBar.setVisibility(View.GONE);
+                            viewsButton.setVisibility(View.GONE);
+                        }
+                        isOnLongClickPressed = true;
                     }
-                    isOnLongClickPressed = true;
 
                     return false;
                 }
@@ -441,7 +445,8 @@ public class StatusActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        leaveActivity();
+        if (isViewsDialogOpened) closeViewsDialog(-viewsDialogRootLayout.getHeight());
+        else leaveActivity();
     }
 
     public void leaveActivity() {
@@ -701,14 +706,15 @@ public class StatusActivity extends AppCompatActivity {
 
     // Views dialog methods
     private void openViewsDialog(float startViewsDialogPos) {
+        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
+
         // Open views dialog with animation
         ObjectAnimator viewsPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
-        viewsPosAnimation.setDuration(500);
+        viewsPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
         viewsPosAnimation.start();
 
         // Darken background with animation
         ValueAnimator viewsColorAnimation = new ValueAnimator();
-        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
         int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
         viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(123, 123, 123));
         viewsColorAnimation.setEvaluator(new ArgbEvaluator());
@@ -719,7 +725,7 @@ public class StatusActivity extends AppCompatActivity {
             }
         });
 
-        viewsColorAnimation.setDuration(500);
+        viewsColorAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
         viewsColorAnimation.start();
 
         isViewsDialogScrolling = false;
@@ -727,14 +733,15 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     private void closeViewsDialog(float startViewsDialogPos) {
+        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
+
         // Close views dialog with animation
         ObjectAnimator animation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, 0f);
-        animation.setDuration(500);
+        animation.setDuration((int) (500 * viewsDialogOpenPercentage));
         animation.start();
 
         // Darken background with animation
         ValueAnimator viewsColorAnimation = new ValueAnimator();
-        float viewsDialogOpenPercentage = -startViewsDialogPos / viewsDialogRootLayout.getHeight();
         int startColorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
         viewsColorAnimation.setIntValues(Color.rgb(startColorFilterValues, startColorFilterValues, startColorFilterValues), Color.rgb(255, 255, 255));
         viewsColorAnimation.setEvaluator(new ArgbEvaluator());
@@ -745,10 +752,10 @@ public class StatusActivity extends AppCompatActivity {
             }
         });
 
-        viewsColorAnimation.setDuration(500);
+        viewsColorAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
         viewsColorAnimation.start();
 
-        isViewsDialogScrolling = false;
+        //isViewsDialogScrolling = false;
         isViewsDialogOpened = false;
     }
 
@@ -820,7 +827,9 @@ public class StatusActivity extends AppCompatActivity {
                                 .y(viewsDialogDefaultY)
                                 .setDuration(0)
                                 .start();
+                        // Set isViewsDialogOpen to true and isOnLongClickPressed to false
                         isViewsDialogOpened = true;
+                        isOnLongClickPressed = false;
                     } else if (viewsDialogY > App.fullScreenHeight) {
                         // ViewsDialog is fully closed
                         // Set viewsDialog to the min position
@@ -828,7 +837,9 @@ public class StatusActivity extends AppCompatActivity {
                                 .y(App.fullScreenHeight)
                                 .setDuration(0)
                                 .start();
+                        // Set isViewsDialogOpen to false and resume story
                         isViewsDialogOpened = false;
+                        resumeStory();
                     }
 
                     break;
@@ -848,6 +859,7 @@ public class StatusActivity extends AppCompatActivity {
                         } else {
                             // ViewsDialog was less than half open - full close
                             closeViewsDialog(-viewsDialogYFromBottom);
+                            resumeStory();
                         }
                     }
                 } else {
@@ -994,10 +1006,7 @@ public class StatusActivity extends AppCompatActivity {
 
         private void onSwipeDown() {
             isSwiping = true;
-            if (isViewsDialogOpened) {
-                closeViewsDialog(-viewsDialogRootLayout.getHeight());
-                resumeStory();
-            } else {
+            if (!isViewsDialogOpened && !isViewsDialogScrolling) {
                 leaveActivity();
             }
         }
