@@ -39,4 +39,5 @@
     <string name="inoltra">Inoltra</string>
     <string name="condividi">Condividi...</string>
     <string name="elimina">Elimina</string>
+    <string name="visto_da">Visto da %1$d</string>
 </resources>

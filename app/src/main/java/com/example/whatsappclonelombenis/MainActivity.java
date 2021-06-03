@@ -5,7 +5,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate ActionBar menu
-        getMenuInflater().inflate(R.menu.main_options_menu, menu);
+        getMenuInflater().inflate(R.menu.main_actionbar_menu, menu);
 
         // Instantiate the button showing the selected filter
         filterButtonItem = menu.findItem(R.id.app_bar_filter_button);

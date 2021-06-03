@@ -14,15 +14,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -199,6 +196,10 @@ public class StatusActivity extends AppCompatActivity {
             // Set views button text
             viewsButton.setText(Integer.toString(currentStory.getViewsContacts().size()));
 
+            // Set ViewsDialog action bar values
+            viewsDialogActionBar.setTitle(getString(R.string.visto_da, currentStory.getViewsContacts().size()));
+            viewsDialogActionBar.inflateMenu(R.menu.viewsdialog_actionbar_menu);
+
             // Set ViewsButton onClickListener
             viewsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -359,7 +360,7 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (contactsType != 0) {
-            getMenuInflater().inflate(R.menu.status_options_menu, menu);
+            getMenuInflater().inflate(R.menu.status_actionbar_menu, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }

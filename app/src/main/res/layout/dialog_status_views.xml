@@ -8,6 +8,7 @@
     android:background="@drawable/dialog_white_round_background">
 
     <androidx.appcompat.widget.Toolbar
+        android:paddingRight="10dp"
         android:id="@+id/dialog_views_action_bar"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
