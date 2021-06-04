@@ -327,8 +327,6 @@ public class MainActivity extends AppCompatActivity {
             TabChatFragment.archivedView.setText(archivedText);
 
             ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_contacts.get(view));
-            //ArchivedChatsRecViewAdapter.views_holders.put(view, ChatRecViewAdapter.views_holders.get(view));
-            //TODO: adjust contacts being the same in selected views contacts
         }
         closeChatContextualToolbar();
     }

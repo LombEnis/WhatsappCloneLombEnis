@@ -26,6 +26,8 @@ public class ArchivedChatsActivity extends AppCompatActivity {
 
     static ArrayList<Contact> archived_contacts;
 
+    static LinearLayoutManager archivedLinearLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,9 @@ public class ArchivedChatsActivity extends AppCompatActivity {
 
         archivedChatsRecView=findViewById(R.id.archivedChatsRecView);
         archivedChatsRecView.setAdapter(archivedChatsRecViewAdapter);
-        archivedChatsRecView.setLayoutManager(new LinearLayoutManager(this));
+
+        archivedLinearLayoutManager= new LinearLayoutManager(this);
+        archivedChatsRecView.setLayoutManager(archivedLinearLayoutManager);
     }
 
     @Override
@@ -90,6 +94,14 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         }
         TabChatFragment.chatRecViewAdapter.setData(updatedChatContacts);
         TabChatFragment.chatRecView.setAdapter(TabChatFragment.chatRecViewAdapter);
+        if (MainActivity.archived_contacts.size()!=0) {
+            String archivedText= getResources().getString(R.string.archived)+" ("+ archived_contacts.size()+")";
+            TabChatFragment.archivedView.setText(archivedText);
+        }
+        else {
+            onBackPressed();
+            TabChatFragment.archivedView.setVisibility(View.GONE);
+        }
         closeArchivedChatsContextualToolbar();
     }
 

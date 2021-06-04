@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,18 +26,10 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
     Context context;
 
     static ArrayList<Contact> contacts= new ArrayList<>();
+    static HashMap<View, Contact> selected_views_contacts= new HashMap<View, Contact>();
 
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
-
-    static HashMap<View, Contact> selected_views_contacts= new HashMap<View, Contact>();
-    static HashMap<View, ViewHolder> selected_views_holders= new HashMap<View, ViewHolder>();
-    static HashMap<View, ViewHolder> views_holders= new HashMap<View, ViewHolder>();
-
-    static ContextualToolbarListener contextualToolbarListener;
-    static RemoveSelectedListener removeSelectedListener;
-    static SelectListener selectListener;
-    static LongRemoveSelectedListener longRemoveSelectedListener;
 
     public ArchivedChatsRecViewAdapter(Context context) {
         this.context = context;
@@ -89,17 +82,9 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
                 .circleCrop()
                 .into(holder.profileImg);
 
-        //Saving view and corresponding holder
-        View view= views.get(holder.getAdapterPosition());
-        views_holders.put(view, holder);
-
-        //Click listeners
-        contextualToolbarListener= new ContextualToolbarListener(holder);
-        removeSelectedListener= new RemoveSelectedListener(holder);
-        selectListener= new SelectListener(holder);
-        longRemoveSelectedListener= new LongRemoveSelectedListener(holder);
-
-        view.setOnLongClickListener(contextualToolbarListener);
+        //LongClick listener
+        ContextualToolbarListener contextualToolbarListener= new ContextualToolbarListener();
+        holder.rootLayout.setOnLongClickListener(contextualToolbarListener);
     }
 
     @Override
@@ -116,27 +101,24 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView txtNameContact, txtMessageContact, txtTime;
         private ImageView profileImg;
+        private ConstraintLayout rootLayout;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNameContact=itemView.findViewById(R.id.archivedChatsContactName);
             txtMessageContact=itemView.findViewById(R.id.archivedChatsMessage);
             txtTime=itemView.findViewById(R.id.archivedChatsTime);
             profileImg=itemView.findViewById(R.id.archivedChatsProfileImg);
+            rootLayout=itemView.findViewById(R.id.archivedChatsItemLayout);
         }
     }
 
     public static class ContextualToolbarListener implements View.OnLongClickListener {
-        ViewHolder holder;
-
-        public ContextualToolbarListener(ViewHolder holder) {
-            this.holder = holder;
-        }
 
         @Override
         public boolean onLongClick(View v) {
             selected_views.add(v);
-            selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
-            selected_views_holders.put(v, holder);
+            selected_views_contacts.put(v, contacts.get(ArchivedChatsActivity.archivedLinearLayoutManager.getPosition(v)));
 
             View check = v.findViewById(R.id.archivedChatSelectedCheck);
             check.setVisibility(View.VISIBLE);
@@ -149,11 +131,11 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
             for (View view:views) {
                 if (selected_views.contains(view)) {
-                    view.setOnClickListener(new RemoveSelectedListener(views_holders.get(view)));
-                    view.setOnLongClickListener(new LongRemoveSelectedListener(views_holders.get(view)));
+                    view.setOnClickListener(new RemoveSelectedListener());
+                    view.setOnLongClickListener(new LongRemoveSelectedListener());
                 }
                 else {
-                    view.setOnClickListener(new SelectListener(views_holders.get(view)));
+                    view.setOnClickListener(new SelectListener());
                 }
             }
             return true;
@@ -161,12 +143,6 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
     }
 
     public static class RemoveSelectedListener implements View.OnClickListener {
-        ViewHolder holder;
-
-        public RemoveSelectedListener(ViewHolder holder) {
-            this.holder = holder;
-        }
-
         @Override
         public void onClick(View v) {
             View check=v.findViewById(R.id.archivedChatSelectedCheck);
@@ -174,7 +150,6 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
 
             selected_views.remove(v);
             selected_views_contacts.remove(v);
-            selected_views_holders.remove(v);
 
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
@@ -184,12 +159,12 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
             }
 
             if (selected_views.size()!=0) {
-                v.setOnClickListener(new SelectListener(views_holders.get(v)));
-                v.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(v)));
+                v.setOnClickListener(new SelectListener());
+                v.setOnLongClickListener(new ContextualToolbarListener());
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
-                    view.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(view)));
+                    view.setOnLongClickListener(new ContextualToolbarListener());
                 }
             }
 
@@ -197,11 +172,6 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
     }
 
     public static class LongRemoveSelectedListener implements View.OnLongClickListener {
-        ViewHolder holder;
-
-        public LongRemoveSelectedListener(ViewHolder holder) {
-            this.holder = holder;
-        }
 
         @Override
         public boolean onLongClick(View v) {
@@ -212,7 +182,6 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
 
             selected_views.remove(v);
             selected_views_contacts.remove(v);
-            selected_views_holders.remove(v);
 
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
@@ -222,11 +191,11 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
             }
 
             if (selected_views.size()!=0) {
-                v.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(v)));
+                v.setOnLongClickListener(new ContextualToolbarListener());
             }else {
                 for (View view : views) {
                     view.setOnClickListener(null);
-                    view.setOnLongClickListener(new ContextualToolbarListener(views_holders.get(view)));
+                    view.setOnLongClickListener(new ContextualToolbarListener());
                 }
             }
 
@@ -235,12 +204,6 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
     }
 
     public static class SelectListener implements View.OnClickListener {
-        ViewHolder holder;
-
-        public SelectListener(ViewHolder holder) {
-            this.holder = holder;
-        }
-
         @Override
         public void onClick(View v) {
             View check=v.findViewById(R.id.archivedChatSelectedCheck);
@@ -248,14 +211,13 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
             v.setOnLongClickListener(null);
             if (!selected_views.contains(v)) {
                 selected_views.add(v);
-                selected_views_contacts.put(v, contacts.get(holder.getAdapterPosition()));
-                selected_views_holders.put(v, holder);
+                selected_views_contacts.put(v, contacts.get(ArchivedChatsActivity.archivedLinearLayoutManager.getPosition(v)));
             }
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             for(View view: selected_views) {
-                view.setOnClickListener(new RemoveSelectedListener(views_holders.get(view)));
-                view.setOnLongClickListener(new LongRemoveSelectedListener(views_holders.get(view)));
+                view.setOnClickListener(new RemoveSelectedListener());
+                view.setOnLongClickListener(new LongRemoveSelectedListener());
             }
         }
     }

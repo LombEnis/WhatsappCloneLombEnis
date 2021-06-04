@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="12dp"
-    android:background="@drawable/grey_ripple_rectangle_transparent">
+    android:background="@drawable/grey_ripple_rectangle_transparent"
+    android:id="@+id/archivedChatsItemLayout">
 
     <ImageView
         android:id="@+id/archivedChatsProfileImg"

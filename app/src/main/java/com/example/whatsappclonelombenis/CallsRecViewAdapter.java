@@ -2,7 +2,6 @@ package com.example.whatsappclonelombenis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Handler;
@@ -196,7 +195,6 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             }
 
             if (selected_views.size()!=0) {
-                //v.setOnClickListener(selectListener);
                 v.setOnLongClickListener(contextualToolbarListener);
             }else {
                 for (View view : views) {
