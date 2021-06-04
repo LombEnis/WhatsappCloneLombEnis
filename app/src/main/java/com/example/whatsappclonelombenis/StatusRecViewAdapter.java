@@ -255,8 +255,10 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 disabledContacts.add(contact);
 
                 // Set progress bar to 0
-                for (Story story : contact.getStatusStories()) {
-                    story.getProgressBar().setProgress(0);
+                if (contact.getCurrentStoriesPos() != -1) {
+                    for (Story story : contact.getStatusStories()) {
+                        story.getProgressBar().setProgress(0);
+                    }
                 }
             } else if (contact.isAllStoriesSeen()) {
                 seenContacts.add(contact);
