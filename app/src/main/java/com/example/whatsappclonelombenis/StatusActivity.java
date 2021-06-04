@@ -34,6 +34,7 @@ import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -106,6 +107,7 @@ public class StatusActivity extends AppCompatActivity {
     // Views dialog recycler view
     private RecyclerView viewsDialogRecView;
     private StatusViewsDialogRecViewAdapter viewsDialogRecViewAdapter;
+    private FrameLayout viewsDialogNoViewsFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +182,7 @@ public class StatusActivity extends AppCompatActivity {
             viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
             viewsDialogActionBar = findViewById(R.id.dialog_views_action_bar);
             viewsDialogRecView = findViewById(R.id.dialog_views_rec_view);
+            viewsDialogNoViewsFrameLayout = findViewById(R.id.dialog_views_no_views_frame_layout);
 
             // Initialize ViewsDialog variables
             isViewsDialogOpened = false;
@@ -206,18 +209,23 @@ public class StatusActivity extends AppCompatActivity {
 
             // Set ViewsDialog action bar values
             viewsDialogActionBar.setTitle(getString(R.string.visto_da, currentStory.getViewsContacts().size()));
-            viewsDialogActionBar.inflateMenu(R.menu.viewsdialog_actionbar_menu);
+            viewsDialogActionBar.inflateMenu(R.menu.dialog_views_actionbar_menu);
 
-            // Set recycler view bottom margin
+            // Set bottom padding for root relative layout
             App.updateDeviceSizeVariables(this);
-            viewsDialogRecView.setPadding(0, 0, 0, App.navigationBarHeight);
+            viewsDialogRootLayout.setPadding(0, 0, 0, App.navigationBarHeight);
+            if (currentStory.getViewsContacts().size() == 0) {
+                // Set visibility VISIBLE for No Views Message
+                viewsDialogRecView.setVisibility(View.GONE);
+                viewsDialogNoViewsFrameLayout.setVisibility(View.VISIBLE);
+            } else {
+                // Set recycler view adapter
+                viewsDialogRecViewAdapter = new StatusViewsDialogRecViewAdapter(this);
+                viewsDialogRecViewAdapter.setViewsContacts(currentStory);
 
-            // Set recycler view adapter
-            viewsDialogRecViewAdapter = new StatusViewsDialogRecViewAdapter(this);
-            viewsDialogRecViewAdapter.setViewsContacts(currentStory);
-
-            viewsDialogRecView.setAdapter(viewsDialogRecViewAdapter);
-            viewsDialogRecView.setLayoutManager(new LinearLayoutManager(this));
+                viewsDialogRecView.setAdapter(viewsDialogRecViewAdapter);
+                viewsDialogRecView.setLayoutManager(new LinearLayoutManager(this));
+            }
 
             // Set ViewsButton onClickListener
             viewsButton.setOnClickListener(new View.OnClickListener() {
@@ -494,6 +502,12 @@ public class StatusActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isViewsDialogOpened) closeViewsDialog(-viewsDialogRootLayout.getHeight());
         else leaveActivity();
+    }
+
+    @Override
+    protected void onStop() {
+        leaveActivity();
+        super.onStop();
     }
 
     public void leaveActivity() {
