@@ -14,7 +14,7 @@ public class Story {
     private String mainTextString;
     private String captionTextString;
     // Views
-    private ArrayList<Contact> viewsContacts;
+    private ArrayList<Object[]> viewsContacts;
 
     private Bitmap storyPreviewBitmap;
     private StatusActivity.StoryProgressBar progressBar = null;
@@ -34,7 +34,7 @@ public class Story {
     }
 
     // My story constructor
-    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, ArrayList<Contact> viewsContacts) {
+    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, ArrayList<Object[]> viewsContacts) {
         this.date = date;
         this.backgroundColorResource = backgroundColorResource;
         this.backgroundImageUrlString = backgroundImageString;
@@ -117,11 +117,12 @@ public class Story {
         this.backgroundImageUrlString = backgroundImageUrlString;
     }
 
-    public ArrayList<Contact> getViewsContacts() {
+    public ArrayList<Object[]> getViewsContacts() {
         return viewsContacts;
     }
 
-    public void addViewsContact(Contact viewsContact) {
-        this.viewsContacts.add(viewsContact);
+    public void addViewsContact(Contact viewsContact, Calendar viewsDate) {
+        Object[] viewsContactItem = {viewsContact, viewsDate};
+        this.viewsContacts.add(viewsContactItem);
     }
 }

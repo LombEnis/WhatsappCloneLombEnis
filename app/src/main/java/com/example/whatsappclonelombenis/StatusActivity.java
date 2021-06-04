@@ -6,6 +6,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.Animator;
 import android.animation.ArgbEvaluator;
@@ -97,10 +99,13 @@ public class StatusActivity extends AppCompatActivity {
     private float viewsButtonClosedY;
     private float viewsButtonOpenY;
     // Views dialog animations
-    ObjectAnimator viewsDialogPosAnimation;
-    ObjectAnimator viewsButtonPosAnimation;
-    ObjectAnimator viewsButtonAlphaAnimation;
-    ValueAnimator viewsColorAnimation;
+    private ObjectAnimator viewsDialogPosAnimation;
+    private ObjectAnimator viewsButtonPosAnimation;
+    private ObjectAnimator viewsButtonAlphaAnimation;
+    private ValueAnimator viewsColorAnimation;
+    // Views dialog recycler view
+    private RecyclerView viewsDialogRecView;
+    private StatusViewsDialogRecViewAdapter viewsDialogRecViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,14 +175,17 @@ public class StatusActivity extends AppCompatActivity {
             currentContact.setCurrentStoriesPos(startStoryPos);
             currentStory = currentContact.getStatusStories().get(startStoryPos);
 
-            // Get ViewsDialog variables
+            // Get ViewsDialog view
             viewsButton = findViewById(R.id.views_button);
             viewsDialogRootLayout = findViewById(R.id.dialog_views_root_layout);
             viewsDialogActionBar = findViewById(R.id.dialog_views_action_bar);
+            viewsDialogRecView = findViewById(R.id.dialog_views_rec_view);
 
+            // Initialize ViewsDialog variables
             isViewsDialogOpened = false;
             isViewsDialogScrolling = false;
 
+            // Layout created listener
             rootRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(
                     new ViewTreeObserver.OnGlobalLayoutListener() {
                         @Override
@@ -199,6 +207,17 @@ public class StatusActivity extends AppCompatActivity {
             // Set ViewsDialog action bar values
             viewsDialogActionBar.setTitle(getString(R.string.visto_da, currentStory.getViewsContacts().size()));
             viewsDialogActionBar.inflateMenu(R.menu.viewsdialog_actionbar_menu);
+
+            // Set recycler view bottom margin
+            App.updateDeviceSizeVariables(this);
+            viewsDialogRecView.setPadding(0, 0, 0, App.navigationBarHeight);
+
+            // Set recycler view adapter
+            viewsDialogRecViewAdapter = new StatusViewsDialogRecViewAdapter(this);
+            viewsDialogRecViewAdapter.setViewsContacts(currentStory);
+
+            viewsDialogRecView.setAdapter(viewsDialogRecViewAdapter);
+            viewsDialogRecView.setLayoutManager(new LinearLayoutManager(this));
 
             // Set ViewsButton onClickListener
             viewsButton.setOnClickListener(new View.OnClickListener() {
@@ -331,22 +350,19 @@ public class StatusActivity extends AppCompatActivity {
 
         // Set bottom margin for the bottom button
         if (Build.VERSION.SDK_INT >= 19) {
-            int navigationBarResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-            if (navigationBarResourceId > 0) {
-                int navigationBarHeight = getResources().getDimensionPixelSize(navigationBarResourceId);
+            App.updateDeviceSizeVariables(this);
 
-                Button button;
-                if (contactsType == 0) {
-                    button = viewsButton;
-                } else {
-                    button = replyButton;
-                }
-
-                RelativeLayout.LayoutParams buttonLayoutParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
-                buttonLayoutParams.bottomMargin = navigationBarHeight + 20;
-
-                button.setLayoutParams(buttonLayoutParams);
+            Button button;
+            if (contactsType == 0) {
+                button = viewsButton;
+            } else {
+                button = replyButton;
             }
+
+            RelativeLayout.LayoutParams buttonLayoutParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
+            buttonLayoutParams.bottomMargin = App.navigationBarHeight + 20;
+
+            button.setLayoutParams(buttonLayoutParams);
         }
 
         // Start first story

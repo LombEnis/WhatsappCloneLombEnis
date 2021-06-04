@@ -503,6 +503,8 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
                 circularStatusView = itemView.findViewById(R.id.status_preview_image_circular_status_view);
                 nameTextView = itemView.findViewById(R.id.status_title_text_view);
                 dateTextView = itemView.findViewById(R.id.status_subtitle_text_view);
+
+                circularStatusView.setVisibility(View.VISIBLE);
             }
         }
     }

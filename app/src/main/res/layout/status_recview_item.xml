@@ -24,6 +24,7 @@
         android:id="@+id/status_preview_image_circular_status_view"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/status_preview_imageview"
         app:layout_constraintEnd_toEndOf="@id/status_preview_imageview"
         app:layout_constraintStart_toStartOf="@id/status_preview_imageview"

@@ -23,7 +23,7 @@ public class App extends Application {
     public static Contact myContact;
     public static ArrayList<Contact> contacts;
 
-    // Device variables
+    // Device size variables
     public static int screenHeight;
     public static int statusBarHeight;
     public static int navigationBarHeight;
@@ -34,7 +34,7 @@ public class App extends Application {
         super.onCreate();
         context = this;
 
-        // Create device variables
+        // Create device size variables
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
         int navigationBarResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
@@ -92,10 +92,15 @@ public class App extends Application {
         contacts.add(contact3);
 
         // Create my contact + stories
-        ArrayList<Contact> myContactViewsContacts = new ArrayList<>();
-        myContactViewsContacts.add(contact1);
-        myContactViewsContacts.add(contact2);
-        myContactViewsContacts.add(contact3);
+        ArrayList<Object[]> myContactViewsContacts = new ArrayList<>();
+
+        Object[] myContactViewsContactsItem1 = {contact1, Calendar.getInstance()};
+        Object[] myContactViewsContactsItem2 = {contact2, Calendar.getInstance()};
+        Object[] myContactViewsContactsItem3 = {contact3, Calendar.getInstance()};
+
+        myContactViewsContacts.add(myContactViewsContactsItem1);
+        myContactViewsContacts.add(myContactViewsContactsItem2);
+        myContactViewsContacts.add(myContactViewsContactsItem3);
 
         ArrayList<Story> myContactStatusStories = new ArrayList<Story>();
         Story myContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
@@ -120,6 +125,19 @@ public class App extends Application {
     }
 
     // Custom methods
+    // Update navigationBarHeight
+    public static void updateDeviceSizeVariables(Context context) {
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int navigationBarResourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        navigationBarHeight = context.getResources().getDimensionPixelSize(navigationBarResourceId);
+
+        int statusBarResourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        statusBarHeight = context.getResources().getDimensionPixelSize(statusBarResourceId);
+
+        fullScreenHeight = screenHeight + navigationBarHeight + statusBarHeight + 36;
+    }
+
     // Perform ripple effect on a view
     public static void performRipple(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
