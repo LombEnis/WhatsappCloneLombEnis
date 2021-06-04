@@ -859,8 +859,6 @@ public class StatusActivity extends AppCompatActivity {
                         viewsButtonPosAnimation.cancel();
                         viewsButtonAlphaAnimation.cancel();
                         viewsColorAnimation.cancel();
-
-                        isViewsDialogScrolling = true;
                     }
                     // Get start Y position of finger and viewsDialog
                     startY = event.getRawY();
