@@ -306,12 +306,12 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             super(itemView);
 
             // Instantiate my contact vies
-            myConstraintLayout = itemView.findViewById(R.id.constraint_layout);
-            myPreviewImageView = itemView.findViewById(R.id.my_preview_imageview);
-            myPlusImageView = itemView.findViewById(R.id.my_plus_imageview);
-            myCircularStatusView = itemView.findViewById(R.id.my_preview_image_circular_status_view);
-            mySubtitleTextView = itemView.findViewById(R.id.my_status_subtitle_textview);
-            myThreeDotsImageButton = itemView.findViewById(R.id.my_Status_three_dots_imagebutton);
+            myConstraintLayout = itemView.findViewById(R.id.status_my_constraint_layout);
+            myPreviewImageView = itemView.findViewById(R.id.status_my_preview_imageview);
+            myPlusImageView = itemView.findViewById(R.id.status_my_plus_imageview);
+            myCircularStatusView = itemView.findViewById(R.id.status_my_preview_image_circular_status_view);
+            mySubtitleTextView = itemView.findViewById(R.id.status_my_subtitle_textview);
+            myThreeDotsImageButton = itemView.findViewById(R.id.status_my_three_dots_imagebutton);
 
             // Instantiate divider view
             dividerConstraintlayout = itemView.findViewById(R.id.status_divider_constraintlayout);
@@ -498,11 +498,11 @@ public class StatusRecViewAdapter extends RecyclerView.Adapter<StatusRecViewAdap
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                constraintLayout = itemView.findViewById(R.id.constraint_layout);
-                previewImageView = itemView.findViewById(R.id.my_status_preview_imageview);
-                circularStatusView = itemView.findViewById(R.id.preview_image_circular_status_view);
-                nameTextView = itemView.findViewById(R.id.my_Status_title_text_view);
-                dateTextView = itemView.findViewById(R.id.my_status_subtitle_text_view);
+                constraintLayout = itemView.findViewById(R.id.status_constraint_layout);
+                previewImageView = itemView.findViewById(R.id.status_preview_imageview);
+                circularStatusView = itemView.findViewById(R.id.status_preview_image_circular_status_view);
+                nameTextView = itemView.findViewById(R.id.status_title_text_view);
+                dateTextView = itemView.findViewById(R.id.status_subtitle_text_view);
             }
         }
     }

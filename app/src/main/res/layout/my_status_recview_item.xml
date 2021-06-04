@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/my_status_preview_imageview">
 
         <TextView
-            android:id="@+id/my_Status_title_text_view"
+            android:id="@+id/my_status_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Prova"
@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/my_Status_three_dots_imagebutton"
+        android:id="@+id/my_status_three_dots_imagebutton"
         android:layout_width="43dp"
         android:layout_height="43dp"
         app:layout_constraintBottom_toBottomOf="parent"

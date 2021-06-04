@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraint_layout"
+    android:id="@+id/status_my_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/grey_ripple_rectangle_transparent">
 
     <ImageView
-        android:id="@+id/my_preview_imageview"
+        android:id="@+id/status_my_preview_imageview"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
@@ -21,26 +21,26 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <com.devlomi.circularstatusview.CircularStatusView
-        android:id="@+id/my_preview_image_circular_status_view"
+        android:id="@+id/status_my_preview_image_circular_status_view"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="@id/my_preview_imageview"
-        app:layout_constraintEnd_toEndOf="@id/my_preview_imageview"
-        app:layout_constraintStart_toStartOf="@id/my_preview_imageview"
-        app:layout_constraintTop_toTopOf="@id/my_preview_imageview"
+        app:layout_constraintBottom_toBottomOf="@id/status_my_preview_imageview"
+        app:layout_constraintEnd_toEndOf="@id/status_my_preview_imageview"
+        app:layout_constraintStart_toStartOf="@id/status_my_preview_imageview"
+        app:layout_constraintTop_toTopOf="@id/status_my_preview_imageview"
         app:portion_color="@color/grey"
         app:portion_spacing="4dp"
         app:portion_width="2dp" />
 
     <ImageView
-        android:id="@+id/my_plus_imageview"
+        android:id="@+id/status_my_plus_imageview"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/round_button_background"
         android:padding="4dp"
         android:src="@drawable/ic_plus_vector_24"
-        app:layout_constraintBottom_toBottomOf="@+id/my_preview_imageview"
-        app:layout_constraintEnd_toEndOf="@+id/my_preview_imageview" />
+        app:layout_constraintBottom_toBottomOf="@+id/status_my_preview_imageview"
+        app:layout_constraintEnd_toEndOf="@+id/status_my_preview_imageview" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -48,12 +48,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/my_preview_imageview"
-        app:layout_constraintStart_toEndOf="@id/my_preview_imageview"
-        app:layout_constraintTop_toTopOf="@id/my_preview_imageview">
+        app:layout_constraintBottom_toBottomOf="@id/status_my_preview_imageview"
+        app:layout_constraintStart_toEndOf="@id/status_my_preview_imageview"
+        app:layout_constraintTop_toTopOf="@id/status_my_preview_imageview">
 
         <TextView
-            android:id="@+id/my_status_textview"
+            android:id="@+id/status_my_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/il_mio_stato"
@@ -61,7 +61,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/my_status_subtitle_textview"
+            android:id="@+id/status_my_subtitle_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -69,7 +69,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/my_Status_three_dots_imagebutton"
+        android:id="@+id/status_my_three_dots_imagebutton"
         android:layout_width="43dp"
         android:layout_height="43dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraint_layout"
+    android:id="@+id/status_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/grey_ripple_rectangle_transparent">
 
     <ImageView
-        android:id="@+id/my_status_preview_imageview"
+        android:id="@+id/status_preview_imageview"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginLeft="15dp"
@@ -21,13 +21,13 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <com.devlomi.circularstatusview.CircularStatusView
-        android:id="@+id/preview_image_circular_status_view"
+        android:id="@+id/status_preview_image_circular_status_view"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="@id/my_status_preview_imageview"
-        app:layout_constraintEnd_toEndOf="@id/my_status_preview_imageview"
-        app:layout_constraintStart_toStartOf="@id/my_status_preview_imageview"
-        app:layout_constraintTop_toTopOf="@id/my_status_preview_imageview"
+        app:layout_constraintBottom_toBottomOf="@id/status_preview_imageview"
+        app:layout_constraintEnd_toEndOf="@id/status_preview_imageview"
+        app:layout_constraintStart_toStartOf="@id/status_preview_imageview"
+        app:layout_constraintTop_toTopOf="@id/status_preview_imageview"
         app:portion_color="@color/grey"
         app:portion_spacing="4dp"
         app:portion_width="2dp" />
@@ -37,12 +37,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/my_status_preview_imageview"
-        app:layout_constraintStart_toEndOf="@+id/my_status_preview_imageview"
-        app:layout_constraintTop_toTopOf="@+id/my_status_preview_imageview">
+        app:layout_constraintBottom_toBottomOf="@+id/status_preview_imageview"
+        app:layout_constraintStart_toEndOf="@+id/status_preview_imageview"
+        app:layout_constraintTop_toTopOf="@+id/status_preview_imageview">
 
         <TextView
-            android:id="@+id/my_Status_title_text_view"
+            android:id="@+id/status_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Prova"
@@ -50,7 +50,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/my_status_subtitle_text_view"
+            android:id="@+id/status_subtitle_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Prova" />

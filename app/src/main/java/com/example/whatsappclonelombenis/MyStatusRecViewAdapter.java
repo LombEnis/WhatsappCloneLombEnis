@@ -116,9 +116,9 @@ public class MyStatusRecViewAdapter extends RecyclerView.Adapter<MyStatusRecView
 
             constraintLayout = itemView.findViewById(R.id.my_status_constraint_layout);
             previewImageView = itemView.findViewById(R.id.my_status_preview_imageview);
-            titleTextView = itemView.findViewById(R.id.my_Status_title_text_view);
+            titleTextView = itemView.findViewById(R.id.my_status_title_text_view);
             subtitleTextView = itemView.findViewById(R.id.my_status_subtitle_text_view);
-            threeDotsImageButton = itemView.findViewById(R.id.my_Status_three_dots_imagebutton);
+            threeDotsImageButton = itemView.findViewById(R.id.my_status_three_dots_imagebutton);
         }
     }
 }
