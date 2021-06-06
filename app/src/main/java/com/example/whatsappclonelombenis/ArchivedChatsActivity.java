@@ -10,10 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ArchivedChatsActivity extends AppCompatActivity {
     //Toolbar
@@ -28,6 +25,16 @@ public class ArchivedChatsActivity extends AppCompatActivity {
 
     static LinearLayoutManager archivedLinearLayoutManager;
 
+    //Contextual toolbar items
+    static MenuItem createConnectionItem;
+    static MenuItem showContactItem;
+    static MenuItem toReadItem;
+    static MenuItem selectAllItem;
+
+    static boolean isToolbarAsActionBarCalled = false;
+    static boolean isContextualToolbarAsActionBarCalled = false;
+
+    private boolean isContextualMenu=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,10 @@ public class ArchivedChatsActivity extends AppCompatActivity {
                 closeArchivedChatsContextualToolbar();
             }
         });
+
+        showContactItem = findViewById(R.id.archivedShowContact);
+        toReadItem = findViewById(R.id.archivedToRead);
+        selectAllItem = findViewById(R.id.archivedSelectAll);
 
         toolbar=findViewById(R.id.archivedChatsToolbar);
         setSupportActionBar(toolbar);
@@ -63,7 +74,6 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         archivedLinearLayoutManager= new LinearLayoutManager(this);
         archivedChatsRecView.setLayoutManager(archivedLinearLayoutManager);
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -71,15 +81,51 @@ public class ArchivedChatsActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!isContextualMenu) {
+            isContextualToolbarAsActionBarCalled= false;
+            System.out.println("toolbar");
+            if (!isToolbarAsActionBarCalled) {
+                setSupportActionBar(toolbar);
+                isToolbarAsActionBarCalled =true;
+            }
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            menu.clear();
+            getMenuInflater().inflate(R.menu.archived_chats_action_bar, menu);
+        }
+        else {
+            isToolbarAsActionBarCalled =false;
+            System.out.println("contextualToolbar");
+            if (!isContextualToolbarAsActionBarCalled) {
+                setSupportActionBar(contextualToolbar);
+                isContextualToolbarAsActionBarCalled =true;
+            }
+            contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeArchivedChatsContextualToolbar();
+                    invalidateOptionsMenu();
+                }
+            });
+
+            menu.clear();
+            getMenuInflater().inflate(R.menu.archived_chats_contextual_action_bar, menu);
+
+            selectAllItem= menu.findItem(R.id.archivedSelectAll);
+            selectAllItem.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_options_menu, menu);
-
-        MenuItem settingsItem= menu.findItem(R.id.app_bar_settings);
-        settingsItem.setVisible(false);
-
-        MenuItem searchItem= menu.findItem(R.id.app_bar_search);
-        searchItem.setVisible(false);
-
+        if (ArchivedChatsRecViewAdapter.selected_views.size()!=0) isContextualMenu=true;
+        else isContextualMenu=false;
         return super.onCreateOptionsMenu(menu);
     }
 

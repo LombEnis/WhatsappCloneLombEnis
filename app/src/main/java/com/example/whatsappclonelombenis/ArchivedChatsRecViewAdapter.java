@@ -1,5 +1,6 @@
 package com.example.whatsappclonelombenis;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedChatsRecViewAdapter.ViewHolder> {
-    Context context;
+    static Context context;
 
     static ArrayList<Contact> contacts= new ArrayList<>();
     static HashMap<View, Contact> selected_views_contacts= new HashMap<View, Contact>();
@@ -114,11 +115,13 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
     }
 
     public static class ContextualToolbarListener implements View.OnLongClickListener {
-
         @Override
         public boolean onLongClick(View v) {
             selected_views.add(v);
             selected_views_contacts.put(v, contacts.get(ArchivedChatsActivity.archivedLinearLayoutManager.getPosition(v)));
+
+            //Checking to update options menu
+            ((Activity)context).invalidateOptionsMenu();
 
             View check = v.findViewById(R.id.archivedChatSelectedCheck);
             check.setVisibility(View.VISIBLE);
@@ -150,6 +153,9 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
 
             selected_views.remove(v);
             selected_views_contacts.remove(v);
+
+            //Checking to update options menu
+            ((Activity)context).invalidateOptionsMenu();
 
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
@@ -183,6 +189,9 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
             selected_views.remove(v);
             selected_views_contacts.remove(v);
 
+            //Checking to update options menu
+            ((Activity)context).invalidateOptionsMenu();
+
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             if (selected_views.size() == 0) {
@@ -213,12 +222,17 @@ public class ArchivedChatsRecViewAdapter extends RecyclerView.Adapter<ArchivedCh
                 selected_views.add(v);
                 selected_views_contacts.put(v, contacts.get(ArchivedChatsActivity.archivedLinearLayoutManager.getPosition(v)));
             }
+
+            //Checking to update options menu
+            ((Activity)context).invalidateOptionsMenu();
+
             ArchivedChatsActivity.contextualToolbar.setTitle(Integer.toString(selected_views.size()));
 
             for(View view: selected_views) {
                 view.setOnClickListener(new RemoveSelectedListener());
                 view.setOnLongClickListener(new LongRemoveSelectedListener());
             }
+
         }
     }
 

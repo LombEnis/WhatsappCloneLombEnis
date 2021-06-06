@@ -21,17 +21,21 @@
 
     <item
         android:title="@string/create_direct_connection"
+        android:id="@+id/archivedCreateConnection"
         app:showAsAction="never" />
 
     <item
         android:title="@string/show_contact"
+        android:id="@+id/archivedShowContact"
         app:showAsAction="never" />
 
     <item
         android:title="@string/mark_as_to_read"
+        android:id="@+id/archivedToRead"
         app:showAsAction="never" />
 
     <item
         android:title="@string/select_all"
+        android:id="@+id/archivedSelectAll"
         app:showAsAction="never" />
 </menu>

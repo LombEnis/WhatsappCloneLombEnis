@@ -17,24 +17,22 @@ public class App extends Application {
 
         //Chat RecyclerView
         chat_contacts = new ArrayList<>();
-        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", Calendar.getInstance(), false));
-        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", Calendar.getInstance(), false));
-        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!", Calendar.getInstance(), false));
+        Calendar calendar1= Calendar.getInstance();
+        calendar1.set(Calendar.DAY_OF_MONTH, 3);
+
+        Calendar calendar2= Calendar.getInstance();
+        calendar2.set(Calendar.DAY_OF_MONTH, 15);
+
+        Calendar calendar3= Calendar.getInstance();
+        calendar3.set(Calendar.DAY_OF_MONTH, 11);
+
+        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", calendar1, false));
+        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", calendar2, false));
+        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!", calendar3, false));
         /*chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", Calendar.getInstance(), false));
         chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", Calendar.getInstance(), false));
         chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", Calendar.getInstance(), false));
         chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", Calendar.getInstance(), false));
 */
-
-        /*final Calendar calendar = Calendar.getInstance();
-        System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
-        System.out.println(calendar.get(Calendar.MONTH+1));
-        System.out.println(calendar.HOUR_OF_DAY);
-        final Date date = calendar.getTime();
-        String day = new SimpleDateFormat("dd").format(date);    // always 2 digits
-        String month = new SimpleDateFormat("MM").format(date);  // always 2 digits
-        String year = new SimpleDateFormat("yyyy").format(date); // 4 digit year*/
-
-        //System.out.println(Calendar.getInstance().get(Calendar.DAY_OF_MONTH - 1));
     }
 }
