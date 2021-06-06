@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,10 +52,6 @@ public class ArchivedChatsActivity extends AppCompatActivity {
             }
         });
 
-        showContactItem = findViewById(R.id.archivedShowContact);
-        toReadItem = findViewById(R.id.archivedToRead);
-        selectAllItem = findViewById(R.id.archivedSelectAll);
-
         toolbar=findViewById(R.id.archivedChatsToolbar);
         setSupportActionBar(toolbar);
 
@@ -74,6 +71,7 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         archivedLinearLayoutManager= new LinearLayoutManager(this);
         archivedChatsRecView.setLayoutManager(archivedLinearLayoutManager);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -84,40 +82,60 @@ public class ArchivedChatsActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (!isContextualMenu) {
             isContextualToolbarAsActionBarCalled= false;
-            System.out.println("toolbar");
             if (!isToolbarAsActionBarCalled) {
                 setSupportActionBar(toolbar);
                 isToolbarAsActionBarCalled =true;
             }
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
-            menu.clear();
-            getMenuInflater().inflate(R.menu.archived_chats_action_bar, menu);
+            else {
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
+
+                menu.clear();
+                getMenuInflater().inflate(R.menu.archived_chats_action_bar, menu);
+            }
         }
         else {
             isToolbarAsActionBarCalled =false;
-            System.out.println("contextualToolbar");
             if (!isContextualToolbarAsActionBarCalled) {
                 setSupportActionBar(contextualToolbar);
                 isContextualToolbarAsActionBarCalled =true;
             }
-            contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    closeArchivedChatsContextualToolbar();
-                    invalidateOptionsMenu();
+            else {
+                contextualToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        closeArchivedChatsContextualToolbar();
+                        invalidateOptionsMenu();
+                    }
+                });
+
+                menu.clear();
+                getMenuInflater().inflate(R.menu.archived_chats_contextual_action_bar, menu);
+
+                createConnectionItem= menu.findItem(R.id.archivedCreateConnection);
+                showContactItem = menu.findItem(R.id.archivedShowContact);
+                selectAllItem= menu.findItem(R.id.archivedSelectAll);
+
+                if (ArchivedChatsRecViewAdapter.contacts.size()==ArchivedChatsRecViewAdapter.selected_views_contacts.size()
+                && ArchivedChatsRecViewAdapter.contacts.size()==1) {
+                    selectAllItem.setVisible(false);
                 }
-            });
-
-            menu.clear();
-            getMenuInflater().inflate(R.menu.archived_chats_contextual_action_bar, menu);
-
-            selectAllItem= menu.findItem(R.id.archivedSelectAll);
-            selectAllItem.setVisible(false);
+                else if (ArchivedChatsRecViewAdapter.selected_views_contacts.size() > 1
+                        && ArchivedChatsRecViewAdapter.selected_views_contacts.size() < ArchivedChatsRecViewAdapter.contacts.size()) {
+                    createConnectionItem.setVisible(false);
+                    showContactItem.setVisible(false);
+                }
+                else if (ArchivedChatsRecViewAdapter.selected_views_contacts.size() > 1
+                        && ArchivedChatsRecViewAdapter.selected_views_contacts.size() == ArchivedChatsRecViewAdapter.contacts.size()) {
+                    createConnectionItem.setVisible(false);
+                    showContactItem.setVisible(false);
+                    selectAllItem.setVisible(false);
+                }
+            }
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -161,5 +179,17 @@ public class ArchivedChatsActivity extends AppCompatActivity {
 
         ArchivedChatsRecViewAdapter.selected_views.clear();
         ArchivedChatsRecViewAdapter.selected_views_contacts.clear();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK) {
+            if (ArchivedChatsRecViewAdapter.selected_views_contacts.size()!=0) {
+                closeArchivedChatsContextualToolbar();
+                invalidateOptionsMenu();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
