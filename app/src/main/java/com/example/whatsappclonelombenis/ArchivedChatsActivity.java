@@ -1,5 +1,6 @@
 package com.example.whatsappclonelombenis;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -62,12 +63,13 @@ public class ArchivedChatsActivity extends AppCompatActivity {
         archived_contacts = new ArrayList<>();
         archived_contacts.addAll(MainActivity.archived_contacts);
 
+        ArchivedChatsRecViewAdapter.views.clear();
+
         archivedChatsRecViewAdapter= new ArchivedChatsRecViewAdapter(this);
         archivedChatsRecViewAdapter.setData(archived_contacts);
 
         archivedChatsRecView=findViewById(R.id.archivedChatsRecView);
         archivedChatsRecView.setAdapter(archivedChatsRecViewAdapter);
-
         archivedLinearLayoutManager= new LinearLayoutManager(this);
         archivedChatsRecView.setLayoutManager(archivedLinearLayoutManager);
     }
@@ -179,6 +181,8 @@ public class ArchivedChatsActivity extends AppCompatActivity {
 
         ArchivedChatsRecViewAdapter.selected_views.clear();
         ArchivedChatsRecViewAdapter.selected_views_contacts.clear();
+
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -191,5 +195,24 @@ public class ArchivedChatsActivity extends AppCompatActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.archivedSelectAll:
+                for (View view : ArchivedChatsRecViewAdapter.views) {
+                    if (!ArchivedChatsRecViewAdapter.selected_views.contains(view)) {
+                        View check=view.findViewById(R.id.archivedChatSelectedCheck);
+                        check.setVisibility(View.VISIBLE);
+                        view.setOnClickListener(new ArchivedChatsRecViewAdapter.RemoveSelectedListener());
+                        ArchivedChatsRecViewAdapter.selected_views.add(view);
+                        ArchivedChatsRecViewAdapter.selected_views_contacts.put(view, ArchivedChatsRecViewAdapter.contacts.get(archivedLinearLayoutManager.getPosition(view)));
+                        System.out.println(ArchivedChatsRecViewAdapter.selected_views);
+                        contextualToolbar.setTitle(Integer.toString(ArchivedChatsRecViewAdapter.selected_views.size()));
+                    }
+                }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.whatsappclonelombenis;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
@@ -62,6 +63,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 closeChatContextualToolbar();
+            }
+        });
+
+        chatContextualToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.chatSelectAll:
+                        for (View view : ChatRecViewAdapter.views) {
+                            if (!ChatRecViewAdapter.selected_views.contains(view)) {
+                                View check=view.findViewById(R.id.chatSelectedCheck);
+                                check.setVisibility(View.VISIBLE);
+                                view.setOnClickListener(new ChatRecViewAdapter.RemoveSelectedListener());
+                                ChatRecViewAdapter.selected_views.add(view);
+                                ChatRecViewAdapter.selected_views_contacts.put(view, ChatRecViewAdapter.contacts.get(TabChatFragment.mLinearLayoutManager.getPosition(view)));
+                            }
+                            chatContextualToolbar.setTitle(Integer.toString(ChatRecViewAdapter.views.size()));
+                        }
+                }
+                return false;
             }
         });
 
@@ -322,12 +343,11 @@ public class MainActivity extends AppCompatActivity {
             ChatRecViewAdapter.selected_views_contacts.get(view).setArchived(true);
             archived_contacts.add(ChatRecViewAdapter.selected_views_contacts.get(view));
 
-            TabChatFragment.archivedView.setVisibility(View.VISIBLE);
-            String archivedText= getResources().getString(R.string.archived)+" ("+ archived_contacts.size()+")";
-            TabChatFragment.archivedView.setText(archivedText);
-
             ChatRecViewAdapter.contacts.remove(ChatRecViewAdapter.selected_views_contacts.get(view));
         }
+        TabChatFragment.archivedView.setVisibility(View.VISIBLE);
+        String archivedText= getResources().getString(R.string.archived)+" ("+ archived_contacts.size()+")";
+        TabChatFragment.archivedView.setText(archivedText);
         closeChatContextualToolbar();
     }
 }

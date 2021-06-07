@@ -55,4 +55,6 @@
     <string name="feminine_archived">Archiviata</string>
     <string name="yesterday">Ieri</string>
     <string name="extract_from_archive">Estrai chat dall\'archivio</string>
+    <string name="abandon_group">Abbandona gruppo</string>
+    <string name="group_info">Info gruppo</string>
 </resources>

@@ -41,6 +41,7 @@
 
     <item
         android:title="@string/select_all"
+        android:id="@+id/chatSelectAll"
         app:showAsAction="never" />
 
 </menu>

@@ -20,9 +20,19 @@
         android:onClick="onUnarchiveButtonClick"/>
 
     <item
+        android:title="@string/abandon_group"
+        app:showAsAction="never"
+        android:visible="false" />
+
+    <item
         android:title="@string/create_direct_connection"
         android:id="@+id/archivedCreateConnection"
         app:showAsAction="never" />
+
+    <item
+        android:title="@string/group_info"
+        app:showAsAction="never"
+        android:visible="false" />
 
     <item
         android:title="@string/show_contact"
@@ -38,4 +48,6 @@
         android:title="@string/select_all"
         android:id="@+id/archivedSelectAll"
         app:showAsAction="never" />
+
+
 </menu>
