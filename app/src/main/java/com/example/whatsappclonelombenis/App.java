@@ -2,6 +2,7 @@ package com.example.whatsappclonelombenis;
 
 import android.app.Application;
 
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,10 +30,5 @@ public class App extends Application {
         chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", calendar1, false));
         chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", calendar2, false));
         chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!", calendar3, false));
-        /*chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", Calendar.getInstance(), false));
-        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", Calendar.getInstance(), false));
-        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg", "Margot <3", "Ho l'impressione che", Calendar.getInstance(), false));
-        chat_contacts.add(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Leonardo_di_Caprio_%2823531475691%29.jpg/900px-Leonardo_di_Caprio_%2823531475691%29.jpg", "Leonardo", "Ei Enis, sai dov'è Margot?", Calendar.getInstance(), false));
-*/
     }
 }

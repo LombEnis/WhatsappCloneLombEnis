@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.sql.SQLOutput;
+import java.util.Calendar;
+
 public class CallInfoActivity extends AppCompatActivity {
     //Toolbar
     Toolbar callInfoToolbar;
@@ -47,10 +50,12 @@ public class CallInfoActivity extends AppCompatActivity {
         String contactImageUrl= intent.getStringExtra(CallsRecViewAdapter.EXTRA_IMAGE);
         String contactName= intent.getStringExtra(CallsRecViewAdapter.EXTRA_NAME);
         String contactInfo= intent.getStringExtra(CallsRecViewAdapter.EXTRA_INFO);
-        String callDay= intent.getStringExtra(CallsRecViewAdapter.EXTRA_DAY);
-        String callTime= intent.getStringExtra(CallsRecViewAdapter.EXTRA_TIME);
         boolean isAcceptedCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_ACCEPTED, false);
         boolean isIncomingCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_INCOMING, false);
+        //getting Contact Calendar object
+        long contactTimeInMillis= intent.getLongExtra(CallsRecViewAdapter.EXTRA_DATE, 0);
+        Calendar contactCalendar= Calendar.getInstance();
+        contactCalendar.setTimeInMillis(contactTimeInMillis);
 
         //Setting the EXTRA values to the Views
         contactProfileImg=findViewById(R.id.callContactInfoProfileImg);
@@ -65,11 +70,13 @@ public class CallInfoActivity extends AppCompatActivity {
         contactInfoView= findViewById(R.id.callContactInfoInfo);
         contactInfoView.setText(contactInfo);
 
+        //TODO: set call day and call time
+
         callDayView=findViewById(R.id.callContactInfoCallDay);
-        callDayView.setText(callDay);
+        //callDayView.setText(callDay);
 
         callTimeView=findViewById(R.id.callContactInfoCallTime);
-        callTimeView.setText(callTime);
+        //callTimeView.setText(callTime);
 
         callInfoView=findViewById(R.id.callContactInfoCallInfo);
         imageCallInfo=findViewById(R.id.callContactInfoImageInfo);

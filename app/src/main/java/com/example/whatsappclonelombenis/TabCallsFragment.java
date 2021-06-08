@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TabCallsFragment extends Fragment {
     //RecyclerView
@@ -31,9 +32,20 @@ public class TabCallsFragment extends Fragment {
 
         //Calls
         ArrayList<Call> calls= new ArrayList<>();
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), "14/05/2021", "18:28", true, true, true));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), "14/05/2021","18:28", true, true, true));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Enis is my love :))"),"14/05/2021","15:12",true, false, true));
+
+        Calendar calendar1= Calendar.getInstance();
+        calendar1.set(Calendar.HOUR_OF_DAY, 7);
+        calendar1.set(Calendar.DAY_OF_MONTH, 7);
+
+        Calendar calendar2= Calendar.getInstance();
+        calendar2.set(Calendar.HOUR_OF_DAY, 15);
+
+        Calendar calendar3= Calendar.getInstance();
+        calendar3.set(Calendar.HOUR_OF_DAY, 11);
+
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), calendar1, true, true, true));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), calendar2, true, true, true));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Enis is my love :))"), calendar3,true, false, true));
 
         //Adapter
         callsAdapter= new CallsRecViewAdapter(getContext());

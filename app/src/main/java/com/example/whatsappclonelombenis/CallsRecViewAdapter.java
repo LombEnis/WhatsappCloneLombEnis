@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapter.ViewHolder>{
     static Context context;
@@ -37,10 +40,9 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public static final String EXTRA_IMAGE="url";
     public static final String EXTRA_NAME="name";
     public static final String EXTRA_INFO="info";
-    public static final String EXTRA_DAY="day";
     public static final String EXTRA_IS_ACCEPTED="isAccepted";
     public static final String EXTRA_IS_INCOMING="isIncoming";
-    public static final String EXTRA_TIME="time";
+    public static final String EXTRA_DATE="date";
 
     public CallsRecViewAdapter(Context context) {
         this.context = context;
@@ -73,7 +75,42 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                 .circleCrop()
                 .into(holder.profilePic);
         holder.name.setText(calls.get(position).getContact().getName());
-        holder.time.setText(calls.get(position).getCallTime());
+
+        //Setting call time
+        Calendar currentCalendar = Calendar.getInstance();
+        Calendar contactCalendar = calls.get(position).getDate();
+        Date contactDate = contactCalendar.getTime();
+        Calendar previousCalendar= Calendar.getInstance();
+        previousCalendar.add(Calendar.DATE, -1);
+
+        if (contactCalendar.get(Calendar.DAY_OF_MONTH)==currentCalendar.get(Calendar.DAY_OF_MONTH)
+        && contactCalendar.get(Calendar.MONTH)==currentCalendar.get(Calendar.MONTH)
+        && contactCalendar.get(Calendar.YEAR)==currentCalendar.get(Calendar.YEAR)) {
+            String output=context.getResources().getString(R.string.today)+", "+ new SimpleDateFormat("HH").format(contactDate)+":"
+                    +new SimpleDateFormat("mm").format(contactDate);
+            holder.time.setText(output);
+        }
+        else if (contactCalendar.get(Calendar.DAY_OF_MONTH)==previousCalendar.get(Calendar.DAY_OF_MONTH)
+        && contactCalendar.get(Calendar.MONTH)==previousCalendar.get(Calendar.MONTH)
+        && contactCalendar.get(Calendar.YEAR)==previousCalendar.get(Calendar.YEAR)){
+            String output=context.getResources().getString(R.string.yesterday)+", "+new SimpleDateFormat("HH").format(contactDate)+":"
+                    +new SimpleDateFormat("mm").format(contactDate);
+            holder.time.setText(output);
+        }
+        else if ((contactCalendar.get(Calendar.DAY_OF_MONTH)!=currentCalendar.get(Calendar.DAY_OF_MONTH)
+                || contactCalendar.get(Calendar.MONTH)!=currentCalendar.get(Calendar.MONTH))
+                && contactCalendar.get(Calendar.YEAR)==currentCalendar.get(Calendar.YEAR)) {
+            String output=contactCalendar.get(Calendar.DAY_OF_MONTH) + " "+ new SimpleDateFormat("MMMM").format(contactDate)+", "+ new SimpleDateFormat("HH").format(contactDate)+":"
+                    +new SimpleDateFormat("mm").format(contactDate);
+            holder.time.setText(output);
+        }
+        else if (contactCalendar.get(Calendar.YEAR)!=currentCalendar.get(Calendar.YEAR)) {
+            String output = new SimpleDateFormat("dd").format(contactDate)+"/"
+                    + new SimpleDateFormat("MM").format(contactDate)+"/"
+                    + new SimpleDateFormat("yy").format(contactDate)+", "+ new SimpleDateFormat("HH").format(contactDate)+":"
+                    +new SimpleDateFormat("mm").format(contactDate);
+            holder.time.setText(output);
+        }
 
         //Call info
         if (calls.get(position).isCallAccepted() && calls.get(position).isIncomingCall()) {
@@ -229,17 +266,16 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public static class OpenCallInfo implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent showCallInfo= new Intent(context, CallInfoActivity.class);
+            Intent showCallInfoIntent= new Intent(context, CallInfoActivity.class);
 
-            showCallInfo.putExtra(EXTRA_IMAGE, calls.get(views.indexOf(v)).getContact().getProfilePicture());
-            showCallInfo.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
-            showCallInfo.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getMessage());
-            showCallInfo.putExtra(EXTRA_DAY, calls.get(views.indexOf(v)).getCallDay());
-            showCallInfo.putExtra(EXTRA_TIME, calls.get(views.indexOf(v)).getCallTime());
-            showCallInfo.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
-            showCallInfo.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());
+            showCallInfoIntent.putExtra(EXTRA_IMAGE, calls.get(views.indexOf(v)).getContact().getProfilePicture());
+            showCallInfoIntent.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
+            showCallInfoIntent.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getMessage());
+            showCallInfoIntent.putExtra(EXTRA_DATE, calls.get(views.indexOf(v)).getDate().getTimeInMillis());
+            showCallInfoIntent.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
+            showCallInfoIntent.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());
 
-            context.startActivity(showCallInfo);
+            context.startActivity(showCallInfoIntent);
         }
     }
 

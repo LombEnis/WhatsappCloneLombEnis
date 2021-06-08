@@ -1,17 +1,18 @@
 package com.example.whatsappclonelombenis;
 
+import java.util.Calendar;
+
 public class Call {
     private Contact contact;
-    private String callTime, callDay;
+    private Calendar date;
     private boolean callAccepted, isIncomingCall, isVoiceCall;
 
-    public Call(Contact contact, String callDay, String callTime, boolean callAccepted, boolean incomingCall, boolean isVoiceCall) {
+    public Call(Contact contact, Calendar date, boolean callAccepted, boolean incomingCall, boolean isVoiceCall) {
         this.contact = contact;
-        this.callTime = callTime;
+        this.date = date;
         this.callAccepted = callAccepted;
         this.isIncomingCall = incomingCall;
-        this.isVoiceCall= isVoiceCall;
-        this.callDay= callDay;
+        this.isVoiceCall = isVoiceCall;
     }
 
     public Contact getContact() {
@@ -22,20 +23,12 @@ public class Call {
         this.contact = contact;
     }
 
-    public String getCallDay() {
-        return callDay;
+    public Calendar getDate() {
+        return date;
     }
 
-    public void setCallDay(String callDay) {
-        this.callDay = callDay;
-    }
-
-    public String getCallTime() {
-        return callTime;
-    }
-
-    public void setCallTime(String callTime) {
-        this.callTime = callTime;
+    public void setDate(Calendar date) {
+        this.date = date;
     }
 
     public boolean isCallAccepted() {
