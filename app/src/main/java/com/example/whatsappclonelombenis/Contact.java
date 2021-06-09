@@ -69,6 +69,10 @@ public class Contact {
         this.statusStories = statusStories;
     }
 
+    public void deleteStatusStory(int position) {
+        this.statusStories.remove(position);
+    }
+
     public int getCurrentStoriesPos() {
         return currentStoriesPos;
     }

@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -218,6 +219,38 @@ public class StatusActivity extends AppCompatActivity {
             // Set ViewsDialog action bar values
             viewsDialogActionBar.setTitle(getString(R.string.visto_da, currentStory.getViewsContacts().size()));
             viewsDialogActionBar.inflateMenu(R.menu.dialog_views_actionbar_menu);
+            viewsDialogActionBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.dialog_views_actionbar_menu_delete:
+                            // Delete item pressed
+
+                            // Create delete story dialog
+                            AlertDialog.Builder deleteStoryAlertDialog = new AlertDialog.Builder(StatusActivity.this);
+
+                            deleteStoryAlertDialog.setMessage(R.string.delete_story_message);
+
+                            deleteStoryAlertDialog.setPositiveButton(R.string.elimina, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    currentContact.deleteStatusStory(currentContact.getCurrentStoriesPos());
+                                    leaveActivity();
+
+                                    Toast.makeText(StatusActivity.this,
+                                            getString(R.string.deleted_story_message),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            deleteStoryAlertDialog.setNegativeButton(R.string.annulla, null);
+
+                            deleteStoryAlertDialog.show();
+                            break;
+                    }
+
+                    return false;
+                }
+            });
 
             // Set bottom padding for root relative layout
             App.updateDeviceSizeVariables(this);
@@ -456,6 +489,7 @@ public class StatusActivity extends AppCompatActivity {
                 disableAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
+                        // Click outside of dialog
                         resumeStory();
                         // Set alert dialog opened variable to false
                         optionsAlertDialogOpened = false;
@@ -589,7 +623,7 @@ public class StatusActivity extends AppCompatActivity {
             // This is the last story
             if (currentContactPos == (contacts.size() - 1)) {
                 // This is the last contact
-                onBackPressed();
+                leaveActivity();
                 return;
             } else {
                 // This is not the last contact

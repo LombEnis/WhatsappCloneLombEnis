@@ -41,4 +41,6 @@
     <string name="elimina">Elimina</string>
     <string name="visto_da">Visto da %1$d</string>
     <string name="non_ancora_visto">Non ancora visto</string>
+    <string name="delete_story_message">Eliminare questo aggiornamento allo stato? Verrà eliminato anche per tutti i destinatari che lo hanno ricevuto.</string>
+    <string name="deleted_story_message">Aggiornamento allo stato eliminato</string>
 </resources>
