@@ -654,7 +654,7 @@ public class StatusActivity extends AppCompatActivity {
             // This is the first story
             if (currentContactPos == 0) {
                 // This is the first contact
-                onBackPressed();
+                leaveActivity();
                 return;
             } else {
                 // This is not the first contact
@@ -1005,10 +1005,10 @@ public class StatusActivity extends AppCompatActivity {
                     startViewsButtonY = viewsButton.getY();
                     // Stop story when the finger is touching the screen
                     stopStory();
-                    break;
+
+                    return false;
 
                 case MotionEvent.ACTION_MOVE:
-                    isViewsDialogScrolling = true;
                     // Get scroll Y length and viewsDialog new position
                     moveDiffY = startY - event.getRawY();
                     viewsDialogY = startViewsDialogY - moveDiffY;
@@ -1016,6 +1016,7 @@ public class StatusActivity extends AppCompatActivity {
 
                     // Change position for viewsDialog
                     if (viewsDialogY > viewsDialogOpenY && viewsDialogY < App.fullScreenHeight) {
+                        isViewsDialogScrolling = true;
                         // ViewsDialog is being opened
                         viewsDialogOpenPercentage = (App.fullScreenHeight - viewsDialogY) /
                                 (App.fullScreenHeight - viewsDialogOpenY);
@@ -1048,10 +1049,10 @@ public class StatusActivity extends AppCompatActivity {
                         viewsButton.setAlpha(1);
                     }
 
-                    break;
+                    return false;
             }
 
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (event.getAction() == MotionEvent.ACTION_UP && !isSwiping) {
                 // When the touch is released
                 if (isViewsDialogScrolling) {
                     // ViewsDialog is scrolling
@@ -1176,7 +1177,7 @@ public class StatusActivity extends AppCompatActivity {
             isSwiping = true;
             if (currentContactPos == 0) {
                 // This is the first contact
-                onBackPressed();
+                leaveActivity();
                 return;
             } else {
                 // This is not the first contact
@@ -1196,7 +1197,7 @@ public class StatusActivity extends AppCompatActivity {
             isSwiping = true;
             if (currentContactPos == (contacts.size() - 1)) {
                 // This is the last contact
-                onBackPressed();
+                leaveActivity();
                 return;
             } else {
                 // This is not the last contact
@@ -1322,7 +1323,7 @@ public class StatusActivity extends AppCompatActivity {
             isSwiping = true;
             if (currentContactPos == 0) {
                 // This is the first contact
-                onBackPressed();
+                leaveActivity();
                 return;
             } else {
                 // This is not the first contact
@@ -1343,7 +1344,7 @@ public class StatusActivity extends AppCompatActivity {
             isSwiping = true;
             if (currentContactPos == (contacts.size() - 1)) {
                 // This is the last contact
-                onBackPressed();
+                leaveActivity();
                 return;
             } else {
                 // This is not the last contact
