@@ -41,7 +41,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <!-- MyStatusActivity PopupMenu theme -->
+    <!-- MyStatusListActivity PopupMenu theme -->
     <style name="MyStatusPopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
         <item name="android:dropDownVerticalOffset">10dp</item>
     </style>

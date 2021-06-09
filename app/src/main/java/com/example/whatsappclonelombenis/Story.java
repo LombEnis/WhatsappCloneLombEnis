@@ -10,7 +10,7 @@ public class Story {
     private Calendar date;
     // Layout
     private int backgroundColorResource;
-    private String backgroundImageUrlString;
+    private String storyImageUrlString;
     private String mainTextString;
     private String captionTextString;
     // Views
@@ -25,7 +25,7 @@ public class Story {
     public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
         this.date = date;
         this.backgroundColorResource = backgroundColorResource;
-        this.backgroundImageUrlString = backgroundImageString;
+        this.storyImageUrlString = backgroundImageString;
         this.mainTextString = mainTextString;
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
@@ -37,7 +37,7 @@ public class Story {
     public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, ArrayList<Object[]> viewsContacts) {
         this.date = date;
         this.backgroundColorResource = backgroundColorResource;
-        this.backgroundImageUrlString = backgroundImageString;
+        this.storyImageUrlString = backgroundImageString;
         this.mainTextString = mainTextString;
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
@@ -61,12 +61,12 @@ public class Story {
         this.backgroundColorResource = backgroundColorResource;
     }
 
-    public String getBackgroundImageString() {
-        return backgroundImageUrlString;
+    public String getStoryImageUrlString() {
+        return storyImageUrlString;
     }
 
-    public void setBackgroundImageString(String backgroundImageString) {
-        this.backgroundImageUrlString = backgroundImageString;
+    public void setStoryImageUrlString(String storyImageUrlString) {
+        this.storyImageUrlString = storyImageUrlString;
     }
 
     public String getMainTextString() {
@@ -110,11 +110,11 @@ public class Story {
     }
 
     public String getBackgroundImageUrlString() {
-        return backgroundImageUrlString;
+        return storyImageUrlString;
     }
 
     public void setBackgroundImageUrlString(String backgroundImageUrlString) {
-        this.backgroundImageUrlString = backgroundImageUrlString;
+        this.storyImageUrlString = backgroundImageUrlString;
     }
 
     public ArrayList<Object[]> getViewsContacts() {

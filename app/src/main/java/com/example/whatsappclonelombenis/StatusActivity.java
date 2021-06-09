@@ -55,8 +55,7 @@ public class StatusActivity extends AppCompatActivity {
     private RelativeLayout statusRootRelativeLayout;
     private LinearLayout progressLinearLayout;
     private Toolbar actionBar;
-    private ImageView backgroundImageView;
-    private TextView mainTextView;
+    private ImageView storyImageView;
     private Button replyButton;
     // ViewsDialog
     private Button viewsButton;
@@ -166,8 +165,7 @@ public class StatusActivity extends AppCompatActivity {
         statusRootRelativeLayout = findViewById(R.id.status_root_layout);
         progressLinearLayout = findViewById(R.id.progress_linearlayout);
         actionBar = findViewById(R.id.action_bar);
-        backgroundImageView = findViewById(R.id.background_imageview);
-        mainTextView = findViewById(R.id.main_textview);
+        storyImageView = findViewById(R.id.story_imageview);
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
@@ -779,10 +777,8 @@ public class StatusActivity extends AppCompatActivity {
         statusRootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
 
         Glide.with(this)
-                .load(currentStory.getBackgroundImageString())
-                .into(backgroundImageView);
-
-        mainTextView.setText(currentStory.getMainTextString());
+                .load(currentStory.getStoryImageUrlString())
+                .into(storyImageView);
     }
 
     public void startCurrentStory() {
@@ -868,7 +864,7 @@ public class StatusActivity extends AppCompatActivity {
         viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                backgroundImageView.setColorFilter((Integer)valueAnimator.getAnimatedValue(), android.graphics.PorterDuff.Mode.MULTIPLY);
+                storyImageView.setColorFilter((Integer)valueAnimator.getAnimatedValue(), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         });
 
@@ -929,7 +925,7 @@ public class StatusActivity extends AppCompatActivity {
         viewsColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                backgroundImageView.setColorFilter((Integer)valueAnimator.getAnimatedValue(), android.graphics.PorterDuff.Mode.MULTIPLY);
+                storyImageView.setColorFilter((Integer)valueAnimator.getAnimatedValue(), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         });
 
@@ -1030,7 +1026,7 @@ public class StatusActivity extends AppCompatActivity {
                         viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
                         float viewsDialogOpenPercentage = viewsDialogYFromBottom / viewsDialogRootLayout.getHeight();
                         int colorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
-                        backgroundImageView.setColorFilter(Color.rgb(colorFilterValues, colorFilterValues, colorFilterValues), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        storyImageView.setColorFilter(Color.rgb(colorFilterValues, colorFilterValues, colorFilterValues), android.graphics.PorterDuff.Mode.MULTIPLY);
                     } else if (viewsDialogY < viewsDialogOpenY) {
                         // ViewsDialog is fully open
                         // Set viewsDialog to the max position
