@@ -50,6 +50,9 @@ import com.bumptech.glide.request.transition.Transition;
 import java.util.ArrayList;
 
 public class StatusActivity extends AppCompatActivity {
+    // Activity variables
+    private boolean isLeavingActivity;
+
     // Layout view
     private ConstraintLayout rootConstraintLayout;
     private RelativeLayout statusRootRelativeLayout;
@@ -100,7 +103,7 @@ public class StatusActivity extends AppCompatActivity {
     private boolean isViewsDialogScrolling;
     private boolean isViewsDialogAnimationCancelled;
     float viewsDialogOpenPercentage;
-    // Views button viariables
+    // Views button variables
     private float viewsDialogOpenY;
     private float viewsButtonClosedY;
     private float viewsButtonOpenY;
@@ -420,8 +423,10 @@ public class StatusActivity extends AppCompatActivity {
         changeContactLayout();
         setCurrentStoryLayout();
         startCurrentStory();
-        // Set alert dialog opened variable to false
+
+        // Initialize some variables
         optionsAlertDialogOpened = false;
+        isLeavingActivity = false;
     }
 
     @Override
@@ -555,6 +560,7 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     public void leaveActivity() {
+        isLeavingActivity = true;
         super.onBackPressed();
 
         progressBarAnimator.cancel();
@@ -792,9 +798,7 @@ public class StatusActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (currentProgressBar.getProgress() == 100) {
-                    nextStory();
-                }
+                if (currentProgressBar.getProgress() == 100) nextStory();
             }
 
             @Override
@@ -1046,7 +1050,7 @@ public class StatusActivity extends AppCompatActivity {
                     return false;
             }
 
-            if (event.getAction() == MotionEvent.ACTION_UP && !isSwiping) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 // When the touch is released
                 if (isViewsDialogScrolling) {
                     // ViewsDialog is scrolling
@@ -1054,12 +1058,12 @@ public class StatusActivity extends AppCompatActivity {
                         // The ViewsDialog is neither open nor closed
                         viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
                         if (viewsDialogYFromBottom >= (viewsDialogRootLayout.getHeight() / 2)) {
-                            // ViewsDialog was more than half open - full open
+                            // ViewsDialog is more than half open -> full open
                             openViewsDialog(-viewsDialogYFromBottom);
                         } else {
-                            // ViewsDialog was less than half open - full close
+                            // ViewsDialog is less than half open -> full close
                             closeViewsDialog(-viewsDialogYFromBottom);
-                            resumeStory();
+                            if (!isLeavingActivity) resumeStory();
                         }
                     } else if (viewsDialogY < viewsDialogOpenY) {
                         // ViewsDialog is fully open
