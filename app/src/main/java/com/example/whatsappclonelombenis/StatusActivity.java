@@ -770,14 +770,12 @@ public class StatusActivity extends AppCompatActivity {
     private void setCurrentStoryLayout() {
         // Set story date in the actionBar subtitle
         String currentContactDateString = App.getDateString(currentStory.getDate());
-
         getSupportActionBar().setSubtitle(currentContactDateString);
 
-        // Set layout of the story
-        statusRootRelativeLayout.setBackgroundColor(currentStory.getBackgroundColorResource());
-
+        // Set image of the story
         Glide.with(this)
-                .load(currentStory.getStoryImageUrlString())
+                .load(currentStory.getStoryImageBitmap())
+                .centerCrop()
                 .into(storyImageView);
     }
 

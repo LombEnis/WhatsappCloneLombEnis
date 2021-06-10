@@ -13,6 +13,11 @@
         android:layout_height="match_parent"
         tools:context=".StatusActivity">
 
+        <ImageView
+            android:id="@+id/story_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <LinearLayout
             android:id="@+id/navigation_buttons_linear_layout"
             android:layout_width="match_parent"
@@ -59,11 +64,6 @@
             app:titleMarginStart="17dp"
             app:titleTextAppearance="@style/StoriesTitleTextStyle"
             app:titleTextColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/story_imageview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/views_button"

@@ -1,12 +1,14 @@
 package com.example.whatsappclonelombenis;
 
+import android.graphics.Bitmap;
+
 import java.net.URL;
 import java.util.ArrayList;
 
 public class Contact {
     private String name;
     private String telNumber;
-    private String profilePicture;
+    private Bitmap profilePicture;
     private String infoText;
 
     private ArrayList<Story> statusStories;
@@ -16,7 +18,7 @@ public class Contact {
     private boolean isStatusDisabled;
 
     // Main constructor
-    public Contact(String name, String telNumber, String profilePicture, String infoText, ArrayList<Story> statusStories) {
+    public Contact(String name, String telNumber, Bitmap profilePicture, String infoText, ArrayList<Story> statusStories) {
         this.name = name;
         this.telNumber = telNumber;
         this.profilePicture = profilePicture;
@@ -45,11 +47,11 @@ public class Contact {
         this.telNumber = telNumber;
     }
 
-    public String getProfilePicture() {
+    public Bitmap getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(Bitmap profilePicture) {
         this.profilePicture = profilePicture;
     }
 

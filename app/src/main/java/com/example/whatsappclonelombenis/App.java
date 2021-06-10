@@ -12,6 +12,9 @@ import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,75 +49,89 @@ public class App extends Application {
         fullScreenHeight = screenHeight + navigationBarHeight + statusBarHeight + 36;
 
         // Create contacts
-        String sampleImageUrlString = "https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale";
-        Bitmap sampleBitmap = BitmapFactory.decodeResource(getResources(),
-                R.drawable.dark);
+        Thread createContactsThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL sampleDiCaprioUrl = new URL("https://img.huffingtonpost.com/asset/5e1710b4250000bee1d323e7.jpeg?cache=iA1K1GPWo5&ops=scalefit_630_noupscale");
+                    Bitmap sampleDiCaprioBitmap = BitmapFactory.decodeStream(sampleDiCaprioUrl.openConnection().getInputStream());
 
-        // Create stories
-        ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();
-        Story firstContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
-        Story firstContactSecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
-        Story firstContactThirdStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
-                "Storia 3", "Questo è un caption", sampleBitmap);
-        firstContactStatusStories.add(firstContactFirstStory);
-        firstContactStatusStories.add(firstContactSecondStory);
-        firstContactStatusStories.add(firstContactThirdStory);
+                    Bitmap sampleDarkBitmap = BitmapFactory.decodeResource(getResources(),
+                            R.drawable.dark);
 
-        ArrayList<Story> secondContactStatusStories = new ArrayList<Story>();
-        Story secondContactfirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
-        Story secondContactsecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
-        secondContactStatusStories.add(secondContactfirstStory);
-        secondContactStatusStories.add(secondContactsecondStory);
+                    // Create stories
+                    ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();
+                    Story firstContactFirstStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    Story firstContactSecondStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    Story firstContactThirdStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    firstContactStatusStories.add(firstContactFirstStory);
+                    firstContactStatusStories.add(firstContactSecondStory);
+                    firstContactStatusStories.add(firstContactThirdStory);
 
-        ArrayList<Story> thirdContactStatusStories = new ArrayList<Story>();
-        Story thirdContactfirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap);
-        Story thirdContactsecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap);
-        thirdContactStatusStories.add(thirdContactfirstStory);
-        thirdContactStatusStories.add(thirdContactsecondStory);
+                    ArrayList<Story> secondContactStatusStories = new ArrayList<Story>();
+                    Story secondContactfirstStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    Story secondContactsecondStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    secondContactStatusStories.add(secondContactfirstStory);
+                    secondContactStatusStories.add(secondContactsecondStory);
 
-        // Create contacts
-        contacts = new ArrayList<>();
+                    ArrayList<Story> thirdContactStatusStories = new ArrayList<Story>();
+                    Story thirdContactfirstStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    Story thirdContactsecondStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap);
+                    thirdContactStatusStories.add(thirdContactfirstStory);
+                    thirdContactStatusStories.add(thirdContactsecondStory);
 
-        Contact contact1 = new Contact("Leonardo DiCaprio1", "3666875674", sampleImageUrlString,
-                "Questo è il mio stato", firstContactStatusStories);
-        contacts.add(contact1);
-        Contact contact2 = new Contact("Leonardo DiCaprio2", "3666875674", sampleImageUrlString,
-                "Questo è il mio stato", secondContactStatusStories);
-        contacts.add(contact2);
-        Contact contact3 = new Contact("Leonardo DiCaprio3", "3666875674", sampleImageUrlString,
-                "Questo è il mio stato", thirdContactStatusStories);
-        contacts.add(contact3);
+                    // Create contacts
+                    contacts = new ArrayList<>();
 
-        // Create my contact + stories
-        ArrayList<Object[]> myContactViewsContacts = new ArrayList<>();
+                    Contact contact1 = new Contact("Leonardo DiCaprio1", "3666875674", sampleDiCaprioBitmap,
+                            "Questo è il mio stato", firstContactStatusStories);
+                    contacts.add(contact1);
+                    Contact contact2 = new Contact("Leonardo DiCaprio2", "3666875674", sampleDiCaprioBitmap,
+                            "Questo è il mio stato", secondContactStatusStories);
+                    contacts.add(contact2);
+                    Contact contact3 = new Contact("Leonardo DiCaprio3", "3666875674", sampleDiCaprioBitmap,
+                            "Questo è il mio stato", thirdContactStatusStories);
+                    contacts.add(contact3);
 
-        Object[] myContactViewsContactsItem1 = {contact1, Calendar.getInstance()};
-        Object[] myContactViewsContactsItem2 = {contact2, Calendar.getInstance()};
-        Object[] myContactViewsContactsItem3 = {contact3, Calendar.getInstance()};
+                    // Create my contact + stories
+                    ArrayList<Object[]> myContactViewsContacts = new ArrayList<>();
 
-        myContactViewsContacts.add(myContactViewsContactsItem1);
-        myContactViewsContacts.add(myContactViewsContactsItem2);
-        myContactViewsContacts.add(myContactViewsContactsItem3);
+                    Object[] myContactViewsContactsItem1 = {contact1, Calendar.getInstance()};
+                    Object[] myContactViewsContactsItem2 = {contact2, Calendar.getInstance()};
+                    Object[] myContactViewsContactsItem3 = {contact3, Calendar.getInstance()};
 
-        ArrayList<Story> myContactStatusStories = new ArrayList<Story>();
-        Story myContactFirstStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.black), sampleImageUrlString,
-                "Storia 1", "Questo è un caption", sampleBitmap, myContactViewsContacts);
-        Story myContactSecondStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orchid), sampleImageUrlString,
-                "Storia 2", "Questo è un caption", sampleBitmap, myContactViewsContacts);
-        Story myContactThirdStory = new Story(Calendar.getInstance(), ContextCompat.getColor(getContext(), R.color.orange), sampleImageUrlString,
-                "Storia 3", "Questo è un caption", sampleBitmap, myContactViewsContacts);
-        myContactStatusStories.add(myContactFirstStory);
-        myContactStatusStories.add(myContactSecondStory);
-        myContactStatusStories.add(myContactThirdStory);
+                    myContactViewsContacts.add(myContactViewsContactsItem1);
+                    myContactViewsContacts.add(myContactViewsContactsItem2);
+                    myContactViewsContacts.add(myContactViewsContactsItem3);
 
-        myContact = new Contact("Matteo", "3666875674", sampleImageUrlString,
-                "Questo è il mio stato", myContactStatusStories);
+                    ArrayList<Story> myContactStatusStories = new ArrayList<Story>();
+                    Story myContactFirstStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap, myContactViewsContacts);
+                    Story myContactSecondStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap, myContactViewsContacts);
+                    Story myContactThirdStory = new Story(Calendar.getInstance(), sampleDarkBitmap,
+                            "Questo è un caption", sampleDarkBitmap, myContactViewsContacts);
+                    myContactStatusStories.add(myContactFirstStory);
+                    myContactStatusStories.add(myContactSecondStory);
+                    myContactStatusStories.add(myContactThirdStory);
+
+                    myContact = new Contact("Matteo", "3666875674", sampleDiCaprioBitmap,
+                            "Questo è il mio stato", myContactStatusStories);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        createContactsThread.start();
 
         // Initialize isDisabledContactsVisible to false
         TabStatusFragment.isDisabledContactsVisible = false;

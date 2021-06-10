@@ -42,8 +42,16 @@ public class TabStatusFragment extends Fragment {
         // Set adapter for recyclerview
         recViewAdapter = new StatusRecViewAdapter(getContext());
 
-        TabStatusFragment.recViewAdapter.setMyContact(App.myContact);
-        TabStatusFragment.recViewAdapter.setContacts(App.contacts);
+        if (App.contacts != null && App.myContact != null) {
+            // Connected successfully to internet
+            TabStatusFragment.recViewAdapter.setMyContact(App.myContact);
+            TabStatusFragment.recViewAdapter.setContacts(App.contacts);
+        } else {
+            // No internet connection
+            TabStatusFragment.recViewAdapter.setMyContact(new Contact("", "", null,
+                    "", new ArrayList<>()));
+            TabStatusFragment.recViewAdapter.setContacts(new ArrayList<>());
+        }
 
         recView.setAdapter(recViewAdapter);
 

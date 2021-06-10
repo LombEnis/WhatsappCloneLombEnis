@@ -9,9 +9,7 @@ public class Story {
     // Date
     private Calendar date;
     // Layout
-    private int backgroundColorResource;
-    private String storyImageUrlString;
-    private String mainTextString;
+    private Bitmap storyImageBitmap;
     private String captionTextString;
     // Views
     private ArrayList<Object[]> viewsContacts;
@@ -22,11 +20,9 @@ public class Story {
     private boolean isSeen;
 
     // Story constructor
-    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap) {
+    public Story(Calendar date, Bitmap storyImageBitmap, String captionTextString, Bitmap storyPreviewBitmap) {
         this.date = date;
-        this.backgroundColorResource = backgroundColorResource;
-        this.storyImageUrlString = backgroundImageString;
-        this.mainTextString = mainTextString;
+        this.storyImageBitmap = storyImageBitmap;
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
 
@@ -34,11 +30,9 @@ public class Story {
     }
 
     // My story constructor
-    public Story(Calendar date, int backgroundColorResource, String backgroundImageString, String mainTextString, String captionTextString, Bitmap storyPreviewBitmap, ArrayList<Object[]> viewsContacts) {
+    public Story(Calendar date, Bitmap storyImageBitmap, String captionTextString, Bitmap storyPreviewBitmap, ArrayList<Object[]> viewsContacts) {
         this.date = date;
-        this.backgroundColorResource = backgroundColorResource;
-        this.storyImageUrlString = backgroundImageString;
-        this.mainTextString = mainTextString;
+        this.storyImageBitmap = storyImageBitmap;
         this.captionTextString = captionTextString;
         this.storyPreviewBitmap = storyPreviewBitmap;
         this.viewsContacts = viewsContacts;
@@ -53,28 +47,12 @@ public class Story {
         this.date = date;
     }
 
-    public int getBackgroundColorResource() {
-        return backgroundColorResource;
+    public Bitmap getStoryImageBitmap() {
+        return storyImageBitmap;
     }
 
-    public void setBackgroundColorResource(int backgroundColorResource) {
-        this.backgroundColorResource = backgroundColorResource;
-    }
-
-    public String getStoryImageUrlString() {
-        return storyImageUrlString;
-    }
-
-    public void setStoryImageUrlString(String storyImageUrlString) {
-        this.storyImageUrlString = storyImageUrlString;
-    }
-
-    public String getMainTextString() {
-        return mainTextString;
-    }
-
-    public void setMainTextString(String mainTextString) {
-        this.mainTextString = mainTextString;
+    public void setStoryImageBitmap(Bitmap storyImageBitmap) {
+        this.storyImageBitmap = storyImageBitmap;
     }
 
     public String getCaptionTextString() {
@@ -107,14 +85,6 @@ public class Story {
 
     public boolean isSeen() {
         return this.isSeen;
-    }
-
-    public String getBackgroundImageUrlString() {
-        return storyImageUrlString;
-    }
-
-    public void setBackgroundImageUrlString(String backgroundImageUrlString) {
-        this.storyImageUrlString = backgroundImageUrlString;
     }
 
     public ArrayList<Object[]> getViewsContacts() {
