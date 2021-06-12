@@ -551,7 +551,6 @@ public class StatusActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isViewsDialogOpen) {
             closeViewsDialog(-viewsDialogRootLayout.getHeight());
-            resumeStory();
         }
         else leaveActivity();
     }
@@ -898,6 +897,7 @@ public class StatusActivity extends AppCompatActivity {
                     // The animation reaches the end
                     isViewsDialogScrolling = false;
                     setViewsDialogOpen(false);
+                    if (!isLeavingActivity) resumeStory();
                 }
             }
 
@@ -947,7 +947,6 @@ public class StatusActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // Touch outside of viewsDialog
                     closeViewsDialog(-viewsDialogRootLayout.getHeight());
-                    resumeStory();
                 }
             });
         } else {
@@ -1068,7 +1067,6 @@ public class StatusActivity extends AppCompatActivity {
                         } else {
                             // ViewsDialog is less than half open -> full close
                             closeViewsDialog(-viewsDialogYFromBottom);
-                            if (!isLeavingActivity) resumeStory();
                         }
                     } else if (viewsDialogY < viewsDialogOpenY) {
                         // ViewsDialog is fully open
@@ -1079,7 +1077,15 @@ public class StatusActivity extends AppCompatActivity {
                         // ViewsDialog is fully closed
                         isViewsDialogScrolling = false;
                         setViewsDialogOpen(false);
-                        resumeStory();
+                        if (!isLeavingActivity) resumeStory();
+                    }
+
+                    if (isOnLongClickPressed) {
+                        progressLinearLayout.setVisibility(View.VISIBLE);
+                        actionBar.setVisibility(View.VISIBLE);
+                        viewsButton.setVisibility(View.VISIBLE);
+
+                        isOnLongClickPressed = false;
                     }
                 } else {
                     // ViewsDialog is not scrolling
@@ -1104,7 +1110,6 @@ public class StatusActivity extends AppCompatActivity {
                             if (!viewRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                                 // Touch outside of viewsDialog
                                 closeViewsDialog(-viewsDialogRootLayout.getHeight());
-                                resumeStory();
                             }
                         } else if (!isSwiping) {
                             if (view.getId() == R.id.right_button) nextStory();
