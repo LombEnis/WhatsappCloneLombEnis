@@ -21,7 +21,8 @@
             android:theme="@style/Theme.WhatsappCloneLombEnis.FullScreenActivity" />
         <activity
             android:name=".NewStatusTextActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.WhatsappCloneLombEnis.FullScreenActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

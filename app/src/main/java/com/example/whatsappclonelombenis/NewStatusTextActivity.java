@@ -2,20 +2,18 @@ package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.view.WindowInsetsController;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
@@ -26,6 +24,8 @@ public class NewStatusTextActivity extends AppCompatActivity {
 
     private EmojiconEditText statusEditText;
     private EmojiconTextView emojiTextView;
+
+    private RelativeLayout bottomRelativeLayout;
 
     private ImageButton emojiImageButton;
     private ImageButton fontImageButton;
@@ -52,13 +52,41 @@ public class NewStatusTextActivity extends AppCompatActivity {
         statusEditText = findViewById(R.id.status_edittext);
         emojiTextView = findViewById(R.id.emoji_textview);
 
+        bottomRelativeLayout = findViewById(R.id.bottom_relativelayout);
+
         emojiImageButton = findViewById(R.id.emoji_imagebutton);
         fontImageButton = findViewById(R.id.text_imagebutton);
         colorImageButton = findViewById(R.id.color_imagebutton);
 
         sendImageButton = findViewById(R.id.send_imagebutton);
 
-        // Appear/Disappear send button on text changing
+        // Delete status bar and expand the layout
+        getWindow().setDecorFitsSystemWindows(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            final WindowInsetsController controller = getWindow().getInsetsController();
+            getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        } else {
+            //noinspection deprecation
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }
+
+        // Set bottom margin for the bottom layout
+        if (Build.VERSION.SDK_INT >= 19) {
+            App.updateDeviceSizeVariables(this);
+
+            ConstraintLayout.LayoutParams bottomRelativeLayoutLayoutParams = (ConstraintLayout.LayoutParams) bottomRelativeLayout.getLayoutParams();
+            bottomRelativeLayoutLayoutParams.bottomMargin = App.navigationBarHeight;
+
+            bottomRelativeLayout.setLayoutParams(bottomRelativeLayoutLayoutParams);
+        }
+
+        // Make send button appear/disappear on text changing
         statusEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
