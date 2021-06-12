@@ -57,7 +57,7 @@ public class App extends Application {
                     Bitmap sampleDiCaprioBitmap = BitmapFactory.decodeStream(sampleDiCaprioUrl.openConnection().getInputStream());
 
                     Bitmap sampleDarkBitmap = BitmapFactory.decodeResource(getResources(),
-                            R.drawable.yellow);
+                            R.drawable.dark);
 
                     // Create stories
                     ArrayList<Story> firstContactStatusStories = new ArrayList<Story>();

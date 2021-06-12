@@ -290,7 +290,7 @@ public class StatusActivity extends AppCompatActivity {
                         if (!isViewsDialogOpen) {
                             progressLinearLayout.setVisibility(View.GONE);
                             actionBar.setVisibility(View.GONE);
-                            viewsButton.setVisibility(View.GONE);
+                            bottomRelativeLayout.setVisibility(View.GONE);
                         }
                         isOnLongClickPressed = true;
                     }
@@ -306,7 +306,7 @@ public class StatusActivity extends AppCompatActivity {
                         if (!isViewsDialogOpen) {
                             progressLinearLayout.setVisibility(View.GONE);
                             actionBar.setVisibility(View.GONE);
-                            viewsButton.setVisibility(View.GONE);
+                            bottomRelativeLayout.setVisibility(View.GONE);
                         }
                         isOnLongClickPressed = true;
                     }
@@ -338,7 +338,7 @@ public class StatusActivity extends AppCompatActivity {
                 public boolean onLongClick(View v) {
                     progressLinearLayout.setVisibility(View.GONE);
                     actionBar.setVisibility(View.GONE);
-                    replyButton.setVisibility(View.GONE);
+                    bottomRelativeLayout.setVisibility(View.GONE);
 
                     isOnLongClickPressed = true;
                     return false;
@@ -350,7 +350,7 @@ public class StatusActivity extends AppCompatActivity {
                 public boolean onLongClick(View v) {
                     progressLinearLayout.setVisibility(View.GONE);
                     actionBar.setVisibility(View.GONE);
-                    replyButton.setVisibility(View.GONE);
+                    bottomRelativeLayout.setVisibility(View.GONE);
 
                     isOnLongClickPressed = true;
 
@@ -1082,7 +1082,7 @@ public class StatusActivity extends AppCompatActivity {
                     if (isOnLongClickPressed) {
                         progressLinearLayout.setVisibility(View.VISIBLE);
                         actionBar.setVisibility(View.VISIBLE);
-                        viewsButton.setVisibility(View.VISIBLE);
+                        bottomRelativeLayout.setVisibility(View.VISIBLE);
 
                         isOnLongClickPressed = false;
                     }
@@ -1094,7 +1094,7 @@ public class StatusActivity extends AppCompatActivity {
 
                         progressLinearLayout.setVisibility(View.VISIBLE);
                         actionBar.setVisibility(View.VISIBLE);
-                        viewsButton.setVisibility(View.VISIBLE);
+                        bottomRelativeLayout.setVisibility(View.VISIBLE);
 
                         isStoryStopped = false;
                         isOnLongClickPressed = false;
@@ -1248,7 +1248,7 @@ public class StatusActivity extends AppCompatActivity {
 
                     progressLinearLayout.setVisibility(View.VISIBLE);
                     actionBar.setVisibility(View.VISIBLE);
-                    replyButton.setVisibility(View.VISIBLE);
+                    bottomRelativeLayout.setVisibility(View.VISIBLE);
 
                     isStoryStopped = false;
                     isOnLongClickPressed = false;
