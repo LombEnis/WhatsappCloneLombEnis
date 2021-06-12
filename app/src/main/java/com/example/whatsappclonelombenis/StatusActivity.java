@@ -549,7 +549,10 @@ public class StatusActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isViewsDialogOpen) closeViewsDialog(-viewsDialogRootLayout.getHeight());
+        if (isViewsDialogOpen) {
+            closeViewsDialog(-viewsDialogRootLayout.getHeight());
+            resumeStory();
+        }
         else leaveActivity();
     }
 
@@ -819,7 +822,6 @@ public class StatusActivity extends AppCompatActivity {
         // Open ViewsDialog with animation
         viewsDialogPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, -viewsDialogRootLayout.getHeight());
         viewsDialogPosAnimation.setDuration((int) (500 - 500 * viewsDialogOpenPercentage));
-        viewsDialogPosAnimation.start();
 
         viewsDialogPosAnimation.addListener(new Animator.AnimatorListener() {
             @Override
@@ -845,6 +847,8 @@ public class StatusActivity extends AppCompatActivity {
             @Override
             public void onAnimationRepeat(Animator animation) {}
         });
+
+        viewsDialogPosAnimation.start();
 
         // Open ViewsButton with animation
         viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, -viewsDialogRootLayout.getHeight());
@@ -880,7 +884,6 @@ public class StatusActivity extends AppCompatActivity {
         // Close views dialog with animation
         viewsDialogPosAnimation = ObjectAnimator.ofFloat(viewsDialogRootLayout, "translationY",  startViewsDialogPos, 0f);
         viewsDialogPosAnimation.setDuration((int) (500 * viewsDialogOpenPercentage));
-        viewsDialogPosAnimation.start();
 
         viewsDialogPosAnimation.addListener(new Animator.AnimatorListener() {
             @Override
@@ -906,6 +909,8 @@ public class StatusActivity extends AppCompatActivity {
             @Override
             public void onAnimationRepeat(Animator animation) {}
         });
+
+        viewsDialogPosAnimation.start();
 
         // Close ViewsButton with animation
         viewsButtonPosAnimation = ObjectAnimator.ofFloat(viewsButton, "translationY", startViewsDialogPos, 0f);
