@@ -583,7 +583,7 @@ public class StatusActivity extends AppCompatActivity {
                 contacts.get(pos).setCurrentStoriesPos(0);
             }
 
-            // Set progress bar value to 0
+            // Set progress bar value to 0 for seen and disabled contacts
             for (Contact contact : contacts) {
                 if (contact.isAllStoriesSeen() || contact.isStatusDisabled()) {
                     for (Story story : contact.getStatusStories()) {
@@ -595,7 +595,7 @@ public class StatusActivity extends AppCompatActivity {
         } else if (contactsType == 2) {
             // Seen contacts
 
-            // Set progress bar value to 0
+            // Set progress bar value to 0 for seen and disabled contacts
             for (Contact contact : contacts) {
                 for (Story story : contact.getStatusStories()) {
                     story.getProgressBar().setProgress(0);
@@ -604,7 +604,7 @@ public class StatusActivity extends AppCompatActivity {
         } else if (contactsType == 3) {
             // Disabled contacts
 
-            // Set progress bar and last position to 0
+            // Set progress bar and last position to 0 for seen and disabled contacts
             for (Contact contact : contacts) {
                 contact.setLastStoriesPos(0);
                 for (Story story : contact.getStatusStories()) {

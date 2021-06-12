@@ -98,6 +98,7 @@ public class Contact {
     }
 
     public void increaseLastStoriesPos() {
+        statusStories.get(lastStoriesPos).setSeen(true);
         if (lastStoriesPos != (statusStories.size() - 1)) {
             lastStoriesPos++;
         } else {
