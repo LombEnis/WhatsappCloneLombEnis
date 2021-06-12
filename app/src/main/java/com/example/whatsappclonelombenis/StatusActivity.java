@@ -54,14 +54,15 @@ public class StatusActivity extends AppCompatActivity {
     private boolean isLeavingActivity;
 
     // Layout view
-    private ConstraintLayout rootConstraintLayout;
     private RelativeLayout statusRootRelativeLayout;
     private LinearLayout progressLinearLayout;
     private Toolbar actionBar;
     private ImageView storyImageView;
+    private RelativeLayout bottomRelativeLayout;
+    private TextView captionTextView;
     private Button replyButton;
-    // ViewsDialog
     private Button viewsButton;
+    // ViewsDialog
     private ConstraintLayout viewsDialogRootLayout;
     private Toolbar viewsDialogActionBar;
 
@@ -164,7 +165,6 @@ public class StatusActivity extends AppCompatActivity {
         }
 
         // Instantiate layout view
-        rootConstraintLayout = findViewById(R.id.root_layout);
         statusRootRelativeLayout = findViewById(R.id.status_root_layout);
         progressLinearLayout = findViewById(R.id.progress_linearlayout);
         actionBar = findViewById(R.id.action_bar);
@@ -172,6 +172,9 @@ public class StatusActivity extends AppCompatActivity {
 
         leftButton = findViewById(R.id.left_button);
         rightButton = findViewById(R.id.right_button);
+
+        bottomRelativeLayout = findViewById(R.id.bottom_relativelayout);
+        captionTextView = findViewById(R.id.caption_textview);
 
         // Instantiate onLongClick variables
         isOnLongClickPressed = false;
@@ -359,6 +362,8 @@ public class StatusActivity extends AppCompatActivity {
             rightButtonTouchListener = new OnStatusTouchListener(this, rightButton);
         }
 
+        captionTextView.setText(currentStory.getCaptionTextString());
+
         // Set touch listeners
         leftButton.setOnTouchListener(leftButtonTouchListener);
         rightButton.setOnTouchListener(rightButtonTouchListener);
@@ -405,18 +410,12 @@ public class StatusActivity extends AppCompatActivity {
         // Set bottom margin for the bottom button
         if (Build.VERSION.SDK_INT >= 19) {
             App.updateDeviceSizeVariables(this);
+            App.updateDeviceSizeVariables(this);
 
-            Button button;
-            if (contactsType == 0) {
-                button = viewsButton;
-            } else {
-                button = replyButton;
-            }
+            RelativeLayout.LayoutParams bottomRelativeLayoutLayoutParams = (RelativeLayout.LayoutParams) bottomRelativeLayout.getLayoutParams();
+            bottomRelativeLayoutLayoutParams.bottomMargin = App.navigationBarHeight;
 
-            RelativeLayout.LayoutParams buttonLayoutParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
-            buttonLayoutParams.bottomMargin = App.navigationBarHeight + 20;
-
-            button.setLayoutParams(buttonLayoutParams);
+            bottomRelativeLayout.setLayoutParams(bottomRelativeLayoutLayoutParams);
         }
 
         // Start first story

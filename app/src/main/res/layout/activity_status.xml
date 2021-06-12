@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,8 +18,8 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:id="@+id/navigation_buttons_linear_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -65,17 +64,38 @@
             app:titleTextAppearance="@style/StoriesTitleTextStyle"
             app:titleTextColor="@color/white" />
 
-        <Button
-            android:id="@+id/reply_button"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/bottom_relativelayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="17dp"
-            android:background="@drawable/status_button_ripple_round_background"
-            android:drawableTop="@drawable/ic_arrow_up_vector_24"
-            android:text="@string/rispondi"
-            android:textColor="@color/white" />
+            android:background="@color/translucent">
+
+            <TextView
+                android:id="@+id/caption_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+                android:text="Prova di testo"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/reply_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/caption_textview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/status_button_ripple_round_background"
+                android:drawableTop="@drawable/ic_arrow_up_vector_24"
+                android:drawableTint="@color/white"
+                android:text="@string/rispondi"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

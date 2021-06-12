@@ -15,6 +15,7 @@
     <color name="tab_selected">#C1C0C0</color>
     <color name="transparent_white">#60FFFFFF</color>
     <color name="transparent_dark_white">#40000000</color>
+    <color name="translucent">#65000000</color>
     <color name="transparent_black">#70000000</color>
     <color name="transparent_grey">#70CCCCCC</color>
     <color name="light_blue_shadow">#EEF7F6</color>
