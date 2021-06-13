@@ -321,7 +321,8 @@ public class StatusActivity extends AppCompatActivity {
             // Set current contact and story
             currentContactPos = extraPosition;
             currentContact = contacts.get(currentContactPos);
-            startStoryPos = currentContact.getLastStoriesPos();
+            currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+            startStoryPos = currentContact.getCurrentStoriesPos();
 
             if (contactsType == 1) seenContactsPosDuringNavigation.add(currentContactPos);
 
@@ -579,8 +580,12 @@ public class StatusActivity extends AppCompatActivity {
             // Increase last story pos and set last story as seen for seen contacts during this navigation
             for (int pos:seenContactsPosDuringNavigation) {
                 contacts.get(pos).increaseLastStoriesPos();
-                contacts.get(pos).getStatusStories().get(currentContact.getCurrentStoriesPos()).setSeen(true);
-                contacts.get(pos).setCurrentStoriesPos(0);
+                contacts.get(pos).getStatusStories().get(contacts.get(pos).getCurrentStoriesPos()).setSeen(true);
+                contacts.get(pos).setCurrentStoriesPos(-1);
+
+                for (Story story:contacts.get(pos).getStatusStories()) {
+                    story.getProgressBar().setProgress(100);
+                }
             }
 
             // Set progress bar value to 0 for seen and disabled contacts
@@ -687,7 +692,7 @@ public class StatusActivity extends AppCompatActivity {
         currentContactPos += 1;
         currentContact = contacts.get(currentContactPos);
 
-        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        if (currentContact.getCurrentStoriesPos() == -1) currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
 
         if (!seenContactsPosDuringNavigation.contains(currentContactPos)) seenContactsPosDuringNavigation.add(currentContactPos);
 
@@ -700,7 +705,7 @@ public class StatusActivity extends AppCompatActivity {
         currentContactPos -= 1;
         currentContact = contacts.get(currentContactPos);
 
-        currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
+        if (currentContact.getCurrentStoriesPos() == -1) currentContact.setCurrentStoriesPos(currentContact.getLastStoriesPos());
 
         if (!seenContactsPosDuringNavigation.contains(currentContactPos)) seenContactsPosDuringNavigation.add(currentContactPos);
 
@@ -1359,7 +1364,7 @@ public class StatusActivity extends AppCompatActivity {
 
                 // Set progress bar 100% and stop animator of the previous story
                 progressBarAnimator.cancel();
-                currentProgressBar.setProgress(0);
+                currentProgressBar.setProgress(100);
                 // Set current story
                 currentStory = currentContact.getStatusStories().get(currentContact.getCurrentStoriesPos());
                 // Start current story
