@@ -19,8 +19,11 @@ import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapter.ViewHolder>{
     static Context context;
@@ -122,9 +125,6 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         else if (calls.get(position).isCallAccepted() && (!calls.get(position).isIncomingCall())) {
             holder.callInfo.setImageResource(R.drawable.ic_call_made_green);
         }
-        else {
-            holder.callInfo.setImageResource(R.drawable.ic_call_made_red);
-        }
 
         //VideoCall or VoiceCall
         if (calls.get(position).isVoiceCall()) {
@@ -135,8 +135,56 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         }
     }
 
-    public void setData(ArrayList<Call> calls) {
-        this.calls=calls;
+    public void setData(ArrayList<Call> rawCalls) {
+        ArrayList<Call> filteredCalls= new ArrayList<>();
+        ArrayList<Object> allCalls= new ArrayList<>();
+        ArrayList<Call> addingArr = new ArrayList<>();
+        for (int i=0;  i<rawCalls.size()-1; i++ ) {
+            if (rawCalls.get(i).getContact().getName() == rawCalls.get(i + 1).getContact().getName()) {
+                if (!addingArr.contains(rawCalls.get(i))) {
+                    addingArr.add(rawCalls.get(i));
+                }
+                addingArr.add(rawCalls.get(i+1));
+            }
+            else {
+                if (addingArr.size()>1) {
+                    ArrayList<Call> copyingArrayList= new ArrayList<>();
+                    for (int z=0; z<addingArr.size(); z++) {
+                        Call newOne= addingArr.get(z);
+                        copyingArrayList.add(newOne);
+                    }
+                    allCalls.add(copyingArrayList);
+                    addingArr.clear();
+                }
+                else {
+                    allCalls.add(rawCalls.get(i));
+                }
+            }
+        }
+        if (addingArr.size()==0){
+            allCalls.add(rawCalls.get(rawCalls.size()-1));
+        }else{
+            ArrayList<Call> copyingArrayList= new ArrayList<>();
+            for (int z=0; z<addingArr.size(); z++) {
+                Call newOne= addingArr.get(z);
+                copyingArrayList.add(newOne);
+            }
+            allCalls.add(copyingArrayList);
+        }
+
+        System.out.println(allCalls);
+        for (Object o : allCalls) {
+            if (o instanceof ArrayList) {
+                List<Call> list = new ArrayList<>((Collection<Call>)o);
+                filteredCalls.add(list.get(0));
+            }
+            else {
+                Call call = (Call) o;
+                filteredCalls.add(call);
+            }
+        }
+        System.out.println("filtered"+filteredCalls);
+        this.calls=filteredCalls;
         notifyDataSetChanged();
     }
 
@@ -183,7 +231,6 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                     view.setOnClickListener(selectListener);
                 }
             }
-            //v.setOnLongClickListener(contextualToolbarListener);
             return true;
         }
     }

@@ -46,6 +46,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/callNewContactProfileImg"
         app:layout_constraintEnd_toStartOf="@+id/videocallImageView"
         app:layout_constraintTop_toTopOf="@+id/callNewContactProfileImg"
+        android:scaleType="center"
         app:srcCompat="@drawable/ic_call" />
 
     <ImageView
@@ -57,6 +58,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/callNewContactProfileImg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/callNewContactProfileImg"
+        android:scaleType="center"
         app:srcCompat="@drawable/ic_videocall" />
 
 
