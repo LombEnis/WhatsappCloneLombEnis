@@ -228,7 +228,15 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public class ContactsDateComparator implements Comparator<Contact> {
         @Override
         public int compare(Contact o1, Contact o2) {
-            return o1.getDate().compareTo(o2.getDate());
+            if (o1.getDate().compareTo(o2.getDate())==-1) {
+                return 1;
+            }
+            else if (o1.getDate().compareTo(o2.getDate())==1) {
+                return -1;
+            }
+            else{
+                return 0;
+            }
         }
     }
 }

@@ -16,12 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
 
     static ArrayList<View> views= new ArrayList<>();
     static ArrayList<View> selected_views = new ArrayList<>();
+    static ArrayList<Object> allCalls;
 
     static ContextualToolbarListener contextualToolbarListener= new ContextualToolbarListener();
     static SelectListener selectListener= new SelectListener();
@@ -56,8 +60,18 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public CallsRecViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.calls_recview_item, parent, false);
         views.add(view);
+
         view.setOnLongClickListener(contextualToolbarListener);
         view.setOnClickListener(openCallInfo);
+
+        //Checking if this call contains other calls
+        if (allCalls.get(views.indexOf(view)) instanceof ArrayList) {
+            TextView numberOfCalls = view.findViewById(R.id.numberInsideCalls);
+            List callsList = new ArrayList<>((Collection<?>)allCalls.get(views.indexOf(view)));
+            String text= "("+callsList.size()+")";
+            numberOfCalls.setText(text);
+            numberOfCalls.setVisibility(View.VISIBLE);
+        }
 
         ImageView callImage= view.findViewById(R.id.callImageView);
         callImage.setOnClickListener(new View.OnClickListener() {
@@ -136,11 +150,20 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     }
 
     public void setData(ArrayList<Call> rawCalls) {
+        views.clear();
+
+        allCalls= new ArrayList<>();
         ArrayList<Call> filteredCalls= new ArrayList<>();
-        ArrayList<Object> allCalls= new ArrayList<>();
         ArrayList<Call> addingArr = new ArrayList<>();
+
+        Collections.sort(rawCalls, new ContactsDateComparator());
+
+        //Storing all calls
         for (int i=0;  i<rawCalls.size()-1; i++ ) {
-            if (rawCalls.get(i).getContact().getName() == rawCalls.get(i + 1).getContact().getName()) {
+            if (rawCalls.get(i).getContact().getName() == rawCalls.get(i + 1).getContact().getName()
+            && rawCalls.get(i).getDate().get(Calendar.DAY_OF_MONTH)==rawCalls.get(i+1).getDate().get(Calendar.DAY_OF_MONTH)
+            && rawCalls.get(i).isIncomingCall()==rawCalls.get(i+1).isIncomingCall()
+            && rawCalls.get(i).isCallAccepted()==rawCalls.get(i+1).isCallAccepted()) {
                 if (!addingArr.contains(rawCalls.get(i))) {
                     addingArr.add(rawCalls.get(i));
                 }
@@ -172,7 +195,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             allCalls.add(copyingArrayList);
         }
 
-        System.out.println(allCalls);
+        //Filtering
         for (Object o : allCalls) {
             if (o instanceof ArrayList) {
                 List<Call> list = new ArrayList<>((Collection<Call>)o);
@@ -183,7 +206,9 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                 filteredCalls.add(call);
             }
         }
-        System.out.println("filtered"+filteredCalls);
+        /*System.out.println("filtered"+filteredCalls);
+        System.out.println("viewsSize"+views.size());
+        System.out.println(filteredCalls.size());*/
         this.calls=filteredCalls;
         notifyDataSetChanged();
     }
@@ -340,6 +365,21 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                     rippleDrawable.setState(new int[]{});
                 }
             }, 200);
+        }
+    }
+
+    public class ContactsDateComparator implements Comparator<Call> {
+        @Override
+        public int compare(Call o1, Call o2) {
+            if (o1.getDate().compareTo(o2.getDate())==-1) {
+                return 1;
+            }
+            else if (o1.getDate().compareTo(o2.getDate())==1) {
+                return -1;
+            }
+            else{
+                return 0;
+            }
         }
     }
 

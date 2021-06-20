@@ -20,6 +20,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
+        android:id="@+id/callsSelectedCheck"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="36dp"
@@ -27,11 +28,10 @@
         android:layout_marginTop="34dp"
         android:background="@drawable/circular_check_background"
         android:padding="4dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/callProfileImg"
         app:layout_constraintTop_toTopOf="@+id/callProfileImg"
-        app:srcCompat="@drawable/ic_check"
-        android:id="@+id/callsSelectedCheck"
-        android:visibility="gone"/>
+        app:srcCompat="@drawable/ic_check" />
 
     <TextView
         android:id="@+id/callContactName"
@@ -60,12 +60,12 @@
         android:id="@+id/callTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="17dp"
         android:text="Time"
-        app:layout_constraintStart_toEndOf="@+id/callInfo"
-        app:layout_constraintTop_toBottomOf="@+id/callContactName" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/numberInsideCalls" />
 
     <ImageView
         android:id="@+id/callImageView"
@@ -77,5 +77,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/callProfileImg"
         app:srcCompat="@drawable/ic_call" />
+
+    <TextView
+        android:id="@+id/numberInsideCalls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/callTime"
+        app:layout_constraintStart_toEndOf="@+id/callInfo"
+        app:layout_constraintTop_toTopOf="@+id/callTime"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,7 @@ public class TabChatFragment extends Fragment {
 
         mLinearLayoutManager=new LinearLayoutManager(this.getContext());
         chatRecView.setLayoutManager(mLinearLayoutManager);
+
         //Archived chats
         archivedView = chat_layout.findViewById(R.id.archivedChats);
         if (MainActivity.archived_contacts.size()!=0) {

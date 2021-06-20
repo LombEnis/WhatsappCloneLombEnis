@@ -25,37 +25,23 @@ public class TabCallsFragment extends Fragment {
     private FloatingActionButton callContacts;
 
     static CallsRecViewAdapter callsAdapter;
+
+    static LinearLayoutManager mCallsLinearLayoutManager;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab_calls, container, false);
 
-        //Calls
-        ArrayList<Call> calls= new ArrayList<>();
-
-        Calendar calendar1= Calendar.getInstance();
-        calendar1.set(Calendar.HOUR_OF_DAY, 7);
-        calendar1.set(Calendar.DAY_OF_MONTH, 7);
-
-        Calendar calendar2= Calendar.getInstance();
-        calendar2.set(Calendar.HOUR_OF_DAY, 15);
-
-        Calendar calendar3= Calendar.getInstance();
-        calendar3.set(Calendar.HOUR_OF_DAY, 11);
-
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), calendar1, true, false, false));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), calendar2, true, true, true));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), calendar2, true, true, true));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Enis is my love :))"), calendar3,true, false, true));
-
         //Adapter
         callsAdapter= new CallsRecViewAdapter(getContext());
-        callsAdapter.setData(calls);
+        callsAdapter.setData(App.calls);
 
         //RecyclerView
         callsRecView=view.findViewById(R.id.callsRecView);
         callsRecView.setAdapter(callsAdapter);
-        callsRecView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mCallsLinearLayoutManager= new LinearLayoutManager(this.getContext());
+        callsRecView.setLayoutManager(mCallsLinearLayoutManager);
 
         RecViewItemDivider dividerItemDecoration= new RecViewItemDivider(callsRecView.getContext());
         callsRecView.addItemDecoration(dividerItemDecoration);
