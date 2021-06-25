@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -333,11 +334,23 @@ public class StatusActivity extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 if (!isBottomDialogScrolling) {
                     if (!isBottomDialogOpen) {
-                        progressLinearLayout.setVisibility(View.GONE);
-                        actionBar.setVisibility(View.GONE);
+                        // Hide view with animations
+                        ObjectAnimator progressLinearLayoutOpacityAnimation = ObjectAnimator.ofFloat(progressLinearLayout, "alpha", 0f);
+                        ObjectAnimator actionBarOpacityAnimation = ObjectAnimator.ofFloat(actionBar, "alpha", 0f);
+                        ObjectAnimator bottomEmptyFrameLayoutOpacityAnimation = ObjectAnimator.ofFloat(bottomEmptyFrameLayout, "alpha", 0f);
+                        ObjectAnimator bottomButtonOpacityAnimation = ObjectAnimator.ofFloat(bottomButton, "alpha", 0f);
 
-                        bottomEmptyFrameLayout.setVisibility(View.INVISIBLE);
-                        bottomButton.setVisibility(View.INVISIBLE);
+                        ObjectAnimator[] opacityAnimators = {
+                                progressLinearLayoutOpacityAnimation,
+                                actionBarOpacityAnimation,
+                                bottomEmptyFrameLayoutOpacityAnimation,
+                                bottomButtonOpacityAnimation
+                        };
+
+                        AnimatorSet opacityAnimatorSet = new AnimatorSet();
+                        opacityAnimatorSet.playTogether(opacityAnimators);
+                        opacityAnimatorSet.setDuration(200);
+                        opacityAnimatorSet.start();
                     }
                     isOnLongClickPressed = true;
                 }
@@ -351,9 +364,23 @@ public class StatusActivity extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 if (!isBottomDialogScrolling) {
                     if (!isBottomDialogOpen) {
-                        progressLinearLayout.setVisibility(View.GONE);
-                        actionBar.setVisibility(View.GONE);
-                        bottomEmptyFrameLayout.setVisibility(View.INVISIBLE);
+                        // Hide view with animations
+                        ObjectAnimator progressLinearLayoutOpacityAnimation = ObjectAnimator.ofFloat(progressLinearLayout, "alpha", 0f);
+                        ObjectAnimator actionBarOpacityAnimation = ObjectAnimator.ofFloat(actionBar, "alpha", 0f);
+                        ObjectAnimator bottomEmptyFrameLayoutOpacityAnimation = ObjectAnimator.ofFloat(bottomEmptyFrameLayout, "alpha", 0f);
+                        ObjectAnimator bottomButtonOpacityAnimation = ObjectAnimator.ofFloat(bottomButton, "alpha", 0f);
+
+                        ObjectAnimator[] opacityAnimators = {
+                                progressLinearLayoutOpacityAnimation,
+                                actionBarOpacityAnimation,
+                                bottomEmptyFrameLayoutOpacityAnimation,
+                                bottomButtonOpacityAnimation
+                        };
+
+                        AnimatorSet opacityAnimatorSet = new AnimatorSet();
+                        opacityAnimatorSet.playTogether(opacityAnimators);
+                        opacityAnimatorSet.setDuration(200);
+                        opacityAnimatorSet.start();
                     }
                     isOnLongClickPressed = true;
                 }
@@ -1083,11 +1110,25 @@ public class StatusActivity extends AppCompatActivity {
                         // Exit from long click
                         resumeStory();
 
-                        progressLinearLayout.setVisibility(View.VISIBLE);
-                        actionBar.setVisibility(View.VISIBLE);
-                        bottomEmptyFrameLayout.setVisibility(View.VISIBLE);
-                        bottomButton.setVisibility(View.VISIBLE);
+                        // Set opacity = 1 for all the hidden view
+                        ObjectAnimator progressLinearLayoutOpacityAnimation = ObjectAnimator.ofFloat(progressLinearLayout, "alpha", 1f);
+                        ObjectAnimator actionBarOpacityAnimation = ObjectAnimator.ofFloat(actionBar, "alpha", 1f);
+                        ObjectAnimator bottomEmptyFrameLayoutOpacityAnimation = ObjectAnimator.ofFloat(bottomEmptyFrameLayout, "alpha", 1f);
+                        ObjectAnimator bottomButtonOpacityAnimation = ObjectAnimator.ofFloat(bottomButton, "alpha", 1f);
 
+                        ObjectAnimator[] opacityAnimators = {
+                                progressLinearLayoutOpacityAnimation,
+                                actionBarOpacityAnimation,
+                                bottomEmptyFrameLayoutOpacityAnimation,
+                                bottomButtonOpacityAnimation
+                        };
+
+                        AnimatorSet opacityAnimatorSet = new AnimatorSet();
+                        opacityAnimatorSet.playTogether(opacityAnimators);
+                        opacityAnimatorSet.setDuration(200);
+                        opacityAnimatorSet.start();
+
+                        // Change variables values
                         isStoryStopped = false;
                         isOnLongClickPressed = false;
                     } else if (isOnLongClickPressed) {
