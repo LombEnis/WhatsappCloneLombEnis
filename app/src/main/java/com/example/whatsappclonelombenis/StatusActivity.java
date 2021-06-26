@@ -1133,7 +1133,7 @@ public class StatusActivity extends AppCompatActivity {
                     }
                 } else {
                     // ViewsDialog is not scrolling
-                    if (isOnLongClickPressed && !isBottomDialogOpen) {
+                    if (!isLeavingActivity && isOnLongClickPressed && !isBottomDialogOpen) {
                         // Exit from long click
                         resumeStory();
 
