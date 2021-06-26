@@ -1028,69 +1028,70 @@ public class StatusActivity extends AppCompatActivity {
         public boolean onTouch(View view, MotionEvent event) {
             gestureDetector.onTouchEvent(event);
 
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    // Stop ViewsDialog animations
-                    if (viewsDialogPosAnimation != null &&
-                            viewsButtonPosAnimation != null &&
-                            viewsButtonAlphaAnimation != null &&
-                            viewsColorAnimation != null) {
-                        viewsDialogPosAnimation.cancel();
-                        viewsButtonPosAnimation.cancel();
-                        viewsButtonAlphaAnimation.cancel();
-                        viewsColorAnimation.cancel();
-                    }
-                    // Get start Y position of finger and viewsDialog
-                    startY = event.getRawY();
-                    startViewsDialogY = viewsDialogRootLayout.getY();
-                    startViewsButtonY = bottomButton.getY();
-                    // Stop story when the finger is touching the screen
-                    stopStory();
+            if (!isOnLongClickPressed) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Stop ViewsDialog animations
+                        if (viewsDialogPosAnimation != null &&
+                                viewsButtonPosAnimation != null &&
+                                viewsButtonAlphaAnimation != null &&
+                                viewsColorAnimation != null) {
+                            viewsDialogPosAnimation.cancel();
+                            viewsButtonPosAnimation.cancel();
+                            viewsButtonAlphaAnimation.cancel();
+                            viewsColorAnimation.cancel();
+                        }
+                        // Get start Y position of finger and viewsDialog
+                        startY = event.getRawY();
+                        startViewsDialogY = viewsDialogRootLayout.getY();
+                        startViewsButtonY = bottomButton.getY();
+                        // Stop story when the finger is touching the screen
+                        stopStory();
 
-                    return false;
+                        return false;
 
-                case MotionEvent.ACTION_MOVE:
-                    // Get scroll Y length and viewsDialog new position
-                    moveDiffY = startY - event.getRawY();
-                    viewsDialogY = startViewsDialogY - moveDiffY;
-                    viewsButtonY = startViewsButtonY - moveDiffY;
+                    case MotionEvent.ACTION_MOVE:
+                        // Get scroll Y length and viewsDialog new position
+                        moveDiffY = startY - event.getRawY();
+                        viewsDialogY = startViewsDialogY - moveDiffY;
+                        viewsButtonY = startViewsButtonY - moveDiffY;
 
-                    // Change position for viewsDialog
-                    if (viewsDialogY > viewsDialogOpenY && viewsDialogY < App.fullScreenHeight) {
-                        isBottomDialogScrolling = true;
-                        // ViewsDialog is being opened
-                        viewsDialogOpenPercentage = (App.fullScreenHeight - viewsDialogY) /
-                                (App.fullScreenHeight - viewsDialogOpenY);
-                        // Set ViewsDialog to the current position
-                        viewsDialogRootLayout.setY(viewsDialogY);
-                        // Set ViewsButton to the current position
-                        bottomButton.setY(viewsButtonY);
-                        // Set alpha for ViewsButton for the current position
-                        bottomButton.setAlpha(1 - viewsDialogOpenPercentage);
-                        // Darken background
-                        viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
-                        float viewsDialogOpenPercentage = viewsDialogYFromBottom / viewsDialogRootLayout.getHeight();
-                        int colorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
-                        storyImageView.setColorFilter(Color.rgb(colorFilterValues, colorFilterValues, colorFilterValues), android.graphics.PorterDuff.Mode.MULTIPLY);
-                    } else if (viewsDialogY < viewsDialogOpenY) {
-                        // ViewsDialog is fully open
-                        // Set viewsDialog to the max position
-                        viewsDialogRootLayout.setY(viewsDialogOpenY);
-                        // Set viewsButton to the max position
-                        bottomButton.setY(viewsButtonOpenY);
-                        // Set alpha for ViewsButton to the max value
-                        bottomButton.setAlpha(0);
-                    } else if (viewsDialogY > App.fullScreenHeight) {
-                        // ViewsDialog is fully closed
-                        // Set viewsDialog to the min position
-                        viewsDialogRootLayout.setY(App.fullScreenHeight);
-                        // Set viewsButton to the min position
-                        bottomButton.setY(viewsButtonClosedY);
-                        // Set alpha for ViewsButton to the min value
-                        bottomButton.setAlpha(1);
-                    }
-
-                    return false;
+                        // Change position for viewsDialog
+                        if (viewsDialogY > viewsDialogOpenY && viewsDialogY < App.fullScreenHeight) {
+                            isBottomDialogScrolling = true;
+                            // ViewsDialog is being opened
+                            viewsDialogOpenPercentage = (App.fullScreenHeight - viewsDialogY) /
+                                    (App.fullScreenHeight - viewsDialogOpenY);
+                            // Set ViewsDialog to the current position
+                            viewsDialogRootLayout.setY(viewsDialogY);
+                            // Set ViewsButton to the current position
+                            bottomButton.setY(viewsButtonY);
+                            // Set alpha for ViewsButton for the current position
+                            bottomButton.setAlpha(1 - viewsDialogOpenPercentage);
+                            // Darken background
+                            viewsDialogYFromBottom = App.fullScreenHeight - viewsDialogRootLayout.getY();
+                            float viewsDialogOpenPercentage = viewsDialogYFromBottom / viewsDialogRootLayout.getHeight();
+                            int colorFilterValues = 255 - (int) (123 * viewsDialogOpenPercentage);
+                            storyImageView.setColorFilter(Color.rgb(colorFilterValues, colorFilterValues, colorFilterValues), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        } else if (viewsDialogY < viewsDialogOpenY) {
+                            // ViewsDialog is fully open
+                            // Set viewsDialog to the max position
+                            viewsDialogRootLayout.setY(viewsDialogOpenY);
+                            // Set viewsButton to the max position
+                            bottomButton.setY(viewsButtonOpenY);
+                            // Set alpha for ViewsButton to the max value
+                            bottomButton.setAlpha(0);
+                        } else if (viewsDialogY > App.fullScreenHeight) {
+                            // ViewsDialog is fully closed
+                            // Set viewsDialog to the min position
+                            viewsDialogRootLayout.setY(App.fullScreenHeight);
+                            // Set viewsButton to the min position
+                            bottomButton.setY(viewsButtonClosedY);
+                            // Set alpha for ViewsButton to the min value
+                            bottomButton.setAlpha(1);
+                        }
+                        return false;
+                }
             }
 
             if (event.getAction() == MotionEvent.ACTION_UP) {
