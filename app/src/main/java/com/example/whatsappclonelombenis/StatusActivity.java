@@ -30,6 +30,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
@@ -351,6 +352,22 @@ public class StatusActivity extends AppCompatActivity {
                         opacityAnimatorSet.playTogether(opacityAnimators);
                         opacityAnimatorSet.setDuration(200);
                         opacityAnimatorSet.start();
+
+                        // Hide navigation bar with animation
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            int colorTo = Color.argb(0, 0, 0, 0);
+                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), getWindow().getNavigationBarColor(), colorTo);
+                            colorAnimation.setDuration(200);
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    if ((int) animator.getAnimatedValue() != 0) {
+                                        getWindow().setNavigationBarColor((int) animator.getAnimatedValue());
+                                    }
+                                }
+                            });
+                            colorAnimation.start();
+                        }
                     }
                     isOnLongClickPressed = true;
                 }
@@ -417,6 +434,11 @@ public class StatusActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.argb(100, 0, 0, 0));
+            getWindow().setNavigationBarColor(Color.argb(100, 0, 0, 0));
         }
 
         // Set top margin for the action bar
@@ -1127,6 +1149,22 @@ public class StatusActivity extends AppCompatActivity {
                         opacityAnimatorSet.playTogether(opacityAnimators);
                         opacityAnimatorSet.setDuration(200);
                         opacityAnimatorSet.start();
+
+                        // Set opacity = 1 for navigation bar
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            int colorTo = Color.argb(100, 0, 0, 0);
+                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), getWindow().getNavigationBarColor(), colorTo);
+                            colorAnimation.setDuration(200);
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    if ((int) animator.getAnimatedValue() != 0) {
+                                        getWindow().setNavigationBarColor((int) animator.getAnimatedValue());
+                                    }
+                                }
+                            });
+                            colorAnimation.start();
+                        }
 
                         // Change variables values
                         isStoryStopped = false;
