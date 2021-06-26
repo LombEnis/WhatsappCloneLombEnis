@@ -205,41 +205,6 @@ public class StatusActivity extends AppCompatActivity {
             isBottomDialogOpen = false;
             isBottomDialogScrolling = false;
 
-            // Layout created listener
-            statusRootRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-                    new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            // Layout creation completed
-                            statusRootRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                            // Set bottom margin for the bottom button
-                            if (Build.VERSION.SDK_INT >= 19) {
-                                App.updateDeviceSizeVariables(StatusActivity.this);
-                                App.updateDeviceSizeVariables(StatusActivity.this);
-
-                                // Set bottom button margin
-                                RelativeLayout.LayoutParams bottombuttonLayoutParams = (RelativeLayout.LayoutParams) bottomButton.getLayoutParams();
-                                bottombuttonLayoutParams.bottomMargin = App.navigationBarHeight;
-
-                                bottomButton.setLayoutParams(bottombuttonLayoutParams);
-
-                                // Set bottom empty frame layout margin and height
-                                RelativeLayout.LayoutParams bottomEmptyFrameLayoutLayoutParams = (RelativeLayout.LayoutParams) bottomEmptyFrameLayout.getLayoutParams();
-                                bottomEmptyFrameLayoutLayoutParams.bottomMargin = App.navigationBarHeight;
-                                bottomEmptyFrameLayoutLayoutParams.height = bottomButton.getHeight();
-
-                                bottomEmptyFrameLayout.setLayoutParams(bottomEmptyFrameLayoutLayoutParams);
-
-                                // Get ViewsDialog default position when is open
-                                viewsDialogOpenY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
-                                // Get ViewsButton default position when ViewsDialog is open and closed
-                                viewsButtonClosedY = App.fullScreenHeight - bottomButton.getHeight() - App.navigationBarHeight;
-                                viewsButtonOpenY = viewsDialogOpenY - (App.fullScreenHeight - viewsButtonClosedY);
-                            }
-                        }
-                    });
-
             // Set views button text
             bottomButton.setText(Integer.toString(currentStory.getViewsContacts().size()));
 
@@ -328,6 +293,45 @@ public class StatusActivity extends AppCompatActivity {
         }
 
         captionTextView.setText(currentStory.getCaptionTextString());
+
+        // Layout created listener
+        statusRootRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        // Layout creation completed
+                        statusRootRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                        // Set bottom margin for the bottom button
+                        if (Build.VERSION.SDK_INT >= 19) {
+                            App.updateDeviceSizeVariables(StatusActivity.this);
+                            App.updateDeviceSizeVariables(StatusActivity.this);
+
+                            // Set bottom button margin
+                            RelativeLayout.LayoutParams bottombuttonLayoutParams = (RelativeLayout.LayoutParams) bottomButton.getLayoutParams();
+                            bottombuttonLayoutParams.bottomMargin = App.navigationBarHeight;
+
+                            bottomButton.setLayoutParams(bottombuttonLayoutParams);
+
+                            // Set bottom empty frame layout margin and height
+                            RelativeLayout.LayoutParams bottomEmptyFrameLayoutLayoutParams = (RelativeLayout.LayoutParams) bottomEmptyFrameLayout.getLayoutParams();
+                            bottomEmptyFrameLayoutLayoutParams.bottomMargin = App.navigationBarHeight;
+                            bottomEmptyFrameLayoutLayoutParams.height = bottomButton.getHeight();
+
+                            bottomEmptyFrameLayout.setLayoutParams(bottomEmptyFrameLayoutLayoutParams);
+
+                            // Get bottomButton default position when bottomDialog is open and closed
+                            viewsButtonClosedY = App.fullScreenHeight - bottomButton.getHeight() - App.navigationBarHeight;
+                            viewsButtonOpenY = viewsDialogOpenY - (App.fullScreenHeight - viewsButtonClosedY);
+
+                            if (contactsType == 0) {
+                                // Get ViewsDialog default position when is open
+                                viewsDialogOpenY = App.fullScreenHeight - viewsDialogRootLayout.getHeight();
+                            }
+
+                        }
+                    }
+                });
 
         // Set right and left buttons longClickListeners
         rightButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -1318,9 +1322,40 @@ public class StatusActivity extends AppCompatActivity {
                     // Exit from long click
                     resumeStory();
 
-                    progressLinearLayout.setVisibility(View.VISIBLE);
-                    actionBar.setVisibility(View.VISIBLE);
-                    bottomRelativeLayout.setVisibility(View.VISIBLE);
+                    // Set opacity = 1 for all the hidden view
+                    ObjectAnimator progressLinearLayoutOpacityAnimation = ObjectAnimator.ofFloat(progressLinearLayout, "alpha", 1f);
+                    ObjectAnimator actionBarOpacityAnimation = ObjectAnimator.ofFloat(actionBar, "alpha", 1f);
+                    ObjectAnimator bottomEmptyFrameLayoutOpacityAnimation = ObjectAnimator.ofFloat(bottomEmptyFrameLayout, "alpha", 1f);
+                    ObjectAnimator bottomButtonOpacityAnimation = ObjectAnimator.ofFloat(bottomButton, "alpha", 1f);
+
+                    ObjectAnimator[] opacityAnimators = {
+                            progressLinearLayoutOpacityAnimation,
+                            actionBarOpacityAnimation,
+                            bottomEmptyFrameLayoutOpacityAnimation,
+                            bottomButtonOpacityAnimation
+                    };
+
+                    AnimatorSet opacityAnimatorSet = new AnimatorSet();
+                    opacityAnimatorSet.playTogether(opacityAnimators);
+                    opacityAnimatorSet.setDuration(200);
+                    opacityAnimatorSet.start();
+
+                    // Set opacity = 1 for navigation bar
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        int colorTo = Color.argb(100, 0, 0, 0);
+                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), getWindow().getNavigationBarColor(), colorTo);
+                        colorAnimation.setDuration(200);
+                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                if ((int) animator.getAnimatedValue() != 0) {
+                                    getWindow().setNavigationBarColor((int) animator.getAnimatedValue());
+                                }
+                            }
+                        });
+                        colorAnimation.start();
+                    }
+
 
                     isStoryStopped = false;
                     isOnLongClickPressed = false;
