@@ -47,6 +47,33 @@ public class App extends Application {
         fullScreenHeight = screenHeight + navigationBarHeight + statusBarHeight + 36;
 
         // Create contacts
+        createContacts();
+
+        // Initialize isDisabledContactsVisible to false
+        TabStatusFragment.isDisabledContactsVisible = false;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    // Custom methods
+
+    // Update navigationBarHeight
+    public static void updateDeviceSizeVariables(Context context) {
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int navigationBarResourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        navigationBarHeight = context.getResources().getDimensionPixelSize(navigationBarResourceId);
+
+        int statusBarResourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        statusBarHeight = context.getResources().getDimensionPixelSize(statusBarResourceId);
+
+        fullScreenHeight = screenHeight + navigationBarHeight + statusBarHeight + 36;
+    }
+
+    // Create contacts
+    public void createContacts() {
         Thread createContactsThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -130,27 +157,6 @@ public class App extends Application {
             }
         });
         createContactsThread.start();
-
-        // Initialize isDisabledContactsVisible to false
-        TabStatusFragment.isDisabledContactsVisible = false;
-    }
-
-    public static Context getContext() {
-        return context;
-    }
-
-    // Custom methods
-    // Update navigationBarHeight
-    public static void updateDeviceSizeVariables(Context context) {
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-        int navigationBarResourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        navigationBarHeight = context.getResources().getDimensionPixelSize(navigationBarResourceId);
-
-        int statusBarResourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        statusBarHeight = context.getResources().getDimensionPixelSize(statusBarResourceId);
-
-        fullScreenHeight = screenHeight + navigationBarHeight + statusBarHeight + 36;
     }
 
     // Perform ripple effect on a view
