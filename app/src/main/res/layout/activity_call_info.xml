@@ -83,58 +83,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="75dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/callContactInfoCallDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginStart="75dp"
+        android:text="Day"
+        android:layout_below="@id/callLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/callLayout">
+        android:layout_marginTop="10dp"
+        android:id="@+id/callContactInfoCallsRecView"
+        android:layout_below="@id/callContactInfoCallDay" />
 
-        <TextView
-            android:id="@+id/callContactInfoCallTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Time"
-            app:layout_constraintStart_toEndOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/callContactInfoCallInfo" />
-
-        <TextView
-            android:id="@+id/callContactInfoCallInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Info"
-            app:layout_constraintStart_toEndOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/callContactInfoCallDay" />
-
-        <TextView
-            android:id="@+id/callContactInfoCallDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Day"
-            app:layout_constraintStart_toEndOf="@+id/guideline3"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/callContactInfoImageInfo"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginLeft="26dp"
-            android:layout_marginTop="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="75dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

@@ -206,9 +206,6 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                 filteredCalls.add(call);
             }
         }
-        /*System.out.println("filtered"+filteredCalls);
-        System.out.println("viewsSize"+views.size());
-        System.out.println(filteredCalls.size());*/
         this.calls=filteredCalls;
         notifyDataSetChanged();
     }
