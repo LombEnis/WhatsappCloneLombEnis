@@ -6,9 +6,10 @@ public class Call {
     private Contact contact;
     private Calendar date;
     private boolean callAccepted, isIncomingCall, isVoiceCall;
-    private int callDuration, callMB;
+    private int callDuration;
+    private double callMB;
 
-    public Call(Contact contact, Calendar date, boolean callAccepted, boolean incomingCall, boolean isVoiceCall, int callDuration, int callMB) {
+    public Call(Contact contact, Calendar date, boolean callAccepted, boolean incomingCall, boolean isVoiceCall, int callDuration, double callMB) {
         this.contact = contact;
         this.date = date;
         this.callAccepted = callAccepted;
@@ -26,7 +27,7 @@ public class Call {
         this.callDuration = callDuration;
     }
 
-    public int getCallMB() {
+    public double getCallMB() {
         return callMB;
     }
 

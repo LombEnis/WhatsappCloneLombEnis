@@ -23,6 +23,8 @@ import com.bumptech.glide.Glide;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 public class CallInfoActivity extends AppCompatActivity {
     //Toolbar
@@ -37,6 +39,7 @@ public class CallInfoActivity extends AppCompatActivity {
     TextView callTimeView;
 
     RecyclerView callsRecView;
+    ArrayList<Call> calls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,34 +54,28 @@ public class CallInfoActivity extends AppCompatActivity {
 
         Intent intent= getIntent();
 
-        //RecView
-        Calendar callCalendar1= Calendar.getInstance();
-        callCalendar1.set(Calendar.HOUR_OF_DAY, 7);
-        callCalendar1.set(Calendar.DAY_OF_MONTH, 7);
-
-        Calendar callCalendar2= Calendar.getInstance();
-        callCalendar2.set(Calendar.HOUR_OF_DAY, 15);
-
-        callsRecView=findViewById(R.id.callContactInfoCallsRecView);
-
-        ArrayList<Call> calls = new ArrayList<>();
-       
-        CallInfoRecViewAdapter recViewAdapter = new CallInfoRecViewAdapter(this);
-        recViewAdapter.setData(calls);
-
-        callsRecView.setAdapter(recViewAdapter);
-        callsRecView.setLayoutManager(new LinearLayoutManager(this));
-
         //EXTRAS
         String contactImageUrl= intent.getStringExtra(CallsRecViewAdapter.EXTRA_IMAGE);
         String contactName= intent.getStringExtra(CallsRecViewAdapter.EXTRA_NAME);
         String contactInfo= intent.getStringExtra(CallsRecViewAdapter.EXTRA_INFO);
-        boolean isAcceptedCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_ACCEPTED, false);
-        boolean isIncomingCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_INCOMING, false);
+        //boolean isAcceptedCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_ACCEPTED, false);
+        //boolean isIncomingCall= intent.getBooleanExtra(CallsRecViewAdapter.EXTRA_IS_INCOMING, false);
         //getting Contact Calendar object
-        long contactTimeInMillis= intent.getLongExtra(CallsRecViewAdapter.EXTRA_DATE, 0);
-        Calendar contactCalendar= Calendar.getInstance();
-        contactCalendar.setTimeInMillis(contactTimeInMillis);
+        //long contactTimeInMillis= intent.getLongExtra(CallsRecViewAdapter.EXTRA_DATE, 0);
+        //Calendar contactCalendar= Calendar.getInstance();
+        //contactCalendar.setTimeInMillis(contactTimeInMillis);
+
+        int callIndex= intent.getIntExtra(CallsRecViewAdapter.EXTRA_CALL_INDEX, -1);
+        System.out.println(callIndex);
+
+        System.out.println(CallsRecViewAdapter.allCalls);
+        if (CallsRecViewAdapter.allCalls.get(callIndex) instanceof ArrayList) {
+            List<Call> callsList = new ArrayList<>((Collection<Call>) CallsRecViewAdapter.allCalls.get(callIndex));
+            calls.addAll(callsList);
+        }else {
+            Call callToAdd = (Call) CallsRecViewAdapter.allCalls.get(callIndex);
+            calls.add(callToAdd);
+        }
 
         //Setting the EXTRA values to the Views
         contactProfileImg=findViewById(R.id.callContactInfoProfileImg);
@@ -116,7 +113,21 @@ public class CallInfoActivity extends AppCompatActivity {
             callInfoView.setText(R.string.outgoing);
         }*/
 
-        //TODO: adjust not transporting data
+        //RecView
+        Calendar callCalendar1= Calendar.getInstance();
+        callCalendar1.set(Calendar.HOUR_OF_DAY, 7);
+        callCalendar1.set(Calendar.DAY_OF_MONTH, 7);
+
+        Calendar callCalendar2= Calendar.getInstance();
+        callCalendar2.set(Calendar.HOUR_OF_DAY, 15);
+
+        callsRecView=findViewById(R.id.callContactInfoCallsRecView);
+
+        CallInfoRecViewAdapter recViewAdapter = new CallInfoRecViewAdapter(this);
+        recViewAdapter.setData(calls);
+
+        callsRecView.setAdapter(recViewAdapter);
+        callsRecView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

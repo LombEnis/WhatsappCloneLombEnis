@@ -50,6 +50,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
     public static final String EXTRA_IS_ACCEPTED="isAccepted";
     public static final String EXTRA_IS_INCOMING="isIncoming";
     public static final String EXTRA_DATE="date";
+    public static final String EXTRA_CALL_INDEX="callIndex";
 
     public CallsRecViewAdapter(Context context) {
         this.context = context;
@@ -136,7 +137,7 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
         else if ((!calls.get(position).isCallAccepted()) && calls.get(position).isIncomingCall()) {
             holder.callInfo.setImageResource(R.drawable.ic_call_received_red);
         }
-        else if (calls.get(position).isCallAccepted() && (!calls.get(position).isIncomingCall())) {
+        else if (!calls.get(position).isIncomingCall()) {
             holder.callInfo.setImageResource(R.drawable.ic_call_made_green);
         }
 
@@ -160,10 +161,13 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
 
         //Storing all calls
         for (int i=0;  i<rawCalls.size()-1; i++ ) {
-            if (rawCalls.get(i).getContact().getName() == rawCalls.get(i + 1).getContact().getName()
-            && rawCalls.get(i).getDate().get(Calendar.DAY_OF_MONTH)==rawCalls.get(i+1).getDate().get(Calendar.DAY_OF_MONTH)
+            if (isSameDayAndContact(rawCalls, i)
             && rawCalls.get(i).isIncomingCall()==rawCalls.get(i+1).isIncomingCall()
-            && rawCalls.get(i).isCallAccepted()==rawCalls.get(i+1).isCallAccepted()) {
+            && rawCalls.get(i).isCallAccepted()==rawCalls.get(i+1).isCallAccepted()
+            || (isSameDayAndContact(rawCalls, i) && rawCalls.get(i).isCallAccepted() && rawCalls.get(i).isIncomingCall()
+                    && !rawCalls.get(i+1).isIncomingCall())
+            || (isSameDayAndContact(rawCalls, i) && !rawCalls.get(i).isIncomingCall() && rawCalls.get(i+1).isCallAccepted()
+                    && rawCalls.get(i+1).isIncomingCall())) {
                 if (!addingArr.contains(rawCalls.get(i))) {
                     addingArr.add(rawCalls.get(i));
                 }
@@ -340,10 +344,11 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
             showCallInfoIntent.putExtra(EXTRA_IMAGE, calls.get(views.indexOf(v)).getContact().getProfilePicture());
             showCallInfoIntent.putExtra(EXTRA_NAME, calls.get(views.indexOf(v)).getContact().getName());
             showCallInfoIntent.putExtra(EXTRA_INFO, calls.get(views.indexOf(v)).getContact().getMessage());
-            showCallInfoIntent.putExtra(EXTRA_DATE, calls.get(views.indexOf(v)).getDate().getTimeInMillis());
+            /*showCallInfoIntent.putExtra(EXTRA_DATE, calls.get(views.indexOf(v)).getDate().getTimeInMillis());
             showCallInfoIntent.putExtra(EXTRA_IS_ACCEPTED, calls.get(views.indexOf(v)).isCallAccepted());
-            showCallInfoIntent.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());
+            showCallInfoIntent.putExtra(EXTRA_IS_INCOMING, calls.get(views.indexOf(v)).isIncomingCall());*/
 
+            showCallInfoIntent.putExtra(EXTRA_CALL_INDEX, TabCallsFragment.mCallsLinearLayoutManager.getPosition(v));
             context.startActivity(showCallInfoIntent);
         }
     }
@@ -378,6 +383,13 @@ public class CallsRecViewAdapter extends RecyclerView.Adapter<CallsRecViewAdapte
                 return 0;
             }
         }
+    }
+
+    public boolean isSameDayAndContact(ArrayList<Call> rawCalls, int i) {
+        return rawCalls.get(i).getContact().getName().equals(rawCalls.get(i + 1).getContact().getName())
+                && rawCalls.get(i).getDate().get(Calendar.DAY_OF_MONTH)==rawCalls.get(i+1).getDate().get(Calendar.DAY_OF_MONTH)
+                && rawCalls.get(i).getDate().get(Calendar.MONTH)==rawCalls.get(i+1).getDate().get(Calendar.MONTH)
+                && rawCalls.get(i).getDate().get(Calendar.YEAR)==rawCalls.get(i+1).getDate().get(Calendar.YEAR);
     }
 
 }

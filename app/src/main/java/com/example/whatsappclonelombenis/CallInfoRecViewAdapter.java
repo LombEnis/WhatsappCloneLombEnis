@@ -53,7 +53,7 @@ public class CallInfoRecViewAdapter extends RecyclerView.Adapter<CallInfoRecView
         holder.callTime.setText(callTimeText);
 
         holder.callDuration.setText(Integer.toString(calls.get(position).getCallDuration()));
-        holder.callMB.setText(Integer.toString(calls.get(position).getCallMB()));
+        holder.callMB.setText(Double.toString(calls.get(position).getCallMB()));
     }
 
     @Override
