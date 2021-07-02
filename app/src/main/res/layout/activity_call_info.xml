@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/callInfoToolbar"
-        android:background="@drawable/item_divider">
+        android:background="@drawable/call_info_layout_divider">
 
         <ImageView
             android:id="@+id/callContactProfileImg"
