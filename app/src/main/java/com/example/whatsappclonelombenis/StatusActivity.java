@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -371,6 +372,11 @@ public class StatusActivity extends AppCompatActivity {
                                 }
                             });
                             colorAnimation.start();
+                        } else {
+                            Log.d("lombichh", "true");
+                            getWindow().getDecorView().setSystemUiVisibility(
+                                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
                         }
                     }
                     isOnLongClickPressed = true;
@@ -420,8 +426,8 @@ public class StatusActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Delete status bar and expand the layout
-        getWindow().setDecorFitsSystemWindows(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getWindow().setDecorFitsSystemWindows(false);
             final WindowInsetsController controller = getWindow().getInsetsController();
 
             if (controller != null) {
@@ -433,15 +439,12 @@ public class StatusActivity extends AppCompatActivity {
             //noinspection deprecation
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_IMMERSIVE
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(Color.argb(100, 0, 0, 0));
             getWindow().setNavigationBarColor(Color.argb(100, 0, 0, 0));
         }
 
@@ -623,7 +626,9 @@ public class StatusActivity extends AppCompatActivity {
                 contacts.get(pos).setCurrentStoriesPos(-1);
 
                 for (Story story:contacts.get(pos).getStatusStories()) {
-                    story.getProgressBar().setProgress(100);
+                    if (story.isSeen()) {
+                        story.getProgressBar().setProgress(100);
+                    }
                 }
             }
 

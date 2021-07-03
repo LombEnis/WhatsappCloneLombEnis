@@ -2,6 +2,7 @@
 <resources>
     <style name="Theme.WhatsappCloneLombEnis.FullScreenActivity">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="DialogActivity" parent="Theme.WhatsappCloneLombEnis">

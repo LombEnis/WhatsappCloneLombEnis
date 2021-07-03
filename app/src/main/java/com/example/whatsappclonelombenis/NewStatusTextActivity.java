@@ -61,8 +61,8 @@ public class NewStatusTextActivity extends AppCompatActivity {
         sendImageButton = findViewById(R.id.send_imagebutton);
 
         // Delete status bar and expand the layout
-        getWindow().setDecorFitsSystemWindows(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getWindow().setDecorFitsSystemWindows(false);
             final WindowInsetsController controller = getWindow().getInsetsController();
             getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         } else {
