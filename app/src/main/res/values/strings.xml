@@ -58,4 +58,5 @@
     <string name="abandon_group">Abbandona gruppo</string>
     <string name="group_info">Info gruppo</string>
     <string name="today">Oggi</string>
+    <string name="no_answer">Senza risposta</string>
 </resources>

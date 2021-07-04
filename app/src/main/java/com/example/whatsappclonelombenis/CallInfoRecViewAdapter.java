@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -51,8 +52,24 @@ public class CallInfoRecViewAdapter extends RecyclerView.Adapter<CallInfoRecView
                 + new SimpleDateFormat("mm").format(callDate);
         holder.callTime.setText(callTimeText);
 
-        holder.callDuration.setText(Integer.toString(calls.get(position).getCallDuration()));
-        holder.callMB.setText(Double.toString(calls.get(position).getCallMB()));
+        int durationSeconds= calls.get(position).getCallDuration();
+        String callDurationText="";
+        String callMBString="";
+
+        if (durationSeconds>=3600) {
+            callDurationText=  String.format("%d:%02d:%02d", durationSeconds / 3600, (durationSeconds % 3600) / 60, (durationSeconds % 60));
+            callMBString = calls.get(position).getCallMB() + " MB";
+        }
+        else if (durationSeconds<3600 && durationSeconds>0) {
+            callDurationText=  String.format("%d:%02d", (durationSeconds % 3600) / 60, (durationSeconds % 60));
+            callMBString = calls.get(position).getCallMB() + " MB";
+        }
+        else {
+            callDurationText= context.getResources().getString(R.string.no_answer);
+        }
+        holder.callDuration.setText(callDurationText);
+
+        holder.callMB.setText(callMBString);
     }
 
     @Override

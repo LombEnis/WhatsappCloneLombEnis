@@ -1,3 +1,4 @@
+
 package com.example.whatsappclonelombenis;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class CallInfoActivity extends AppCompatActivity {
@@ -27,12 +30,11 @@ public class CallInfoActivity extends AppCompatActivity {
     Toolbar callInfoToolbar;
 
     //Views
-    ImageView contactProfileImg, imageCallInfo;
+    ImageView contactProfileImg;
     TextView contactNameView;
     TextView contactInfoView;
     TextView callDayView;
-    TextView callInfoView;
-    TextView callTimeView;
+
 
     RecyclerView callsRecView;
     ArrayList<Call> calls = new ArrayList<>();
@@ -50,6 +52,8 @@ public class CallInfoActivity extends AppCompatActivity {
 
         Intent intent= getIntent();
 
+        callDayView=findViewById(R.id.callContactInfoCallDay);
+
         //EXTRAS
         String contactImageUrl= intent.getStringExtra(CallsRecViewAdapter.EXTRA_IMAGE);
         String contactName= intent.getStringExtra(CallsRecViewAdapter.EXTRA_NAME);
@@ -62,15 +66,65 @@ public class CallInfoActivity extends AppCompatActivity {
         //contactCalendar.setTimeInMillis(contactTimeInMillis);
 
         int callIndex= intent.getIntExtra(CallsRecViewAdapter.EXTRA_CALL_INDEX, -1);
-        System.out.println(callIndex);
+        Calendar currentCalendar= Calendar.getInstance();
+        Calendar previousCalendar= Calendar.getInstance();
+        previousCalendar.add(Calendar.DATE, -1);
 
-        System.out.println(CallsRecViewAdapter.allCalls);
         if (CallsRecViewAdapter.allCalls.get(callIndex) instanceof ArrayList) {
             List<Call> callsList = new ArrayList<>((Collection<Call>) CallsRecViewAdapter.allCalls.get(callIndex));
             calls.addAll(callsList);
+            Call callToAdd = callsList.get(0);
+            Calendar callCalendar = callToAdd.getDate();
+            Date callDate = callCalendar.getTime();
+
+            if (currentCalendar.get(Calendar.YEAR)==callCalendar.get(Calendar.YEAR)
+                    && currentCalendar.get(Calendar.DAY_OF_MONTH)==callCalendar.get(Calendar.DAY_OF_MONTH)
+                    && currentCalendar.get(Calendar.MONTH)==callCalendar.get(Calendar.MONTH)) {
+                callDayView.setText(getResources().getString(R.string.today));
+            }
+            else if (previousCalendar.get(Calendar.YEAR)==callCalendar.get(Calendar.YEAR)
+                    && previousCalendar.get(Calendar.DAY_OF_MONTH)==callCalendar.get(Calendar.DAY_OF_MONTH)
+                    && previousCalendar.get(Calendar.MONTH)==callCalendar.get(Calendar.MONTH)) {
+                callDayView.setText(getResources().getString(R.string.yesterday));
+            }
+            else if (currentCalendar.get(Calendar.YEAR)==callCalendar.get(Calendar.YEAR)) {
+                String text = new SimpleDateFormat("dd").format(callDate) + " " +
+                        new SimpleDateFormat("MMM").format(callDate);
+                callDayView.setText(text);
+            }
+            else {
+                String text = new SimpleDateFormat("dd").format(callDate) + " " +
+                        new SimpleDateFormat("MMM").format(callDate) + " " +
+                        new SimpleDateFormat("yyyy").format(callDate);
+                callDayView.setText(text);
+            }
         }else {
             Call callToAdd = (Call) CallsRecViewAdapter.allCalls.get(callIndex);
             calls.add(callToAdd);
+            Calendar callCalendar = callToAdd.getDate();
+            Date callDate = callCalendar.getTime();
+
+            if (currentCalendar.get(Calendar.YEAR)==callCalendar.get(Calendar.YEAR)
+            && currentCalendar.get(Calendar.DAY_OF_MONTH)==callCalendar.get(Calendar.DAY_OF_MONTH)
+            && currentCalendar.get(Calendar.MONTH)==callCalendar.get(Calendar.MONTH)) {
+                callDayView.setText(getResources().getString(R.string.today));
+            }
+            else if (previousCalendar.get(Calendar.YEAR)==callCalendar.get(Calendar.YEAR)
+                    && previousCalendar.get(Calendar.DAY_OF_MONTH)==callCalendar.get(Calendar.DAY_OF_MONTH)
+                    && previousCalendar.get(Calendar.MONTH)==callCalendar.get(Calendar.MONTH)) {
+                callDayView.setText(getResources().getString(R.string.yesterday));
+            }
+            else if (currentCalendar.get(Calendar.YEAR)==callCalendar.get(Calendar.YEAR)) {
+                String text = new SimpleDateFormat("d").format(callDate) + " " +
+                        new SimpleDateFormat("MMMM").format(callDate);
+                callDayView.setText(text);
+            }
+            else {
+                String text = new SimpleDateFormat("d").format(callDate) + " " +
+                        new SimpleDateFormat("MMMM").format(callDate) + " " +
+                        new SimpleDateFormat("yyyy").format(callDate);
+                callDayView.setText(text);
+            }
         }
 
         //Setting the EXTRA values to the Views
@@ -87,11 +141,9 @@ public class CallInfoActivity extends AppCompatActivity {
         contactInfoView.setText(contactInfo);
 
         //TODO: set call day and call time
-
-        callDayView=findViewById(R.id.callContactInfoCallDay);
         //callDayView.setText(callDay);
 
-        callTimeView=findViewById(R.id.callContactInfoCallTime);
+        //callTimeView=findViewById(R.id.callContactInfoCallTime);
         //callTimeView.setText(callTime);
 
         /*callInfoView=findViewById(R.id.callContactInfoCallInfo);

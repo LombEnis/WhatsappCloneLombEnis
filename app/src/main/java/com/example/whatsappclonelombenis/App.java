@@ -39,12 +39,13 @@ public class App extends Application {
         calls= new ArrayList<>();
         Calendar callCalendar1= Calendar.getInstance();
         callCalendar1.set(Calendar.HOUR_OF_DAY, 7);
-        //callCalendar1.set(Calendar.DAY_OF_MONTH, 7);
-        callCalendar1.set(Calendar.MONTH, 4);
+
 
         Calendar callCalendar2= Calendar.getInstance();
         callCalendar2.set(Calendar.HOUR_OF_DAY, 15);
         callCalendar2.set(Calendar.MONTH, 1);
+        callCalendar2.set(Calendar.DAY_OF_MONTH, 14);
+        callCalendar2.set(Calendar.YEAR, 2014);
 
         Calendar callCalendar3= Calendar.getInstance();
         callCalendar3.set(Calendar.HOUR_OF_DAY, 11);
@@ -53,9 +54,9 @@ public class App extends Application {
         callCalendar4.set(Calendar.HOUR_OF_DAY, 11);
         callCalendar4.set(Calendar.MONTH, 2);
 
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), callCalendar1, true, false, false, 3000, 4.4));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), callCalendar2, true, false, true, 3000, 44));
-        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), callCalendar3, true, true, true, 3000, 44));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), callCalendar1, true, false, false, 0, 4.4));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), callCalendar2, true, false, true, 1600, 44));
+        calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/4/42/The_ROCK.jpg", "Dwayne", "Hey, I'm the Rock!"), callCalendar3, true, true, true, 200, 44));
         calls.add(new Call(new Contact("https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Margot_Robbie_%2828129125629%29.jpg/537px-Margot_Robbie_%2828129125629%29.jpg","Margot <3","Enis is my love :))"), callCalendar4,true, false, true, 3000, 44));
     }
 }
